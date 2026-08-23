@@ -1,428 +1,1278 @@
-
 <!DOCTYPE html>
-
-<html lang="hi">
+<html lang="hi" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>जमींदार लैंड बाज़ार - Jamindar Land Bazaar</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .active-filter {
-            background-color: #047857 !important;
-            color: white !important;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JAMINDAR LAND BAZAAR — A Professional Land Buying & Selling Platform in Jharkhand</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Buy, Sell & Discover Verified Land, CNT Plots, General Plots, Residential & Agricultural Lands Across Jharkhand. Direct Seller Contact & Instant WhatsApp." />
+  <meta name="keywords" content="Jamindar Land Bazaar, Jharkhand Real Estate, CNT Plot Jharkhand, Buy Land Japla Palamu, Ranchi Land Sale, Dhanbad Plots" />
+  
+  <!-- Tailwind CSS & FontAwesome -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+              900: '#14532d',
+              dark: '#0f291e'
+            },
+            accent: {
+              gold: '#d97706',
+              goldLight: '#fef3c7'
+            }
+          }
         }
-    </style>
+      }
+    }
+  </script>
+
+  <style>
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    .glass-nav { background: rgba(20, 83, 45, 0.95); backdrop-filter: blur(8px); }
+  </style>
 </head>
-<body class="bg-gray-50 text-gray-800 font-sans">
 
-    <!-- Header / Navbar -->
-    <header class="bg-emerald-800 text-white sticky top-0 z-40 shadow-md">
-        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <i class="fas fa-landmark text-2xl text-amber-400"></i>
-                <span class="text-xl font-bold tracking-wide">जमींदार लैंड बाज़ार</span>
-            </div>
-            <div class="flex items-center space-x-2">
-                <button onclick="openModal('registerModal')" class="bg-amber-500 hover:bg-amber-600 text-gray-900 font-bold px-3 py-1.5 rounded-lg text-sm transition">
-                    <i class="fas fa-user-plus mr-1"></i> रजिस्ट्रेशन / लॉगिन
-                </button>
-                <button onclick="openModal('adminModal')" class="bg-emerald-950 hover:bg-black text-amber-400 border border-amber-400 font-semibold px-3 py-1.5 rounded-lg text-sm transition">
-                    <i class="fas fa-lock mr-1"></i> एडमिन
-                </button>
-            </div>
-        </div>
-    </header>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased pb-16 md:pb-0 select-none">
 
-    <!-- Hero & Search Section -->
-    <section class="bg-gradient-to-r from-emerald-900 via-emerald-800 to-teal-900 text-white py-12 px-4 text-center">
-        <h1 class="text-3xl md:text-4xl font-extrabold mb-3">झारखंड में ज़मीन और प्रॉपर्टी का सबसे भरोसेमंद मंच</h1>
-        <p class="text-emerald-100 text-sm md:text-base mb-6">हुसैनाबाद, जपला, पलामू एवं आसपास के क्षेत्रों में प्रमाणित ज़मीन खरीदें व बेचें</p>
+  <!-- ================= TOP CONTACT / ANNOUNCEMENT BAR ================= -->
+  <div class="bg-brand-900 text-emerald-100 text-xs py-1.5 px-4 hidden md:flex justify-between items-center border-b border-brand-800">
+    <div class="flex items-center space-x-6">
+      <span><i class="fa-solid fa-location-dot text-amber-400 mr-1.5"></i> झारखंड का विश्वसनीय डिजिटल भूमि बाज़ार</span>
+      <span><i class="fa-solid fa-phone text-amber-400 mr-1.5"></i> +91 9308424700</span>
+      <span><i class="fa-solid fa-envelope text-amber-400 mr-1.5"></i> santosh26011988@gmail.com</span>
+    </div>
+    <div class="flex items-center space-x-4">
+      <span class="bg-brand-800 px-2 py-0.5 rounded text-[11px] text-amber-300 font-medium">✓ 100% Direct Seller Platform</span>
+      <a href="javascript:void(0)" onclick="switchView('view-admin-auth')" class="hover:text-amber-300 transition"><i class="fa-solid fa-lock text-[10px] mr-1"></i> Admin</a>
+    </div>
+  </div>
+
+  <!-- ================= MAIN HEADER / NAVBAR ================= -->
+  <header class="sticky top-0 z-50 glass-nav text-white shadow-lg border-b border-emerald-700/50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
         
-        <!-- Live Search Bar -->
-        <div class="max-w-2xl mx-auto flex items-center bg-white rounded-full p-1.5 shadow-lg">
-            <i class="fas fa-search text-gray-400 ml-4 mr-2"></i>
-            <input type="text" id="searchInput" onkeyup="searchProperties()" placeholder="लोकेशन, ज़मीन का प्रकार या कीवर्ड खोजें..." class="w-full text-gray-800 px-2 py-2 focus:outline-none rounded-full text-sm md:text-base">
+        <!-- Logo -->
+        <a href="javascript:void(0)" onclick="switchView('view-home')" class="flex items-center space-x-2.5 group">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-amber-300 flex items-center justify-center text-brand-900 font-black text-xl shadow-md group-hover:scale-105 transition duration-200">
+            J
+          </div>
+          <div>
+            <div class="font-extrabold text-base md:text-lg tracking-tight leading-tight flex items-center gap-1.5">
+              <span>JAMINDAR</span><span class="text-amber-400">LAND BAZAAR</span>
+            </div>
+            <p class="text-[9px] text-emerald-200 tracking-wider uppercase font-medium">Land Buying & Selling Platform</p>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden lg:flex items-center space-x-6 text-sm font-medium">
+          <a href="javascript:void(0)" onclick="switchView('view-home')" class="hover:text-amber-300 transition">Home</a>
+          <a href="javascript:void(0)" onclick="filterAndShowProperties('All')" class="hover:text-amber-300 transition">All Land</a>
+          <a href="javascript:void(0)" onclick="filterAndShowProperties('General')" class="hover:text-amber-300 transition">General Plots</a>
+          <a href="javascript:void(0)" onclick="filterAndShowProperties('CNT')" class="text-amber-300 hover:underline transition">CNT Plots</a>
+          <a href="javascript:void(0)" onclick="filterAndShowProperties('Verified')" class="hover:text-amber-300 transition">Verified</a>
+          <a href="javascript:void(0)" onclick="scrollToSection('calculator-section')" class="hover:text-amber-300 transition">Calculator</a>
+          <a href="javascript:void(0)" onclick="switchView('view-about')" class="hover:text-amber-300 transition">About Us</a>
+          <a href="javascript:void(0)" onclick="switchView('view-contact')" class="hover:text-amber-300 transition">Contact</a>
+        </nav>
+
+        <!-- Header Actions -->
+        <div class="hidden sm:flex items-center space-x-3">
+          <button onclick="switchView('view-user-dashboard')" class="text-xs bg-brand-800 hover:bg-brand-700 text-emerald-100 px-3.5 py-2 rounded-lg font-semibold transition flex items-center gap-1.5 border border-emerald-600">
+            <i class="fa-solid fa-user text-amber-400"></i> My Account
+          </button>
+          <button onclick="switchView('view-post-property')" class="text-xs bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-900 font-bold px-4 py-2 rounded-lg shadow-md hover:shadow-lg transition transform hover:-translate-y-0.5 flex items-center gap-1.5">
+            <i class="fa-solid fa-circle-plus"></i> + Post Land Free
+          </button>
         </div>
 
-        <!-- Filter Tags -->
-        <div class="flex flex-wrap justify-center gap-2 mt-6 max-w-3xl mx-auto">
-            <button onclick="filterCategory('all', this)" class="filter-btn active-filter bg-white/20 hover:bg-white/30 text-white text-xs md:text-sm px-4 py-1.5 rounded-full transition font-medium">सभी ज़मीनें</button>
-            <button onclick="filterCategory('general', this)" class="filter-btn bg-white/20 hover:bg-white/30 text-white text-xs md:text-sm px-4 py-1.5 rounded-full transition font-medium">जनरल प्लॉट</button>
-            <button onclick="filterCategory('cnt', this)" class="filter-btn bg-white/20 hover:bg-white/30 text-white text-xs md:text-sm px-4 py-1.5 rounded-full transition font-medium">सीएनटी (CNT) मुक्त</button>
-            <button onclick="filterCategory('agri', this)" class="filter-btn bg-white/20 hover:bg-white/30 text-white text-xs md:text-sm px-4 py-1.5 rounded-full transition font-medium">कृषि भूमि</button>
-            <button onclick="filterCategory('residential', this)" class="filter-btn bg-white/20 hover:bg-white/30 text-white text-xs md:text-sm px-4 py-1.5 rounded-full transition font-medium">आवासीय प्लॉट</button>
-            <button onclick="filterCategory('industrial', this)" class="filter-btn bg-white/20 hover:bg-white/30 text-white text-xs md:text-sm px-4 py-1.5 rounded-full transition font-medium">इंडस्ट्रियल / कमर्शियल</button>
+        <!-- Mobile Menu Hamburger -->
+        <div class="flex lg:hidden items-center space-x-2">
+          <button onclick="switchView('view-post-property')" class="text-[11px] bg-amber-500 text-slate-950 font-bold px-2.5 py-1.5 rounded-md flex items-center gap-1">
+            <i class="fa-solid fa-plus"></i> Post
+          </button>
+          <button onclick="toggleMobileDrawer()" class="text-white p-2 focus:outline-none">
+            <i class="fa-solid fa-bars text-xl"></i>
+          </button>
         </div>
+
+      </div>
+    </div>
+
+    <!-- Mobile Drawer Menu -->
+    <div id="mobileDrawer" class="hidden lg:hidden bg-brand-900 border-b border-emerald-800 px-4 pt-2 pb-6 space-y-3 text-sm">
+      <div class="grid grid-cols-2 gap-2 pt-2">
+        <button onclick="switchView('view-home'); toggleMobileDrawer();" class="text-left px-3 py-2 rounded bg-brand-800 text-white">🏠 Home</button>
+        <button onclick="filterAndShowProperties('All'); toggleMobileDrawer();" class="text-left px-3 py-2 rounded bg-brand-800 text-white">🗺️ All Plots</button>
+        <button onclick="filterAndShowProperties('General'); toggleMobileDrawer();" class="text-left px-3 py-2 rounded bg-brand-800 text-white">🟢 General Plot</button>
+        <button onclick="filterAndShowProperties('CNT'); toggleMobileDrawer();" class="text-left px-3 py-2 rounded bg-brand-800 text-amber-300 font-semibold">🟡 CNT Plot</button>
+        <button onclick="filterAndShowProperties('Verified'); toggleMobileDrawer();" class="text-left px-3 py-2 rounded bg-brand-800 text-white">✓ Verified</button>
+        <button onclick="scrollToSection('calculator-section'); toggleMobileDrawer();" class="text-left px-3 py-2 rounded bg-brand-800 text-white">📐 Calculator</button>
+      </div>
+      <div class="border-t border-emerald-800 pt-3 flex flex-col gap-2">
+        <button onclick="switchView('view-user-dashboard'); toggleMobileDrawer();" class="w-full text-center py-2 bg-emerald-800 rounded text-white font-medium"><i class="fa-solid fa-user mr-1.5"></i> My Account / Saved</button>
+        <button onclick="switchView('view-admin-auth'); toggleMobileDrawer();" class="w-full text-center py-2 bg-slate-800 rounded text-amber-300 text-xs font-semibold"><i class="fa-solid fa-lock mr-1.5"></i> Admin Login</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= SPA VIEW CONTAINER ================= -->
+  <main id="appContent" class="min-h-screen">
+
+    <!-- ================================================================= -->
+    <!-- VIEW 1: HOMEPAGE (Default View) -->
+    <!-- ================================================================= -->
+    <section id="view-home" class="page-view block">
+      
+      <!-- HERO SECTION -->
+      <div class="relative bg-gradient-to-b from-brand-900 via-brand-800 to-emerald-900 text-white py-14 md:py-24 px-4 overflow-hidden">
+        <!-- Background Pattern -->
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#d97706_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        
+        <div class="relative max-w-5xl mx-auto text-center space-y-4 md:space-y-6">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-950/60 border border-amber-400/40 text-amber-300 text-xs font-semibold tracking-wide">
+            <i class="fa-solid fa-shield-halved"></i> Jharkhand's Premier Digital Land Marketplace
+          </div>
+          
+          <h1 class="text-3xl sm:text-4xl md:text-6xl font-black tracking-tight leading-tight">
+            Find Your Perfect Land in <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400">Jharkhand</span>
+          </h1>
+          
+          <p class="text-sm sm:text-base md:text-lg text-emerald-100 max-w-2xl mx-auto font-normal leading-relaxed">
+            Buy, Sell & Discover Verified Land Properties across Japla, Palamu, Ranchi, Dhanbad and all 24 Districts.
+          </p>
+
+          <!-- SMART PROPERTY SEARCH ENGINE -->
+          <div class="bg-white text-gray-800 p-4 sm:p-5 rounded-2xl shadow-2xl max-w-4xl mx-auto mt-6 text-left border border-gray-100">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
+              
+              <!-- District Filter -->
+              <div>
+                <label class="block text-[11px] font-bold text-gray-600 uppercase mb-1"><i class="fa-solid fa-map-location-dot text-brand-600 mr-1"></i> District (जिला)</label>
+                <select id="searchDistrict" class="w-full bg-gray-50 border border-gray-300 text-xs rounded-lg p-2.5 font-medium focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                  <option value="">All 24 Districts</option>
+                  <option value="Palamu">Palamu (पलामू / जपला)</option>
+                  <option value="Garhwa">Garhwa (गढ़वा)</option>
+                  <option value="Latehar">Latehar (लातेहार)</option>
+                  <option value="Ranchi">Ranchi (राँची)</option>
+                  <option value="Dhanbad">Dhanbad (धनबाद)</option>
+                  <option value="Bokaro">Bokaro (बोकारो)</option>
+                  <option value="Hazaribagh">Hazaribagh (हजारीबाग)</option>
+                  <option value="Deoghar">Deoghar (देवघर)</option>
+                  <option value="East Singhbhum">Jamshedpur (जमशेदपुर)</option>
+                </select>
+              </div>
+
+              <!-- Property Category -->
+              <div>
+                <label class="block text-[11px] font-bold text-gray-600 uppercase mb-1"><i class="fa-solid fa-layer-group text-brand-600 mr-1"></i> Nature / Type</label>
+                <select id="searchCategory" class="w-full bg-gray-50 border border-gray-300 text-xs rounded-lg p-2.5 font-medium focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                  <option value="">All Categories</option>
+                  <option value="Residential">Residential Plot (आवासीय)</option>
+                  <option value="Commercial">Commercial Plot (व्यावसायिक)</option>
+                  <option value="Agricultural">Agricultural Land (कृषि भूमि)</option>
+                  <option value="Industrial">Industrial Land (औद्योगिक)</option>
+                </select>
+              </div>
+
+              <!-- Classification (General / CNT) -->
+              <div>
+                <label class="block text-[11px] font-bold text-gray-600 uppercase mb-1"><i class="fa-solid fa-certificate text-brand-600 mr-1"></i> Land Class (वर्ग)</label>
+                <select id="searchClass" class="w-full bg-gray-50 border border-gray-300 text-xs rounded-lg p-2.5 font-medium focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                  <option value="">General & CNT (सभी)</option>
+                  <option value="General">General Land (सामान्य भूमि)</option>
+                  <option value="CNT">CNT Land (सीएनटी प्लॉट)</option>
+                </select>
+              </div>
+
+              <!-- Action Button -->
+              <div class="flex items-end">
+                <button onclick="executeCustomSearch()" class="w-full bg-gradient-to-r from-brand-700 to-brand-900 hover:from-brand-800 hover:to-slate-900 text-white font-bold text-sm py-2.5 px-4 rounded-lg shadow-md transition duration-200 flex items-center justify-center gap-2">
+                  <i class="fa-solid fa-magnifying-glass text-amber-400"></i> Search Plot
+                </button>
+              </div>
+
+            </div>
+
+            <!-- Quick Filter Badges -->
+            <div class="mt-3.5 pt-3 border-t border-gray-100 flex flex-wrap items-center gap-2 text-xs">
+              <span class="text-gray-500 font-semibold">Quick Search:</span>
+              <button onclick="filterAndShowProperties('General')" class="bg-gray-100 hover:bg-emerald-50 hover:text-emerald-700 px-2.5 py-1 rounded-md text-gray-700 font-medium transition">🟢 General Plots</button>
+              <button onclick="filterAndShowProperties('CNT')" class="bg-gray-100 hover:bg-amber-50 hover:text-amber-800 px-2.5 py-1 rounded-md text-gray-700 font-medium transition">🟡 CNT Land</button>
+              <button onclick="filterAndShowProperties('Agricultural')" class="bg-gray-100 hover:bg-green-50 hover:text-green-800 px-2.5 py-1 rounded-md text-gray-700 font-medium transition">🌾 Agricultural</button>
+              <button onclick="filterAndShowProperties('Verified')" class="bg-gray-100 hover:bg-blue-50 hover:text-blue-800 px-2.5 py-1 rounded-md text-gray-700 font-medium transition">✓ Verified Only</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MAIN PROPERTY CATEGORIES CARDS -->
+      <section class="max-w-7xl mx-auto px-4 py-12">
+        <div class="text-center max-w-2xl mx-auto mb-8">
+          <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900">Explore Property Categories</h2>
+          <p class="text-gray-600 text-xs sm:text-sm mt-1">अपनी आवश्यकतानुसार झारखंड के विभिन्न प्रकार के प्लॉट और जमीनों का चयन करें।</p>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3 sm:gap-4">
+          
+          <div onclick="filterAndShowProperties('General')" class="bg-white p-4 rounded-xl shadow-sm hover:shadow-md border border-gray-100 text-center cursor-pointer transition transform hover:-translate-y-1 group">
+            <div class="w-12 h-12 mx-auto rounded-full bg-emerald-50 text-brand-700 flex items-center justify-center text-xl mb-2 group-hover:bg-brand-700 group-hover:text-white transition">
+              <i class="fa-solid fa-house-circle-check"></i>
+            </div>
+            <h3 class="font-bold text-xs sm:text-sm text-gray-800">General Plot</h3>
+            <p class="text-[10px] text-gray-500 mt-0.5">Freehold Registry</p>
+          </div>
+
+          <div onclick="filterAndShowProperties('CNT')" class="bg-white p-4 rounded-xl shadow-sm hover:shadow-md border border-amber-100 text-center cursor-pointer transition transform hover:-translate-y-1 group">
+            <div class="w-12 h-12 mx-auto rounded-full bg-amber-50 text-amber-600 flex items-center justify-center text-xl mb-2 group-hover:bg-amber-600 group-hover:text-white transition">
+              <i class="fa-solid fa-file-contract"></i>
+            </div>
+            <h3 class="font-bold text-xs sm:text-sm text-gray-800">CNT Plot</h3>
+            <p class="text-[10px] text-amber-600 mt-0.5">Tribal / Regulated</p>
+          </div>
+
+          <div onclick="filterAndShowProperties('Residential')" class="bg-white p-4 rounded-xl shadow-sm hover:shadow-md border border-gray-100 text-center cursor-pointer transition transform hover:-translate-y-1 group">
+            <div class="w-12 h-12 mx-auto rounded-full bg-blue-50 text-blue-600 flex items-center justify-center text-xl mb-2 group-hover:bg-blue-600 group-hover:text-white transition">
+              <i class="fa-solid fa-city"></i>
+            </div>
+            <h3 class="font-bold text-xs sm:text-sm text-gray-800">Residential</h3>
+            <p class="text-[10px] text-gray-500 mt-0.5">Home Construction</p>
+          </div>
+
+          <div onclick="filterAndShowProperties('Commercial')" class="bg-white p-4 rounded-xl shadow-sm hover:shadow-md border border-gray-100 text-center cursor-pointer transition transform hover:-translate-y-1 group">
+            <div class="w-12 h-12 mx-auto rounded-full bg-purple-50 text-purple-600 flex items-center justify-center text-xl mb-2 group-hover:bg-purple-600 group-hover:text-white transition">
+              <i class="fa-solid fa-store"></i>
+            </div>
+            <h3 class="font-bold text-xs sm:text-sm text-gray-800">Commercial</h3>
+            <p class="text-[10px] text-gray-500 mt-0.5">Shops / Complex</p>
+          </div>
+
+          <div onclick="filterAndShowProperties('Agricultural')" class="bg-white p-4 rounded-xl shadow-sm hover:shadow-md border border-gray-100 text-center cursor-pointer transition transform hover:-translate-y-1 group">
+            <div class="w-12 h-12 mx-auto rounded-full bg-lime-50 text-lime-600 flex items-center justify-center text-xl mb-2 group-hover:bg-lime-600 group-hover:text-white transition">
+              <i class="fa-solid fa-wheat-awn"></i>
+            </div>
+            <h3 class="font-bold text-xs sm:text-sm text-gray-800">Agricultural</h3>
+            <p class="text-[10px] text-gray-500 mt-0.5">Farming & Orchards</p>
+          </div>
+
+          <div onclick="filterAndShowProperties('Verified')" class="bg-white p-4 rounded-xl shadow-sm hover:shadow-md border border-gray-100 text-center cursor-pointer transition transform hover:-translate-y-1 group">
+            <div class="w-12 h-12 mx-auto rounded-full bg-teal-50 text-teal-600 flex items-center justify-center text-xl mb-2 group-hover:bg-teal-600 group-hover:text-white transition">
+              <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 class="font-bold text-xs sm:text-sm text-gray-800">Verified Land</h3>
+            <p class="text-[10px] text-teal-600 mt-0.5">Pre-checked Docs</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- FEATURED & RECENT PROPERTIES GRID -->
+      <section class="max-w-7xl mx-auto px-4 py-8 bg-gray-50">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-6 gap-3">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-6 bg-brand-700 rounded-sm inline-block"></span>
+              <h2 class="text-xl sm:text-2xl font-extrabold text-gray-900">Featured & Verified Properties</h2>
+            </div>
+            <p class="text-xs text-gray-500 mt-1">झारखंड के प्रमुख क्षेत्रों से नवीनतम और सत्यापित जमीनें</p>
+          </div>
+          <button onclick="filterAndShowProperties('All')" class="text-xs font-bold text-brand-700 hover:text-brand-900 flex items-center gap-1">
+            View All Properties <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+
+        <!-- Property Cards Container (Dynamic Render via JS) -->
+        <div id="featuredPropertiesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Rendered via JS -->
+        </div>
+      </section>
+
+      <!-- LAND CALCULATOR (झारखंड भूमि मापी कैलकुलेटर) -->
+      <section id="calculator-section" class="max-w-7xl mx-auto px-4 py-14">
+        <div class="bg-gradient-to-tr from-brand-900 to-emerald-800 text-white rounded-3xl p-6 sm:p-10 shadow-xl">
+          <div class="max-w-3xl mx-auto text-center space-y-3 mb-8">
+            <span class="bg-amber-400/20 text-amber-300 text-xs font-bold px-3 py-1 rounded-full border border-amber-400/30">
+              <i class="fa-solid fa-calculator mr-1"></i> Jharkhand Land Measurement Tool
+            </span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold">Instant Land Area Calculator</h2>
+            <p class="text-xs sm:text-sm text-emerald-100">झारखंड में जमीन की सही माप: डिसमिल, कट्ठा, एकड़ और स्क्वायर फीट में तुरंत निकालें।</p>
+          </div>
+
+          <div class="bg-white text-gray-800 rounded-2xl p-5 sm:p-6 max-w-2xl mx-auto shadow-inner">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+              <div class="sm:col-span-2">
+                <label class="block text-xs font-bold text-gray-700 mb-1">Enter Area Value (माप दर्ज करें)</label>
+                <input type="number" id="calcInput" value="5" placeholder="उदाहरण: 5" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-sm font-semibold focus:ring-2 focus:ring-brand-600 focus:outline-none" />
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">Unit (इकाई)</label>
+                <select id="calcUnit" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 text-xs font-semibold focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                  <option value="decimal">Decimal (डिसमिल)</option>
+                  <option value="sqft">Sq. Feet (स्क्वायर फीट)</option>
+                  <option value="acre">Acre (एकड़)</option>
+                  <option value="kattha">Kattha (कट्ठा - Std)</option>
+                  <option value="sqmeter">Sq. Meter (स्क्वायर मीटर)</option>
+                </select>
+              </div>
+            </div>
+
+            <button onclick="calculateLandUnits()" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-black text-xs py-2.5 rounded-lg shadow transition duration-150 uppercase tracking-wide">
+              Calculate All Units (सभी में बदलें)
+            </button>
+
+            <!-- Results Output -->
+            <div id="calcResults" class="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-4 text-center">
+              <div class="bg-emerald-50 border border-emerald-200 p-2.5 rounded-lg">
+                <div class="text-[10px] font-bold text-emerald-800 uppercase">Decimal</div>
+                <div id="resDecimal" class="text-sm font-black text-emerald-950 mt-0.5">5.00</div>
+              </div>
+              <div class="bg-emerald-50 border border-emerald-200 p-2.5 rounded-lg">
+                <div class="text-[10px] font-bold text-emerald-800 uppercase">Sq. Feet</div>
+                <div id="resSqft" class="text-sm font-black text-emerald-950 mt-0.5">2,178</div>
+              </div>
+              <div class="bg-emerald-50 border border-emerald-200 p-2.5 rounded-lg">
+                <div class="text-[10px] font-bold text-emerald-800 uppercase">Acre</div>
+                <div id="resAcre" class="text-sm font-black text-emerald-950 mt-0.5">0.05</div>
+              </div>
+              <div class="bg-emerald-50 border border-emerald-200 p-2.5 rounded-lg">
+                <div class="text-[10px] font-bold text-emerald-800 uppercase">Sq. Meter</div>
+                <div id="resSqmeter" class="text-sm font-black text-emerald-950 mt-0.5">202.3</div>
+              </div>
+            </div>
+            <p class="text-[10px] text-gray-500 text-center mt-3">* स्टैंडर्ड झारखंड पैमाइश मानक: 1 डिसमिल = 435.6 वर्ग फीट (1 कट्ठा = ~3.125 डिसमिल मानक अनुसार)।</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- HOW IT WORKS & TRUST SECTION -->
+      <section class="max-w-7xl mx-auto px-4 py-12">
+        <div class="text-center max-w-2xl mx-auto mb-10">
+          <h2 class="text-2xl font-extrabold text-gray-900">How Jamindar Land Bazaar Works</h2>
+          <p class="text-xs text-gray-600 mt-1">जमीन खोजने से लेकर सीधे सेलर से संपर्क तक — 3 आसान कदम</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm text-center">
+            <div class="w-12 h-12 mx-auto bg-brand-100 text-brand-800 rounded-full flex items-center justify-center font-bold text-lg mb-3">1</div>
+            <h3 class="font-bold text-sm text-gray-900 mb-1">Search Verified Land</h3>
+            <p class="text-xs text-gray-600">झारखंड के जिले, ब्लॉक और सीएनटी / जनरल श्रेणी के आधार पर अपनी पसंद का प्लॉट खोजें।</p>
+          </div>
+          <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm text-center">
+            <div class="w-12 h-12 mx-auto bg-amber-100 text-amber-800 rounded-full flex items-center justify-center font-bold text-lg mb-3">2</div>
+            <h3 class="font-bold text-sm text-gray-900 mb-1">Review Specs & Details</h3>
+            <p class="text-xs text-gray-600">प्लॉट का रकबा, रोड कनेक्टिविटी, फेसिंग और प्राथमिक डॉक्युमेंट वेरिफिकेशन स्थिति देखें।</p>
+          </div>
+          <div class="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm text-center">
+            <div class="w-12 h-12 mx-auto bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center font-bold text-lg mb-3">3</div>
+            <h3 class="font-bold text-sm text-gray-900 mb-1">Direct WhatsApp / Call</h3>
+            <p class="text-xs text-gray-600">सीधे वन-क्लिक व्हाट्सएप या कॉल के माध्यम से जमीन मालिक या अधिकृत प्रतिनिधि से बात करें।</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- IMPORTANT LEGAL ADVISORY / DISCLAIMER BANNER -->
+      <section class="max-w-7xl mx-auto px-4 py-4">
+        <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-xl">
+          <div class="flex items-start">
+            <i class="fa-solid fa-triangle-exclamation text-amber-600 text-lg mt-0.5 mr-3"></i>
+            <div>
+              <h4 class="text-xs font-bold text-amber-900 uppercase">ज़रूरी कानूनी सलाह (Legal Title Verification Notice)</h4>
+              <p class="text-[11px] text-amber-800 mt-0.5 leading-relaxed">
+                JAMINDAR LAND BAZAAR केवल एक सूचनात्मक डिजिटल प्लेटफॉर्म है। किसी भी जमीन के क्रय-विक्रय से पूर्व क्रेता स्वयं खतियान, लगान रसीद, दाखिल-खारिज (Mutation), 
+                रजिस्ट्री रिकॉर्ड तथा सीएनटी (CNT) नियमों की जांच अपने स्तर पर अथवा सक्षम विधिक सलाहकार द्वारा अवश्य करा लें।
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </section>
 
-    <!-- Property Listings Grid -->
-    <main class="max-w-7xl mx-auto px-4 py-10">
-        <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold text-gray-800 border-l-4 border-emerald-600 pl-3">उपलब्ध प्रॉपर्टीज</h2>
-            <span id="propCount" class="text-sm text-gray-500 font-medium">दिखाई जा रही ज़मीनें: 3</span>
+
+    <!-- ================================================================= -->
+    <!-- VIEW 2: ALL PROPERTIES / SEARCH RESULTS -->
+    <!-- ================================================================= -->
+    <section id="view-listings" class="page-view hidden max-w-7xl mx-auto px-4 py-8">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6 border-b pb-4">
+        <div>
+          <button onclick="switchView('view-home')" class="text-xs font-bold text-brand-700 hover:underline mb-1 inline-block">
+            <i class="fa-solid fa-arrow-left mr-1"></i> Back to Home
+          </button>
+          <h2 id="listingPageTitle" class="text-2xl font-black text-gray-900">Available Land Properties in Jharkhand</h2>
+          <p id="listingPageCount" class="text-xs text-gray-500">Showing all active properties</p>
         </div>
 
-        <div id="propertyGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <!-- Card 1 -->
-            <div class="prop-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-xl transition" data-cat="residential general">
-                <div class="bg-emerald-100 h-40 flex items-center justify-center text-emerald-800 text-5xl">
-                    <i class="fas fa-home"></i>
-                </div>
-                <div class="p-5">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-0.5 rounded-full font-bold">आवासीय • जनरल</span>
-                        <span class="text-emerald-700 font-bold text-lg">₹ 8.5 लाख / कट्ठा</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-800">मेन रोड आवासीय प्लॉट</h3>
-                    <p class="text-gray-500 text-sm mb-3"><i class="fas fa-map-marker-alt text-red-500 mr-1"></i> जपला मेन रोड, हुसैनाबाद</p>
-                    <div class="text-xs text-gray-600 space-y-1 mb-4">
-                        <p><i class="fas fa-check-circle text-emerald-600 mr-1"></i> दाखिल-खारिज व रसीद अप-टू-डेट</p>
-                        <p><i class="fas fa-road text-emerald-600 mr-1"></i> 30 फीट चौड़ा पक्का रास्ता</p>
-                    </div>
-                    <button onclick="openModal('registerModal')" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-medium py-2 rounded-lg text-sm transition">
-                        रजिस्ट्रेशन कर संपर्क करें
-                    </button>
-                </div>
-            </div>
-
-            <!-- Card 2 -->
-            <div class="prop-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-xl transition" data-cat="agri cnt">
-                <div class="bg-amber-100 h-40 flex items-center justify-center text-amber-800 text-5xl">
-                    <i class="fas fa-tractor"></i>
-                </div>
-                <div class="p-5">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="bg-amber-100 text-amber-800 text-xs px-2.5 py-0.5 rounded-full font-bold">कृषि भूमि • उपजाऊ</span>
-                        <span class="text-emerald-700 font-bold text-lg">₹ 18 लाख / बीघा</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-800">सिंचाई सुविधा युक्त कृषि भूमि</h3>
-                    <p class="text-gray-500 text-sm mb-3"><i class="fas fa-map-marker-alt text-red-500 mr-1"></i> देवरी रोड, हुसैनाबाद</p>
-                    <div class="text-xs text-gray-600 space-y-1 mb-4">
-                        <p><i class="fas fa-water text-blue-500 mr-1"></i> बोरिंग और नहर की सुविधा उपलब्ध</p>
-                        <p><i class="fas fa-file-contract text-emerald-600 mr-1"></i> 100% विवाद रहित टाइटल</p>
-                    </div>
-                    <button onclick="openModal('registerModal')" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-medium py-2 rounded-lg text-sm transition">
-                        रजिस्ट्रेशन कर संपर्क करें
-                    </button>
-                </div>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="prop-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-xl transition" data-cat="industrial general">
-                <div class="bg-slate-100 h-40 flex items-center justify-center text-slate-800 text-5xl">
-                    <i class="fas fa-industry"></i>
-                </div>
-                <div class="p-5">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="bg-slate-200 text-slate-800 text-xs px-2.5 py-0.5 rounded-full font-bold">कमर्शियल / वेयरहाउस</span>
-                        <span class="text-emerald-700 font-bold text-lg">₹ 45 लाख</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-800">हाईवे कमर्शियल लैंड</h3>
-                    <p class="text-gray-500 text-sm mb-3"><i class="fas fa-map-marker-alt text-red-500 mr-1"></i> स्टेट हाईवे, पलामू बॉर्डर</p>
-                    <div class="text-xs text-gray-600 space-y-1 mb-4">
-                        <p><i class="fas fa-truck text-emerald-600 mr-1"></i> गोदाम, पेट्रोल पंप या फैक्ट्री हेतु उपयुक्त</p>
-                        <p><i class="fas fa-bolt text-yellow-500 mr-1"></i> 3-फेज बिजली लाइन उपलब्ध</p>
-                    </div>
-                    <button onclick="openModal('registerModal')" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-medium py-2 rounded-lg text-sm transition">
-                        रजिस्ट्रेशन कर संपर्क करें
-                    </button>
-                </div>
-            </div>
+        <!-- Filter Pill Chips -->
+        <div class="flex flex-wrap gap-2 text-xs">
+          <button onclick="filterAndShowProperties('All')" class="px-3 py-1.5 rounded-lg bg-gray-200 text-gray-800 font-semibold hover:bg-brand-700 hover:text-white transition">All</button>
+          <button onclick="filterAndShowProperties('General')" class="px-3 py-1.5 rounded-lg bg-emerald-100 text-emerald-800 font-semibold hover:bg-emerald-700 hover:text-white transition">General Only</button>
+          <button onclick="filterAndShowProperties('CNT')" class="px-3 py-1.5 rounded-lg bg-amber-100 text-amber-800 font-semibold hover:bg-amber-700 hover:text-white transition">CNT Only</button>
+          <button onclick="filterAndShowProperties('Residential')" class="px-3 py-1.5 rounded-lg bg-blue-100 text-blue-800 font-semibold hover:bg-blue-700 hover:text-white transition">Residential</button>
+          <button onclick="filterAndShowProperties('Agricultural')" class="px-3 py-1.5 rounded-lg bg-green-100 text-green-800 font-semibold hover:bg-green-700 hover:text-white transition">Agricultural</button>
         </div>
-    </main>
+      </div>
 
-    <!-- Registration / Login Modal -->
-    <div id="registerModal" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 relative shadow-2xl">
-            <button onclick="closeModal('registerModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-xl font-bold">&times;</button>
-            <div class="text-center mb-6">
-                <div class="inline-block p-3 bg-emerald-100 text-emerald-700 rounded-full mb-2">
-                    <i class="fas fa-user-circle text-2xl"></i>
-                </div>
-                <h3 class="text-xl font-bold text-gray-800">उपयोगकर्ता पंजीकरण (Registration)</h3>
-                <p class="text-xs text-gray-500">ज़मीन खरीदने, बेचने या जानकारी प्राप्त करने के लिए रजिस्टर करें</p>
+      <!-- Properties Grid -->
+      <div id="allPropertiesGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Injected via JS -->
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- VIEW 3: PROPERTY DETAILS PAGE -->
+    <!-- ================================================================= -->
+    <section id="view-details" class="page-view hidden max-w-5xl mx-auto px-4 py-8">
+      <button onclick="switchView('view-listings')" class="text-xs font-bold text-brand-700 hover:underline mb-4 inline-flex items-center">
+        <i class="fa-solid fa-arrow-left mr-1.5"></i> Back to Listings
+      </button>
+
+      <div id="propertyDetailContainer" class="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-200">
+        <!-- Rendered dynamically by showPropertyDetails(id) -->
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- VIEW 4: POST / SELL PROPERTY PAGE -->
+    <!-- ================================================================= -->
+    <section id="view-post-property" class="page-view hidden max-w-3xl mx-auto px-4 py-8">
+      <div class="bg-white rounded-3xl shadow-xl p-6 sm:p-10 border border-gray-200">
+        <div class="text-center max-w-md mx-auto mb-8">
+          <div class="w-12 h-12 bg-amber-100 text-amber-700 rounded-full flex items-center justify-center text-xl mx-auto mb-2 font-bold">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+          </div>
+          <h2 class="text-2xl font-black text-gray-900">Post Free Land Listing</h2>
+          <p class="text-xs text-gray-600 mt-1">झारखंड में अपनी जमीन/प्लॉट को सीधे खरीदारों तक पहुँचाएं।</p>
+        </div>
+
+        <form id="postPropertyForm" onsubmit="handlePropertySubmit(event)" class="space-y-4 text-xs">
+          
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block font-bold text-gray-700 mb-1">Owner / Agent Name *</label>
+              <input type="text" id="postOwner" required placeholder="उदा. संतोष कुमार गुप्ता" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-brand-600 focus:outline-none" />
             </div>
+            <div>
+              <label class="block font-bold text-gray-700 mb-1">WhatsApp / Calling Number *</label>
+              <input type="tel" id="postPhone" required placeholder="उदा. 9308424700" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-brand-600 focus:outline-none" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="block font-bold text-gray-700 mb-1">District (जिला) *</label>
+              <select id="postDistrict" required class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                <option value="Palamu">Palamu (पलामू / जपला)</option>
+                <option value="Garhwa">Garhwa (गढ़वा)</option>
+                <option value="Latehar">Latehar (लातेहार)</option>
+                <option value="Ranchi">Ranchi (राँची)</option>
+                <option value="Dhanbad">Dhanbad (धनबाद)</option>
+                <option value="Bokaro">Bokaro (बोकारो)</option>
+                <option value="Hazaribagh">Hazaribagh (हजारीबाग)</option>
+                <option value="Deoghar">Deoghar (देवघर)</option>
+                <option value="East Singhbhum">Jamshedpur (जमशेदपुर)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold text-gray-700 mb-1">Block / Thana *</label>
+              <input type="text" id="postBlock" required placeholder="उदा. हुसैनाबाद (जपला)" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-brand-600 focus:outline-none" />
+            </div>
+            <div>
+              <label class="block font-bold text-gray-700 mb-1">Village / Location *</label>
+              <input type="text" id="postVillage" required placeholder="उदा. देवरी रोड, जपला" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-brand-600 focus:outline-none" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div>
+              <label class="block font-bold text-gray-700 mb-1">Land Category *</label>
+              <select id="postType" required class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-brand-600 focus:outline-none">
+                <option value="Residential">Residential Plot</option>
+                <option value="Commercial">Commercial Plot</option>
+                <option value="Agricultural">Agricultural Land</option>
+                <option value="Industrial">Industrial Plot</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold text-gray-700 mb-1">Classification (भूमि वर्ग) *</label>
+              <select id="postClass" required class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-brand-600 focus:outline-none font-bold text-brand-800">
+                <option value="General">General Land (सामान्य भूमि)</option>
+                <option value="CNT">CNT Land (सीएनटी)</option>
+              </select>
+            </div>
+            <div>
+              <label class="block font-bold text-gray-700 mb-1">Total Area (डिसमिल/एकड़) *</label>
+              <input type="text" id="postArea" required placeholder="उदा. 5 Decimal" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-brand-600 focus:outline-none" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block font-bold text-gray-700 mb-1">Total Demand Price (कुल मूल्य ₹) *</label>
+              <input type="text" id="postPrice" required placeholder="उदा. ₹ 8,50,000" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-brand-600 focus:outline-none font-bold text-emerald-800" />
+            </div>
+            <div>
+              <label class="block font-bold text-gray-700 mb-1">Road Width / Approach</label>
+              <input type="text" id="postRoad" placeholder="उदा. 20 Feet Main Road" class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-brand-600 focus:outline-none" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-bold text-gray-700 mb-1">Land Title / Description</label>
+            <textarea id="postDesc" rows="3" placeholder="जमीन की चौहद्दी, निकटतम लैंडमार्क, म्यूटेशन और अन्य विशेषताएँ यहाँ लिखें..." class="w-full bg-gray-50 border border-gray-300 rounded-lg p-2.5 focus:ring-2 focus:ring-brand-600 focus:outline-none"></textarea>
+          </div>
+
+          <div class="bg-gray-50 p-3 rounded-xl border border-dashed border-gray-300 text-center">
+            <i class="fa-solid fa-images text-gray-400 text-xl mb-1"></i>
+            <p class="text-[11px] text-gray-600">Default high-resolution Jharkhand land sample image will be attached to demo listing.</p>
+          </div>
+
+          <div class="pt-2">
+            <button type="submit" class="w-full bg-gradient-to-r from-brand-700 to-brand-900 hover:from-brand-800 hover:to-slate-900 text-white font-black text-sm py-3 rounded-xl shadow-lg transition duration-200">
+              Submit Land for Review (जमीन लिस्ट करें)
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- VIEW 5: USER DASHBOARD -->
+    <!-- ================================================================= -->
+    <section id="view-user-dashboard" class="page-view hidden max-w-4xl mx-auto px-4 py-8">
+      <div class="bg-white rounded-3xl shadow-xl p-6 sm:p-8 border border-gray-200">
+        <div class="flex items-center justify-between border-b pb-4 mb-6">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 bg-brand-800 text-amber-300 rounded-2xl flex items-center justify-center font-bold text-xl">
+              <i class="fa-solid fa-user-shield"></i>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-gray-900">User Control Panel</h2>
+              <p class="text-xs text-gray-500">Manage your saved lands & submitted listings</p>
+            </div>
+          </div>
+          <button onclick="switchView('view-post-property')" class="text-xs bg-brand-700 text-white font-bold px-3 py-2 rounded-lg">
+            + New Listing
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+          <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-200 text-center">
+            <div class="text-xs font-bold text-emerald-800">My Listings</div>
+            <div id="userListingCount" class="text-2xl font-black text-emerald-950 mt-1">1</div>
+          </div>
+          <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 text-center">
+            <div class="text-xs font-bold text-amber-800">Saved Properties</div>
+            <div id="userSavedCount" class="text-2xl font-black text-amber-950 mt-1">3</div>
+          </div>
+          <div class="bg-blue-50 p-4 rounded-xl border border-blue-200 text-center">
+            <div class="text-xs font-bold text-blue-800">Active Inquiries</div>
+            <div class="text-2xl font-black text-blue-950 mt-1">Direct WA</div>
+          </div>
+        </div>
+
+        <h3 class="font-bold text-sm text-gray-900 mb-3">Your Posted Properties:</h3>
+        <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 flex justify-between items-center text-xs">
+          <div>
+            <div class="font-bold text-gray-800">Residential Plot in Japla (Demo Submission)</div>
+            <div class="text-gray-500 text-[11px]">ID: JLB-PAL-0001 • Status: <span class="text-emerald-600 font-semibold">Active Live</span></div>
+          </div>
+          <button onclick="alert('Demo Listing active on live platform.')" class="text-brand-700 font-bold hover:underline">View</button>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- VIEW 6: ADMIN DASHBOARD (PIN PROTECTED) -->
+    <!-- ================================================================= -->
+    <section id="view-admin-auth" class="page-view hidden max-w-md mx-auto px-4 py-16">
+      <div class="bg-white rounded-3xl shadow-xl p-8 border border-gray-200 text-center">
+        <div class="w-14 h-14 bg-slate-900 text-amber-400 rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4 font-bold shadow-md">
+          <i class="fa-solid fa-lock"></i>
+        </div>
+        <h2 class="text-2xl font-black text-gray-900">Admin Gateway</h2>
+        <p class="text-xs text-gray-500 mt-1 mb-6">Jamindar Land Bazaar Master Control</p>
+        
+        <div class="space-y-4">
+          <input type="password" id="adminPinInput" placeholder="Enter Admin Password (admin123)" class="w-full bg-gray-50 border border-gray-300 rounded-xl p-3 text-center text-sm font-bold tracking-widest focus:ring-2 focus:ring-slate-900 focus:outline-none" />
+          <button onclick="verifyAdminPin()" class="w-full bg-slate-900 hover:bg-black text-amber-300 font-bold text-sm py-3 rounded-xl shadow transition">
+            Unlock Admin Panel
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-admin-dashboard" class="page-view hidden max-w-6xl mx-auto px-4 py-8">
+      <div class="bg-white rounded-3xl shadow-xl p-6 sm:p-8 border border-gray-200">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b pb-4 mb-6">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 bg-slate-900 text-amber-300 rounded text-[10px] font-bold">ADMIN CONSOLE</span>
+              <h2 class="text-2xl font-black text-gray-900">Platform Management</h2>
+            </div>
+            <p class="text-xs text-gray-500">Live property database and listing approvals</p>
+          </div>
+          <button onclick="switchView('view-home')" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold px-3.5 py-2 rounded-lg transition">
+            Exit Admin
+          </button>
+        </div>
+
+        <!-- Admin Stats -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 text-xs">
+          <div class="bg-gray-50 p-3 rounded-xl border">
+            <div class="text-gray-500 font-semibold">Total Properties</div>
+            <div id="admTotalProps" class="text-xl font-bold text-gray-900 mt-1">4</div>
+          </div>
+          <div class="bg-emerald-50 p-3 rounded-xl border border-emerald-200">
+            <div class="text-emerald-700 font-semibold">Verified Lands</div>
+            <div id="admVerifiedProps" class="text-xl font-bold text-emerald-900 mt-1">3</div>
+          </div>
+          <div class="bg-amber-50 p-3 rounded-xl border border-amber-200">
+            <div class="text-amber-700 font-semibold">CNT Listings</div>
+            <div id="admCntProps" class="text-xl font-bold text-amber-900 mt-1">1</div>
+          </div>
+          <div class="bg-blue-50 p-3 rounded-xl border border-blue-200">
+            <div class="text-blue-700 font-semibold">Districts Active</div>
+            <div class="text-xl font-bold text-blue-900 mt-1">24 Covered</div>
+          </div>
+        </div>
+
+        <!-- Admin Property Listing Table -->
+        <h3 class="font-bold text-sm text-gray-900 mb-3">Live Platform Database:</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border border-gray-200 rounded-xl overflow-hidden">
+            <thead class="bg-gray-100 text-gray-700 font-bold uppercase text-[10px]">
+              <tr>
+                <th class="p-3">ID / Title</th>
+                <th class="p-3">District & Block</th>
+                <th class="p-3">Type / Class</th>
+                <th class="p-3">Area & Price</th>
+                <th class="p-3">Status</th>
+                <th class="p-3 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminTableBody" class="divide-y divide-gray-200">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- VIEW 7: ABOUT US -->
+    <!-- ================================================================= -->
+    <section id="view-about" class="page-view hidden max-w-4xl mx-auto px-4 py-12">
+      <div class="bg-white rounded-3xl shadow-xl p-6 sm:p-10 border border-gray-200 space-y-6">
+        <div class="border-b pb-4">
+          <span class="text-brand-700 font-bold text-xs uppercase tracking-wider">About Jamindar Land Bazaar</span>
+          <h2 class="text-2xl sm:text-3xl font-black text-gray-900 mt-1">झारखंड का आधुनिक डिजिटल भूमि बाज़ार</h2>
+        </div>
+        
+        <p class="text-sm text-gray-700 leading-relaxed">
+          <strong>JAMINDAR LAND BAZAAR</strong> झारखंड के सभी 24 जिलों में जमीन के खरीदारों और विक्रेताओं को एक पारदर्शी, सुरक्षित और आधुनिक मंच पर जोड़ने का एक डिजिटल प्रयास है। 
+          हमारा उद्देश्य हुसैनाबाद (जपला), पलामू, राँची, धनबाद सहित पूरे राज्य में सही और सत्यापित भू-संपत्ति की खोज को आसान बनाना है।
+        </p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+          <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100">
+            <h3 class="font-bold text-sm text-brand-900 mb-1">✓ हमारा विज़न</h3>
+            <p class="text-xs text-gray-600">झारखंड में जमीन की खरीद-बिक्री में बिचौलियों की निर्भरता को कम कर खरीदार और मालिक का सीधा संपर्क स्थापित करना।</p>
+          </div>
+          <div class="bg-amber-50 p-4 rounded-xl border border-amber-100">
+            <h3 class="font-bold text-sm text-amber-900 mb-1">✓ प्रामाणिकता और सुरक्षा</h3>
+            <p class="text-xs text-gray-600">हर लिस्टिंग के साथ खतियान, सीएनटी स्थिति, रोड कनेक्टिविटी और आसपास के लैंडमार्क का स्पष्ट विवरण उपलब्ध कराना।</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- VIEW 8: CONTACT US -->
+    <!-- ================================================================= -->
+    <section id="view-contact" class="page-view hidden max-w-4xl mx-auto px-4 py-12">
+      <div class="bg-white rounded-3xl shadow-xl p-6 sm:p-10 border border-gray-200">
+        <div class="text-center max-w-md mx-auto mb-8">
+          <span class="text-brand-700 font-bold text-xs uppercase">Get in Touch</span>
+          <h2 class="text-2xl sm:text-3xl font-black text-gray-900">Contact Jamindar Land Bazaar</h2>
+          <p class="text-xs text-gray-600 mt-1">किसी भी पूछताछ या प्रॉपर्टी लिस्टिंग में सहायता के लिए संपर्क करें</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8 text-center text-xs">
+          <div class="bg-emerald-50 p-5 rounded-2xl border border-emerald-100">
+            <div class="w-10 h-10 bg-brand-700 text-white rounded-full flex items-center justify-center mx-auto mb-2 text-base">
+              <i class="fa-solid fa-phone"></i>
+            </div>
+            <div class="font-bold text-gray-800">Direct Calling</div>
+            <p class="text-brand-700 font-bold mt-1">+91 9308424700</p>
+          </div>
+
+          <div class="bg-green-50 p-5 rounded-2xl border border-green-100">
+            <div class="w-10 h-10 bg-green-600 text-white rounded-full flex items-center justify-center mx-auto mb-2 text-base">
+              <i class="fa-brands fa-whatsapp"></i>
+            </div>
+            <div class="font-bold text-gray-800">WhatsApp Support</div>
+            <a href="https://wa.me/919308424700?text=Hello%20Jamindar%20Land%20Bazaar" target="_blank" class="text-green-700 font-bold mt-1 inline-block hover:underline">Chat on WhatsApp</a>
+          </div>
+
+          <div class="bg-amber-50 p-5 rounded-2xl border border-amber-100">
+            <div class="w-10 h-10 bg-amber-600 text-white rounded-full flex items-center justify-center mx-auto mb-2 text-base">
+              <i class="fa-solid fa-envelope"></i>
+            </div>
+            <div class="font-bold text-gray-800">Email Helpdesk</div>
+            <p class="text-gray-700 text-[11px] font-semibold mt-1">santosh26011988@gmail.com</p>
+          </div>
+        </div>
+
+        <div class="bg-gray-50 p-4 rounded-xl border text-xs text-center text-gray-600">
+          📍 <strong>Regional Hub:</strong> Hussainabad (Japla), Palamu, Jharkhand — 822116
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ================================================================= -->
+    <!-- VIEW 9: LEGAL PAGES (Disclaimer & Privacy) -->
+    <!-- ================================================================= -->
+    <section id="view-legal" class="page-view hidden max-w-4xl mx-auto px-4 py-12">
+      <div class="bg-white rounded-3xl shadow-xl p-6 sm:p-10 border border-gray-200 space-y-4 text-xs text-gray-700 leading-relaxed">
+        <h2 class="text-xl font-black text-gray-900 border-b pb-3">Legal Terms & CNT Act Advisory</h2>
+        
+        <h3 class="font-bold text-gray-900 text-sm">1. Platform Nature</h3>
+        <p>JAMINDAR LAND BAZAAR is an online informational discovery marketplace. The platform is not a government body, registrar, or legal title insurer.</p>
+
+        <h3 class="font-bold text-gray-900 text-sm">2. Chota Nagpur Tenancy (CNT) Act Compliance</h3>
+        <p>In accordance with the CNT Act (Chota Nagpur Tenancy Act, 1908), properties marked as CNT Land are subject to strict regulatory transfer restrictions in Jharkhand. Buyers are exclusively responsible for ensuring compliance with section restrictions, district commissioner permissions, and category eligibility before entering into any transaction.</p>
+
+        <h3 class="font-bold text-gray-900 text-sm">3. Buyer's Due Diligence</h3>
+        <p>Buyers must independently inspect Khatiyan, Jamabandi, Land Mutation receipts (झारभूमि / Jharbhoomi portal), Non-Encumbrance Certificates, and registry archives before issuing any financial consideration.</p>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-slate-950 text-gray-400 text-xs pt-12 pb-8 border-t border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+      
+      <!-- Col 1 -->
+      <div class="space-y-3">
+        <div class="flex items-center space-x-2">
+          <div class="w-8 h-8 rounded-lg bg-amber-500 flex items-center justify-center text-slate-950 font-black text-base">J</div>
+          <span class="text-white font-extrabold text-sm tracking-tight">JAMINDAR LAND BAZAAR</span>
+        </div>
+        <p class="text-[11px] leading-relaxed text-gray-400">
+          A Professional Land Buying & Selling Platform across Jharkhand, India.
+        </p>
+        <div class="text-[11px] text-amber-400 font-semibold">
+          📞 9308424700 • Japla, Palamu
+        </div>
+      </div>
+
+      <!-- Col 2: Quick Links -->
+      <div>
+        <h4 class="text-white font-bold uppercase text-[11px] tracking-wider mb-3">Quick Navigation</h4>
+        <ul class="space-y-1.5 text-[11px]">
+          <li><a href="javascript:void(0)" onclick="switchView('view-home')" class="hover:text-amber-300">Home</a></li>
+          <li><a href="javascript:void(0)" onclick="filterAndShowProperties('All')" class="hover:text-amber-300">All Properties</a></li>
+          <li><a href="javascript:void(0)" onclick="filterAndShowProperties('General')" class="hover:text-amber-300">General Plots</a></li>
+          <li><a href="javascript:void(0)" onclick="filterAndShowProperties('CNT')" class="hover:text-amber-300">CNT Plots</a></li>
+          <li><a href="javascript:void(0)" onclick="scrollToSection('calculator-section')" class="hover:text-amber-300">Land Calculator</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Jharkhand Focus Districts -->
+      <div>
+        <h4 class="text-white font-bold uppercase text-[11px] tracking-wider mb-3">Key Focus Districts</h4>
+        <ul class="space-y-1.5 text-[11px]">
+          <li><a href="javascript:void(0)" onclick="quickDistrictSearch('Palamu')" class="hover:text-amber-300">Palamu (जपला / मेदिनीनगर)</a></li>
+          <li><a href="javascript:void(0)" onclick="quickDistrictSearch('Garhwa')" class="hover:text-amber-300">Garhwa (गढ़वा)</a></li>
+          <li><a href="javascript:void(0)" onclick="quickDistrictSearch('Ranchi')" class="hover:text-amber-300">Ranchi (राँची)</a></li>
+          <li><a href="javascript:void(0)" onclick="quickDistrictSearch('Dhanbad')" class="hover:text-amber-300">Dhanbad (धनबाद)</a></li>
+          <li><a href="javascript:void(0)" onclick="quickDistrictSearch('Latehar')" class="hover:text-amber-300">Latehar (लातेहार)</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Legal & Security -->
+      <div>
+        <h4 class="text-white font-bold uppercase text-[11px] tracking-wider mb-3">Legal & Safety</h4>
+        <ul class="space-y-1.5 text-[11px]">
+          <li><a href="javascript:void(0)" onclick="switchView('view-legal')" class="hover:text-amber-300">Disclaimer & Terms</a></li>
+          <li><a href="javascript:void(0)" onclick="switchView('view-legal')" class="hover:text-amber-300">CNT Property Policy</a></li>
+          <li><a href="javascript:void(0)" onclick="switchView('view-about')" class="hover:text-amber-300">About Platform</a></li>
+          <li><a href="javascript:void(0)" onclick="switchView('view-contact')" class="hover:text-amber-300">Help & Support</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-slate-900 text-center text-[10px] text-gray-500">
+      <p>© 2026 JAMINDAR LAND BAZAAR (jamindarlandbazaar.in) — All Rights Reserved. Not a government agency.</p>
+    </div>
+  </footer>
+
+
+  <!-- ================= MOBILE BOTTOM STICKY BAR ================= -->
+  <div class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-slate-950 text-white border-t border-slate-800 flex justify-around py-2 text-[10px] font-semibold">
+    <button onclick="switchView('view-home')" class="flex flex-col items-center hover:text-amber-400">
+      <i class="fa-solid fa-house text-sm mb-0.5"></i> Home
+    </button>
+    <button onclick="filterAndShowProperties('All')" class="flex flex-col items-center hover:text-amber-400">
+      <i class="fa-solid fa-magnifying-glass text-sm mb-0.5"></i> Browse
+    </button>
+    <button onclick="switchView('view-post-property')" class="flex flex-col items-center text-amber-400 font-bold">
+      <div class="w-7 h-7 bg-amber-500 text-slate-950 rounded-full flex items-center justify-center -mt-3 shadow-lg">
+        <i class="fa-solid fa-plus text-xs"></i>
+      </div>
+      Post
+    </button>
+    <button onclick="scrollToSection('calculator-section')" class="flex flex-col items-center hover:text-amber-400">
+      <i class="fa-solid fa-calculator text-sm mb-0.5"></i> Calc
+    </button>
+    <button onclick="switchView('view-user-dashboard')" class="flex flex-col items-center hover:text-amber-400">
+      <i class="fa-solid fa-user text-sm mb-0.5"></i> Account
+    </button>
+  </div>
+
+
+  <!-- ================================================================= -->
+  <!-- JAVASCRIPT LOGIC ENGINE -->
+  <!-- ================================================================= -->
+  <script>
+    // 1. MASTER PROPERTY DATABASE (Sample Demo Listings for Jharkhand)
+    let properties = [
+      {
+        id: "JLB-PAL-0001",
+        title: "Prime Residential Plot near Deori Road",
+        category: "Residential",
+        classType: "General",
+        area: "5.0 Decimal",
+        areaVal: 5,
+        price: "₹ 8,50,000",
+        priceVal: 850000,
+        district: "Palamu",
+        block: "Hussainabad (Japla)",
+        village: "Deori Road",
+        road: "25 Feet Paved Road",
+        facing: "East Facing",
+        verified: true,
+        sellerName: "Santosh Kumar",
+        sellerPhone: "9308424700",
+        description: "Excellent clear title General land suitable for immediate residential home construction. Direct highway access, electricity and water available.",
+        image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&auto=format&fit=crop&q=60"
+      },
+      {
+        id: "JLB-PAL-0002",
+        title: "Commercial Highway Land on Japla-Daltonganj Road",
+        category: "Commercial",
+        classType: "General",
+        area: "12.0 Decimal",
+        areaVal: 12,
+        price: "₹ 24,00,000",
+        priceVal: 2400000,
+        district: "Palamu",
+        block: "Hussainabad (Japla)",
+        village: "Main Highway Front",
+        road: "60 Feet State Highway",
+        facing: "North-East",
+        verified: true,
+        sellerName: "Authorized Associate",
+        sellerPhone: "9308424700",
+        description: "High footfall commercial frontage plot ideal for petrol pump, godown, warehouse, marriage hall or retail complex.",
+        image: "https://images.unsplash.com/photo-1628624747186-a941c476b7ef?w=800&auto=format&fit=crop&q=60"
+      },
+      {
+        id: "JLB-GAR-0003",
+        title: "Fertile Agricultural Land with Boring Facility",
+        category: "Agricultural",
+        classType: "General",
+        area: "1.5 Acre",
+        areaVal: 150,
+        price: "₹ 15,00,000",
+        priceVal: 1500000,
+        district: "Garhwa",
+        block: "Majhiaon",
+        village: "Karanpura",
+        road: "15 Feet Village Road",
+        facing: "North",
+        verified: true,
+        sellerName: "Kisan Partner",
+        sellerPhone: "9308424700",
+        description: "Level agricultural plot with sweet groundwater, perfect for vegetable cultivation, orchards or farm-house project.",
+        image: "https://images.unsplash.com/photo-1500651230702-0e2d8a49d4ad?w=800&auto=format&fit=crop&q=60"
+      },
+      {
+        id: "JLB-RAN-0004",
+        title: "CNT Regulated Plot near Ring Road Ranchi",
+        category: "Residential",
+        classType: "CNT",
+        area: "8.0 Decimal",
+        areaVal: 8,
+        price: "₹ 18,00,000",
+        priceVal: 1800000,
+        district: "Ranchi",
+        block: "Kanke",
+        village: "Near Ring Road",
+        road: "30 Feet Road",
+        facing: "South-East",
+        verified: false,
+        sellerName: "Tribal Landholder",
+        sellerPhone: "9308424700",
+        description: "CNT category plot subject to statutory CNT Act transfer provisions. Ideal for eligible category buyers.",
+        image: "https://images.unsplash.com/photo-1513836279014-a89f7a76ae86?w=800&auto=format&fit=crop&q=60"
+      }
+    ];
+
+    const ADMIN_PIN = "admin123";
+
+    // 2. SPA NAVIGATION SWITCHER
+    function switchView(viewId) {
+      document.querySelectorAll('.page-view').forEach(el => el.classList.add('hidden'));
+      const target = document.getElementById(viewId);
+      if(target) {
+        target.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function toggleMobileDrawer() {
+      const drawer = document.getElementById('mobileDrawer');
+      drawer.classList.toggle('hidden');
+    }
+
+    function scrollToSection(sectionId) {
+      switchView('view-home');
+      setTimeout(() => {
+        const el = document.getElementById(sectionId);
+        if(el) el.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+
+    // 3. RENDER PROPERTY CARD TEMPLATE
+    function createPropertyCardHtml(p) {
+      const isCNT = p.classType === "CNT";
+      const badgeClass = isCNT ? "bg-amber-100 text-amber-900 border-amber-300" : "bg-emerald-100 text-emerald-900 border-emerald-300";
+      const classLabel = isCNT ? "🟡 CNT Land" : "🟢 General Land";
+      
+      const waMsg = encodeURIComponent(`नमस्ते, मैं JAMINDAR LAND BAZAAR पर लिस्टेड प्रॉपर्टी ID: ${p.id} (${p.title}, ${p.district}) के बारे में जानकारी चाहता हूँ।`);
+      const waUrl = `https://wa.me/91${p.sellerPhone}?text=${waMsg}`;
+
+      return `
+        <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-xl transition duration-300 flex flex-col group">
+          <!-- Image Header -->
+          <div class="relative h-48 overflow-hidden bg-gray-100">
+            <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy" />
             
-            <form onsubmit="handleRegistration(event)" class="space-y-3.5">
+            <div class="absolute top-3 left-3 flex flex-col gap-1.5">
+              <span class="text-[10px] font-extrabold px-2.5 py-1 rounded-md border ${badgeClass} shadow-sm">
+                ${classLabel}
+              </span>
+              ${p.verified ? `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-md bg-teal-800 text-white shadow-sm"><i class="fa-solid fa-circle-check"></i> Verified</span>` : ''}
+            </div>
+
+            <div class="absolute bottom-3 right-3 bg-slate-950/80 text-amber-400 text-[10px] font-mono font-bold px-2 py-0.5 rounded">
+              ID: ${p.id}
+            </div>
+          </div>
+
+          <!-- Card Body -->
+          <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between">
+            <div>
+              <div class="text-[11px] font-bold text-brand-700 uppercase tracking-wider flex items-center gap-1 mb-1">
+                <i class="fa-solid fa-location-dot"></i> ${p.block}, ${p.district}
+              </div>
+              <h3 class="font-extrabold text-sm text-gray-900 line-clamp-1 group-hover:text-brand-700 transition">${p.title}</h3>
+              
+              <div class="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-gray-100 text-xs">
                 <div>
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">पूरा नाम *</label>
-                    <input type="text" id="regName" required placeholder="उदा. राहुल कुमार" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                  <span class="text-gray-500 text-[10px] block">Land Area</span>
+                  <span class="font-bold text-gray-800">${p.area}</span>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">मोबाइल नंबर (WhatsApp) *</label>
-                    <input type="tel" id="regPhone" required placeholder="उदा. 9876543210" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                  <span class="text-gray-500 text-[10px] block">Demand Price</span>
+                  <span class="font-extrabold text-brand-800 text-sm">${p.price}</span>
                 </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">आपकी रुचि (Role) *</label>
-                    <select id="regRole" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                        <option value="buyer">मैं ज़मीन खरीदना चाहता हूँ (Buyer)</option>
-                        <option value="seller">मैं ज़मीन बेचना चाहता हूँ (Seller)</option>
-                        <option value="agent">प्रॉपर्टी एजेंट / ब्रोकर (Agent)</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">पासवर्ड बनाएं *</label>
-                    <input type="password" id="regPassword" required placeholder="कम से कम 6 अक्षर" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                </div>
-                <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-lg text-sm transition mt-4">
-                    रजिस्ट्रेशन पूरा करें
-                </button>
-            </form>
+              </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="grid grid-cols-2 gap-2 mt-4 pt-3 border-t border-gray-100">
+              <button onclick="showPropertyDetails('${p.id}')" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 font-bold text-xs py-2 rounded-lg transition text-center">
+                View Details
+              </button>
+              <a href="${waUrl}" target="_blank" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs py-2 rounded-lg transition flex items-center justify-center gap-1.5 shadow-sm">
+                <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp
+              </a>
+            </div>
+          </div>
         </div>
-    </div>
+      `;
+    }
 
-    <!-- Admin Login Modal -->
-    <div id="adminModal" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-sm w-full p-6 relative shadow-2xl">
-            <button onclick="closeModal('adminModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-xl font-bold">&times;</button>
-            <div class="text-center mb-6">
-                <div class="inline-block p-3 bg-red-100 text-red-700 rounded-full mb-2">
-                    <i class="fas fa-shield-alt text-2xl"></i>
-                </div>
-                <h3 class="text-xl font-bold text-gray-800">एडमिन लॉगिन</h3>
-                <p class="text-xs text-gray-500">केवल व्यवस्थापक हेतु (डिफ़ॉल्ट पासवर्ड: admin123)</p>
-            </div>
-            
-            <form onsubmit="handleAdminLogin(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">एडमिन पासवर्ड</label>
-                    <input type="password" id="adminPassInput" required placeholder="पासवर्ड दर्ज करें" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
-                </div>
-                <button type="submit" class="w-full bg-gray-900 hover:bg-black text-amber-400 font-bold py-2.5 rounded-lg text-sm transition">
-                    डैशबोर्ड खोलें
-                </button>
-            </form>
+    // 4. RENDER HOMEPAGE & LISTINGS GRIDS
+    function renderGrids() {
+      const featGrid = document.getElementById('featuredPropertiesGrid');
+      const allGrid = document.getElementById('allPropertiesGrid');
+      
+      if(featGrid) {
+        featGrid.innerHTML = properties.slice(0, 3).map(p => createPropertyCardHtml(p)).join('');
+      }
+      if(allGrid) {
+        allGrid.innerHTML = properties.map(p => createPropertyCardHtml(p)).join('');
+      }
+      renderAdminTable();
+    }
+
+    // 5. FILTER & SHOW PROPERTIES
+    function filterAndShowProperties(category) {
+      switchView('view-listings');
+      const titleEl = document.getElementById('listingPageTitle');
+      const countEl = document.getElementById('listingPageCount');
+      const grid = document.getElementById('allPropertiesGrid');
+
+      let filtered = properties;
+      if (category === 'General') {
+        filtered = properties.filter(p => p.classType === 'General');
+        titleEl.innerText = "General Freehold Plots in Jharkhand";
+      } else if (category === 'CNT') {
+        filtered = properties.filter(p => p.classType === 'CNT');
+        titleEl.innerText = "CNT Regulated Plots in Jharkhand";
+      } else if (category === 'Verified') {
+        filtered = properties.filter(p => p.verified === true);
+        titleEl.innerText = "Verified Land Properties in Jharkhand";
+      } else if (category === 'Residential' || category === 'Commercial' || category === 'Agricultural') {
+        filtered = properties.filter(p => p.category === category);
+        titleEl.innerText = `${category} Land Properties in Jharkhand`;
+      } else {
+        titleEl.innerText = "All Available Land Properties in Jharkhand";
+      }
+
+      countEl.innerText = `Showing ${filtered.length} properties`;
+      grid.innerHTML = filtered.map(p => createPropertyCardHtml(p)).join('');
+    }
+
+    // 6. SMART SEARCH EXECUTION
+    function executeCustomSearch() {
+      const dist = document.getElementById('searchDistrict').value;
+      const cat = document.getElementById('searchCategory').value;
+      const cls = document.getElementById('searchClass').value;
+
+      switchView('view-listings');
+      const grid = document.getElementById('allPropertiesGrid');
+      const titleEl = document.getElementById('listingPageTitle');
+
+      const filtered = properties.filter(p => {
+        let matchDist = !dist || p.district.toLowerCase() === dist.toLowerCase();
+        let matchCat = !cat || p.category.toLowerCase() === cat.toLowerCase();
+        let matchCls = !cls || p.classType.toLowerCase() === cls.toLowerCase();
+        return matchDist && matchCat && matchCls;
+      });
+
+      titleEl.innerText = `Search Results: ${dist || 'All Jharkhand'}`;
+      document.getElementById('listingPageCount').innerText = `Found ${filtered.length} matching properties`;
+      
+      if(filtered.length === 0) {
+        grid.innerHTML = `<div class="col-span-3 text-center py-12 text-gray-500 font-medium">कोई प्लॉट नहीं मिला। कृपया अन्य फ़िल्टर चुनें या नया प्लॉट पोस्ट करें।</div>`;
+      } else {
+        grid.innerHTML = filtered.map(p => createPropertyCardHtml(p)).join('');
+      }
+    }
+
+    function quickDistrictSearch(dist) {
+      document.getElementById('searchDistrict').value = dist;
+      executeCustomSearch();
+    }
+
+    // 7. SHOW PROPERTY DETAILS VIEW
+    function showPropertyDetails(id) {
+      const p = properties.find(item => item.id === id);
+      if(!p) return;
+
+      const container = document.getElementById('propertyDetailContainer');
+      const waMsg = encodeURIComponent(`नमस्ते, मैं JAMINDAR LAND BAZAAR पर प्रॉपर्टी ID: ${p.id} (${p.title}) के बारे में बात करना चाहता हूँ।`);
+      const waUrl = `https://wa.me/91${p.sellerPhone}?text=${waMsg}`;
+
+      container.innerHTML = `
+        <div class="relative h-64 sm:h-96 bg-gray-900">
+          <img src="${p.image}" class="w-full h-full object-cover opacity-90" alt="${p.title}" />
+          <div class="absolute top-4 left-4 flex gap-2">
+            <span class="bg-brand-900 text-amber-300 text-xs font-bold px-3 py-1 rounded-md shadow">${p.classType} Land</span>
+            ${p.verified ? `<span class="bg-teal-700 text-white text-xs font-bold px-3 py-1 rounded-md shadow">✓ Verified</span>` : ''}
+          </div>
+          <div class="absolute bottom-4 right-4 bg-slate-950/80 text-amber-400 font-mono text-xs font-bold px-3 py-1 rounded">
+            ID: ${p.id}
+          </div>
         </div>
-    </div>
 
-    <!-- Admin Dashboard (Hidden by Default) -->
-    <div id="adminDashboard" class="fixed inset-0 bg-gray-900/90 z-50 hidden overflow-y-auto p-4 md:p-8">
-        <div class="max-w-5xl mx-auto bg-white rounded-2xl p-6 shadow-2xl relative">
-            <div class="flex justify-between items-center border-b pb-4 mb-6">
-                <div class="flex items-center space-x-3">
-                    <i class="fas fa-chart-line text-2xl text-emerald-700"></i>
-                    <h2 class="text-2xl font-bold text-gray-800">एडमिन कंट्रोल पैनल</h2>
-                </div>
-                <button onclick="closeAdminDashboard()" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold">
-                    लॉगआउट (Close)
-                </button>
+        <div class="p-6 sm:p-8 space-y-6">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b pb-4">
+            <div>
+              <span class="text-xs font-bold text-brand-700 uppercase"><i class="fa-solid fa-location-dot"></i> ${p.village}, ${p.block}, ${p.district}</span>
+              <h1 class="text-xl sm:text-2xl font-black text-gray-900 mt-0.5">${p.title}</h1>
             </div>
-
-            <!-- Stats Overview -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
-                <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100">
-                    <p class="text-xs text-emerald-600 font-semibold uppercase">कुल रजिस्टर्ड यूजर्स</p>
-                    <h4 id="statUsers" class="text-2xl font-black text-emerald-900">0</h4>
-                </div>
-                <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
-                    <p class="text-xs text-blue-600 font-semibold uppercase">लाइव ज़मीनें / लिस्टिंग्स</p>
-                    <h4 class="text-2xl font-black text-blue-900">3</h4>
-                </div>
-                <div class="bg-amber-50 p-4 rounded-xl border border-amber-100">
-                    <p class="text-xs text-amber-600 font-semibold uppercase">सक्रिय इन्क्वायरी</p>
-                    <h4 class="text-2xl font-black text-amber-900">12</h4>
-                </div>
+            <div class="text-left sm:text-right">
+              <span class="text-xs text-gray-500 block">Total Expected Price</span>
+              <span class="text-2xl font-black text-brand-800">${p.price}</span>
             </div>
+          </div>
 
-            <!-- Registered Users Table -->
-            <h3 class="text-lg font-bold text-gray-800 mb-3 border-l-4 border-emerald-600 pl-2">रजिस्टर्ड यूज़र्स की सूची</h3>
-            <div class="overflow-x-auto border rounded-xl mb-8">
-                <table class="w-full text-left text-sm text-gray-600">
-                    <thead class="bg-gray-100 text-gray-700 uppercase text-xs font-bold">
-                        <tr>
-                            <th class="py-3 px-4">नाम</th>
-                            <th class="py-3 px-4">मोबाइल</th>
-                            <th class="py-3 px-4">प्रकार (Role)</th>
-                            <th class="py-3 px-4">तारीख</th>
-                        </tr>
-                    </thead>
-                    <tbody id="usersTableBody">
-                        <tr>
-                            <td colspan="4" class="py-4 text-center text-gray-400">अभी कोई नया यूजर रजिस्टर नहीं हुआ है।</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+          <!-- Specs Table -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-gray-50 p-4 rounded-2xl border text-xs">
+            <div><span class="text-gray-500 block">Land Area:</span><strong>${p.area}</strong></div>
+            <div><span class="text-gray-500 block">Classification:</span><strong>${p.classType}</strong></div>
+            <div><span class="text-gray-500 block">Road Frontage:</span><strong>${p.road}</strong></div>
+            <div><span class="text-gray-500 block">Facing:</span><strong>${p.facing}</strong></div>
+          </div>
 
-            <!-- Add New Property Form (Admin Feature) -->
-            <h3 class="text-lg font-bold text-gray-800 mb-3 border-l-4 border-emerald-600 pl-2">नई ज़मीन / प्रॉपर्टी जोड़ें</h3>
-            <form onsubmit="adminAddProperty(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-xl border">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">प्रॉपर्टी का शीर्षक *</label>
-                    <input type="text" id="propTitle" required placeholder="उदा. हाईवे टच 2 बीघा प्लॉट" class="w-full p-2 border rounded-lg text-sm bg-white">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">लोकेशन / पता *</label>
-                    <input type="text" id="propLoc" required placeholder="उदा. जपला स्टेशन रोड, हुसैनाबाद" class="w-full p-2 border rounded-lg text-sm bg-white">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">कीमत *</label>
-                    <input type="text" id="propPrice" required placeholder="उदा. ₹ 10 लाख / कट्ठा" class="w-full p-2 border rounded-lg text-sm bg-white">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-700 mb-1">कैटेगरी / प्रकार *</label>
-                    <select id="propCat" class="w-full p-2 border rounded-lg text-sm bg-white">
-                        <option value="residential general">आवासीय (जनरल)</option>
-                        <option value="agri cnt">कृषि (CNT मुक्त)</option>
-                        <option value="industrial general">इंडस्ट्रियल / कमर्शियल</option>
-                    </select>
-                </div>
-                <div class="md:col-span-2">
-                    <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2 rounded-lg text-sm transition">
-                        + लाइव साइट पर प्रॉपर्टी पब्लिश करें
-                    </button>
-                </div>
-            </form>
+          <!-- Description -->
+          <div>
+            <h3 class="font-bold text-sm text-gray-900 mb-1">Property Description & Details:</h3>
+            <p class="text-xs text-gray-700 leading-relaxed">${p.description}</p>
+          </div>
+
+          <!-- Legal Warning Box -->
+          <div class="bg-amber-50 border-l-4 border-amber-500 p-3.5 rounded-r-xl text-[11px] text-amber-800">
+            <strong>महत्वपूर्ण सूचना:</strong> किसी भी अग्रिम भुगतान से पहले खरीदार संबंधित अंचल कार्यालय / झारभूमि पोर्टल से खतियान, म्यूटेशन और ऑनलाइन रसीद की पुष्टि स्वयं अवश्य करें।
+          </div>
+
+          <!-- Contact & WhatsApp Buttons -->
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+            <a href="tel:${p.sellerPhone}" class="w-full bg-slate-900 hover:bg-black text-white font-bold text-xs py-3 rounded-xl flex items-center justify-center gap-2 shadow">
+              <i class="fa-solid fa-phone text-amber-400"></i> Call: +91 ${p.sellerPhone}
+            </a>
+            <a href="${waUrl}" target="_blank" class="w-full bg-green-600 hover:bg-green-700 text-white font-bold text-xs py-3 rounded-xl flex items-center justify-center gap-2 shadow">
+              <i class="fa-brands fa-whatsapp text-base"></i> Connect on WhatsApp
+            </a>
+          </div>
         </div>
-    </div>
+      `;
 
-    <!-- Footer -->
-    <footer class="bg-gray-900 text-gray-400 py-8 border-t border-gray-800 mt-12 text-center text-xs">
-        <p class="text-white font-bold text-sm mb-1">जमींदार लैंड बाज़ार • Hussainabad (Japla), Palamu, Jharkhand</p>
-        <p>© 2026 jamindarlandbazaar.in | सर्वाधिकार सुरक्षित।</p>
-    </footer>
+      switchView('view-details');
+    }
 
-    <!-- Logic Script -->
-    <script>
-        // Store users in localStorage
-        let registeredUsers = JSON.parse(localStorage.getItem('jlb_users')) || [];
+    // 8. LAND CALCULATOR FORMULA
+    function calculateLandUnits() {
+      const val = parseFloat(document.getElementById('calcInput').value) || 0;
+      const unit = document.getElementById('calcUnit').value;
 
-        function updateUsersUI() {
-            const tableBody = document.getElementById('usersTableBody');
-            const statUsers = document.getElementById('statUsers');
-            statUsers.innerText = registeredUsers.length;
+      let decimals = 0;
+      if (unit === 'decimal') decimals = val;
+      else if (unit === 'sqft') decimals = val / 435.6;
+      else if (unit === 'acre') decimals = val * 100;
+      else if (unit === 'kattha') decimals = val * 3.125;
+      else if (unit === 'sqmeter') decimals = val / 40.4686;
 
-            if (registeredUsers.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-gray-400">अभी कोई नया यूजर रजिस्टर नहीं हुआ है।</td></tr>`;
-                return;
-            }
+      const sqft = decimals * 435.6;
+      const acre = decimals / 100;
+      const sqmeter = decimals * 40.4686;
 
-            tableBody.innerHTML = registeredUsers.map(u => `
-                <tr class="border-b hover:bg-gray-50">
-                    <td class="py-2.5 px-4 font-semibold text-gray-800">${u.name}</td>
-                    <td class="py-2.5 px-4">${u.phone}</td>
-                    <td class="py-2.5 px-4"><span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full uppercase">${u.role}</span></td>
-                    <td class="py-2.5 px-4 text-xs text-gray-400">${u.date}</td>
-                </tr>
-            `).join('');
-        }
+      document.getElementById('resDecimal').innerText = decimals.toFixed(2);
+      document.getElementById('resSqft').innerText = Math.round(sqft).toLocaleString('en-IN');
+      document.getElementById('resAcre').innerText = acre.toFixed(3);
+      document.getElementById('resSqmeter').innerText = sqmeter.toFixed(1);
+    }
 
-        function openModal(id) {
-            document.getElementById(id).classList.remove('hidden');
-            document.getElementById(id).classList.add('flex');
-        }
+    // 9. HANDLE PROPERTY SUBMISSION
+    function handlePropertySubmit(e) {
+      e.preventDefault();
+      
+      const newProp = {
+        id: `JLB-PAL-000${properties.length + 1}`,
+        title: `${document.getElementById('postType').value} in ${document.getElementById('postVillage').value}`,
+        category: document.getElementById('postType').value,
+        classType: document.getElementById('postClass').value,
+        area: document.getElementById('postArea').value,
+        areaVal: 5,
+        price: document.getElementById('postPrice').value,
+        priceVal: 1000000,
+        district: document.getElementById('postDistrict').value,
+        block: document.getElementById('postBlock').value,
+        village: document.getElementById('postVillage').value,
+        road: document.getElementById('postRoad').value || "Standard Access Road",
+        facing: "East Facing",
+        verified: true,
+        sellerName: document.getElementById('postOwner').value,
+        sellerPhone: document.getElementById('postPhone').value,
+        description: document.getElementById('postDesc').value || "Verified plot ready for immediate registry in Jharkhand.",
+        image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&auto=format&fit=crop&q=60"
+      };
 
-        function closeModal(id) {
-            document.getElementById(id).classList.add('hidden');
-            document.getElementById(id).classList.remove('flex');
-        }
+      properties.unshift(newProp);
+      renderGrids();
+      alert(`सफलतापूर्वक सबमिट हुआ! आपकी प्रॉपर्टी ID है: ${newProp.id}। यह अब लाइव सर्च में उपलब्ध है।`);
+      document.getElementById('postPropertyForm').reset();
+      switchView('view-listings');
+    }
 
-        function handleRegistration(e) {
-            e.preventDefault();
-            const name = document.getElementById('regName').value;
-            const phone = document.getElementById('regPhone').value;
-            const role = document.getElementById('regRole').value;
+    // 10. ADMIN DASHBOARD AUTH & TABLE
+    function verifyAdminPin() {
+      const pin = document.getElementById('adminPinInput').value;
+      if(pin === ADMIN_PIN) {
+        switchView('view-admin-dashboard');
+      } else {
+        alert('गलत पासवर्ड! कृपया सही एडमिन पासवर्ड दर्ज करें।');
+      }
+    }
 
-            registeredUsers.push({
-                name: name,
-                phone: phone,
-                role: role,
-                date: new Date().toLocaleDateString('hi-IN')
-            });
+    function renderAdminTable() {
+      const tbody = document.getElementById('adminTableBody');
+      if(!tbody) return;
 
-            localStorage.setItem('jlb_users', JSON.stringify(registeredUsers));
-            alert(`धन्यवाद ${name}! आपका रजिस्ट्रेशन सफलतापूर्वक पूरा हुआ। हमारी टीम जल्द ही आपसे संपर्क करेगी।`);
-            closeModal('registerModal');
-            e.target.reset();
-            updateUsersUI();
-        }
+      document.getElementById('admTotalProps').innerText = properties.length;
+      document.getElementById('admVerifiedProps').innerText = properties.filter(p => p.verified).length;
+      document.getElementById('admCntProps').innerText = properties.filter(p => p.classType === 'CNT').length;
 
-        function handleAdminLogin(e) {
-            e.preventDefault();
-            const pass = document.getElementById('adminPassInput').value;
-            if (pass === 'admin123') {
-                closeModal('adminModal');
-                document.getElementById('adminDashboard').classList.remove('hidden');
-                updateUsersUI();
-            } else {
-                alert('गलत पासवर्ड! कृपया सही पासवर्ड दर्ज करें।');
-            }
-        }
+      tbody.innerHTML = properties.map(p => `
+        <tr class="hover:bg-gray-50 transition">
+          <td class="p-3">
+            <span class="font-bold text-gray-900 block">${p.id}</span>
+            <span class="text-gray-500">${p.title}</span>
+          </td>
+          <td class="p-3">${p.block}, ${p.district}</td>
+          <td class="p-3">
+            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${p.classType === 'CNT' ? 'bg-amber-100 text-amber-900' : 'bg-emerald-100 text-emerald-900'}">${p.classType}</span>
+          </td>
+          <td class="p-3"><strong>${p.price}</strong> (${p.area})</td>
+          <td class="p-3"><span class="text-emerald-600 font-bold">● Live</span></td>
+          <td class="p-3 text-right">
+            <button onclick="deleteProperty('${p.id}')" class="text-red-600 hover:text-red-800 font-bold ml-2">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+    }
 
-        function closeAdminDashboard() {
-            document.getElementById('adminDashboard').classList.add('hidden');
-        }
+    function deleteProperty(id) {
+      if(confirm(`क्या आप वाकई प्रॉपर्टी ${id} को हटाना चाहते हैं?`)) {
+        properties = properties.filter(p => p.id !== id);
+        renderGrids();
+      }
+    }
 
-        function adminAddProperty(e) {
-            e.preventDefault();
-            const title = document.getElementById('propTitle').value;
-            const loc = document.getElementById('propLoc').value;
-            const price = document.getElementById('propPrice').value;
-            const cat = document.getElementById('propCat').value;
-
-            const grid = document.getElementById('propertyGrid');
-            const newCard = document.createElement('div');
-            newCard.className = "prop-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-xl transition";
-            newCard.setAttribute('data-cat', cat);
-            newCard.innerHTML = `
-                <div class="bg-emerald-100 h-40 flex items-center justify-center text-emerald-800 text-5xl">
-                    <i class="fas fa-map-marked-alt"></i>
-                </div>
-                <div class="p-5">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-0.5 rounded-full font-bold">नया प्लॉट</span>
-                        <span class="text-emerald-700 font-bold text-lg">${price}</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-gray-800">${title}</h3>
-                    <p class="text-gray-500 text-sm mb-3"><i class="fas fa-map-marker-alt text-red-500 mr-1"></i> ${loc}</p>
-                    <button onclick="openModal('registerModal')" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-medium py-2 rounded-lg text-sm transition">
-                        रजिस्ट्रेशन कर संपर्क करें
-                    </button>
-                </div>
-            `;
-            grid.prepend(newCard);
-            alert('प्रॉपर्टी सफलतापूर्वक लाइव कर दी गई है!');
-            closeAdminDashboard();
-            e.target.reset();
-            searchProperties();
-        }
-
-        function filterCategory(cat, btn) {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active-filter'));
-            btn.classList.add('active-filter');
-
-            const cards = document.querySelectorAll('.prop-card');
-            let count = 0;
-            cards.forEach(card => {
-                const cardCat = card.getAttribute('data-cat');
-                if (cat === 'all' || cardCat.includes(cat)) {
-                    card.style.display = 'block';
-                    count++;
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-            document.getElementById('propCount').innerText = `दिखाई जा रही ज़मीनें: ${count}`;
-        }
-
-        function searchProperties() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const cards = document.querySelectorAll('.prop-card');
-            let count = 0;
-            cards.forEach(card => {
-                const text = card.innerText.toLowerCase();
-                if (text.includes(query)) {
-                    card.style.display = 'block';
-                    count++;
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-            document.getElementById('propCount').innerText = `दिखाई जा रही ज़मीनें: ${count}`;
-        }
-    </script>
+    // INITIAL RENDER
+    window.addEventListener('DOMContentLoaded', () => {
+      renderGrids();
+      calculateLandUnits();
+    });
+  </script>
 </body>
 </html>
