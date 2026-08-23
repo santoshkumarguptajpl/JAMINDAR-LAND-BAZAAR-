@@ -1,1 +1,427 @@
 
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>जमींदार लैंड बाज़ार - Jamindar Land Bazaar</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .active-filter {
+            background-color: #047857 !important;
+            color: white !important;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+    <!-- Header / Navbar -->
+    <header class="bg-emerald-800 text-white sticky top-0 z-40 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center space-x-2">
+                <i class="fas fa-landmark text-2xl text-amber-400"></i>
+                <span class="text-xl font-bold tracking-wide">जमींदार लैंड बाज़ार</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button onclick="openModal('registerModal')" class="bg-amber-500 hover:bg-amber-600 text-gray-900 font-bold px-3 py-1.5 rounded-lg text-sm transition">
+                    <i class="fas fa-user-plus mr-1"></i> रजिस्ट्रेशन / लॉगिन
+                </button>
+                <button onclick="openModal('adminModal')" class="bg-emerald-950 hover:bg-black text-amber-400 border border-amber-400 font-semibold px-3 py-1.5 rounded-lg text-sm transition">
+                    <i class="fas fa-lock mr-1"></i> एडमिन
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero & Search Section -->
+    <section class="bg-gradient-to-r from-emerald-900 via-emerald-800 to-teal-900 text-white py-12 px-4 text-center">
+        <h1 class="text-3xl md:text-4xl font-extrabold mb-3">झारखंड में ज़मीन और प्रॉपर्टी का सबसे भरोसेमंद मंच</h1>
+        <p class="text-emerald-100 text-sm md:text-base mb-6">हुसैनाबाद, जपला, पलामू एवं आसपास के क्षेत्रों में प्रमाणित ज़मीन खरीदें व बेचें</p>
+        
+        <!-- Live Search Bar -->
+        <div class="max-w-2xl mx-auto flex items-center bg-white rounded-full p-1.5 shadow-lg">
+            <i class="fas fa-search text-gray-400 ml-4 mr-2"></i>
+            <input type="text" id="searchInput" onkeyup="searchProperties()" placeholder="लोकेशन, ज़मीन का प्रकार या कीवर्ड खोजें..." class="w-full text-gray-800 px-2 py-2 focus:outline-none rounded-full text-sm md:text-base">
+        </div>
+
+        <!-- Filter Tags -->
+        <div class="flex flex-wrap justify-center gap-2 mt-6 max-w-3xl mx-auto">
+            <button onclick="filterCategory('all', this)" class="filter-btn active-filter bg-white/20 hover:bg-white/30 text-white text-xs md:text-sm px-4 py-1.5 rounded-full transition font-medium">सभी ज़मीनें</button>
+            <button onclick="filterCategory('general', this)" class="filter-btn bg-white/20 hover:bg-white/30 text-white text-xs md:text-sm px-4 py-1.5 rounded-full transition font-medium">जनरल प्लॉट</button>
+            <button onclick="filterCategory('cnt', this)" class="filter-btn bg-white/20 hover:bg-white/30 text-white text-xs md:text-sm px-4 py-1.5 rounded-full transition font-medium">सीएनटी (CNT) मुक्त</button>
+            <button onclick="filterCategory('agri', this)" class="filter-btn bg-white/20 hover:bg-white/30 text-white text-xs md:text-sm px-4 py-1.5 rounded-full transition font-medium">कृषि भूमि</button>
+            <button onclick="filterCategory('residential', this)" class="filter-btn bg-white/20 hover:bg-white/30 text-white text-xs md:text-sm px-4 py-1.5 rounded-full transition font-medium">आवासीय प्लॉट</button>
+            <button onclick="filterCategory('industrial', this)" class="filter-btn bg-white/20 hover:bg-white/30 text-white text-xs md:text-sm px-4 py-1.5 rounded-full transition font-medium">इंडस्ट्रियल / कमर्शियल</button>
+        </div>
+    </section>
+
+    <!-- Property Listings Grid -->
+    <main class="max-w-7xl mx-auto px-4 py-10">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-2xl font-bold text-gray-800 border-l-4 border-emerald-600 pl-3">उपलब्ध प्रॉपर्टीज</h2>
+            <span id="propCount" class="text-sm text-gray-500 font-medium">दिखाई जा रही ज़मीनें: 3</span>
+        </div>
+
+        <div id="propertyGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Card 1 -->
+            <div class="prop-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-xl transition" data-cat="residential general">
+                <div class="bg-emerald-100 h-40 flex items-center justify-center text-emerald-800 text-5xl">
+                    <i class="fas fa-home"></i>
+                </div>
+                <div class="p-5">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-0.5 rounded-full font-bold">आवासीय • जनरल</span>
+                        <span class="text-emerald-700 font-bold text-lg">₹ 8.5 लाख / कट्ठा</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800">मेन रोड आवासीय प्लॉट</h3>
+                    <p class="text-gray-500 text-sm mb-3"><i class="fas fa-map-marker-alt text-red-500 mr-1"></i> जपला मेन रोड, हुसैनाबाद</p>
+                    <div class="text-xs text-gray-600 space-y-1 mb-4">
+                        <p><i class="fas fa-check-circle text-emerald-600 mr-1"></i> दाखिल-खारिज व रसीद अप-टू-डेट</p>
+                        <p><i class="fas fa-road text-emerald-600 mr-1"></i> 30 फीट चौड़ा पक्का रास्ता</p>
+                    </div>
+                    <button onclick="openModal('registerModal')" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-medium py-2 rounded-lg text-sm transition">
+                        रजिस्ट्रेशन कर संपर्क करें
+                    </button>
+                </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="prop-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-xl transition" data-cat="agri cnt">
+                <div class="bg-amber-100 h-40 flex items-center justify-center text-amber-800 text-5xl">
+                    <i class="fas fa-tractor"></i>
+                </div>
+                <div class="p-5">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="bg-amber-100 text-amber-800 text-xs px-2.5 py-0.5 rounded-full font-bold">कृषि भूमि • उपजाऊ</span>
+                        <span class="text-emerald-700 font-bold text-lg">₹ 18 लाख / बीघा</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800">सिंचाई सुविधा युक्त कृषि भूमि</h3>
+                    <p class="text-gray-500 text-sm mb-3"><i class="fas fa-map-marker-alt text-red-500 mr-1"></i> देवरी रोड, हुसैनाबाद</p>
+                    <div class="text-xs text-gray-600 space-y-1 mb-4">
+                        <p><i class="fas fa-water text-blue-500 mr-1"></i> बोरिंग और नहर की सुविधा उपलब्ध</p>
+                        <p><i class="fas fa-file-contract text-emerald-600 mr-1"></i> 100% विवाद रहित टाइटल</p>
+                    </div>
+                    <button onclick="openModal('registerModal')" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-medium py-2 rounded-lg text-sm transition">
+                        रजिस्ट्रेशन कर संपर्क करें
+                    </button>
+                </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="prop-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-xl transition" data-cat="industrial general">
+                <div class="bg-slate-100 h-40 flex items-center justify-center text-slate-800 text-5xl">
+                    <i class="fas fa-industry"></i>
+                </div>
+                <div class="p-5">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="bg-slate-200 text-slate-800 text-xs px-2.5 py-0.5 rounded-full font-bold">कमर्शियल / वेयरहाउस</span>
+                        <span class="text-emerald-700 font-bold text-lg">₹ 45 लाख</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800">हाईवे कमर्शियल लैंड</h3>
+                    <p class="text-gray-500 text-sm mb-3"><i class="fas fa-map-marker-alt text-red-500 mr-1"></i> स्टेट हाईवे, पलामू बॉर्डर</p>
+                    <div class="text-xs text-gray-600 space-y-1 mb-4">
+                        <p><i class="fas fa-truck text-emerald-600 mr-1"></i> गोदाम, पेट्रोल पंप या फैक्ट्री हेतु उपयुक्त</p>
+                        <p><i class="fas fa-bolt text-yellow-500 mr-1"></i> 3-फेज बिजली लाइन उपलब्ध</p>
+                    </div>
+                    <button onclick="openModal('registerModal')" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-medium py-2 rounded-lg text-sm transition">
+                        रजिस्ट्रेशन कर संपर्क करें
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Registration / Login Modal -->
+    <div id="registerModal" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 relative shadow-2xl">
+            <button onclick="closeModal('registerModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-xl font-bold">&times;</button>
+            <div class="text-center mb-6">
+                <div class="inline-block p-3 bg-emerald-100 text-emerald-700 rounded-full mb-2">
+                    <i class="fas fa-user-circle text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800">उपयोगकर्ता पंजीकरण (Registration)</h3>
+                <p class="text-xs text-gray-500">ज़मीन खरीदने, बेचने या जानकारी प्राप्त करने के लिए रजिस्टर करें</p>
+            </div>
+            
+            <form onsubmit="handleRegistration(event)" class="space-y-3.5">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">पूरा नाम *</label>
+                    <input type="text" id="regName" required placeholder="उदा. राहुल कुमार" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">मोबाइल नंबर (WhatsApp) *</label>
+                    <input type="tel" id="regPhone" required placeholder="उदा. 9876543210" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">आपकी रुचि (Role) *</label>
+                    <select id="regRole" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                        <option value="buyer">मैं ज़मीन खरीदना चाहता हूँ (Buyer)</option>
+                        <option value="seller">मैं ज़मीन बेचना चाहता हूँ (Seller)</option>
+                        <option value="agent">प्रॉपर्टी एजेंट / ब्रोकर (Agent)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">पासवर्ड बनाएं *</label>
+                    <input type="password" id="regPassword" required placeholder="कम से कम 6 अक्षर" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-lg text-sm transition mt-4">
+                    रजिस्ट्रेशन पूरा करें
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Login Modal -->
+    <div id="adminModal" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 relative shadow-2xl">
+            <button onclick="closeModal('adminModal')" class="absolute top-4 right-4 text-gray-400 hover:text-gray-700 text-xl font-bold">&times;</button>
+            <div class="text-center mb-6">
+                <div class="inline-block p-3 bg-red-100 text-red-700 rounded-full mb-2">
+                    <i class="fas fa-shield-alt text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-800">एडमिन लॉगिन</h3>
+                <p class="text-xs text-gray-500">केवल व्यवस्थापक हेतु (डिफ़ॉल्ट पासवर्ड: admin123)</p>
+            </div>
+            
+            <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">एडमिन पासवर्ड</label>
+                    <input type="password" id="adminPassInput" required placeholder="पासवर्ड दर्ज करें" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                </div>
+                <button type="submit" class="w-full bg-gray-900 hover:bg-black text-amber-400 font-bold py-2.5 rounded-lg text-sm transition">
+                    डैशबोर्ड खोलें
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard (Hidden by Default) -->
+    <div id="adminDashboard" class="fixed inset-0 bg-gray-900/90 z-50 hidden overflow-y-auto p-4 md:p-8">
+        <div class="max-w-5xl mx-auto bg-white rounded-2xl p-6 shadow-2xl relative">
+            <div class="flex justify-between items-center border-b pb-4 mb-6">
+                <div class="flex items-center space-x-3">
+                    <i class="fas fa-chart-line text-2xl text-emerald-700"></i>
+                    <h2 class="text-2xl font-bold text-gray-800">एडमिन कंट्रोल पैनल</h2>
+                </div>
+                <button onclick="closeAdminDashboard()" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold">
+                    लॉगआउट (Close)
+                </button>
+            </div>
+
+            <!-- Stats Overview -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+                <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100">
+                    <p class="text-xs text-emerald-600 font-semibold uppercase">कुल रजिस्टर्ड यूजर्स</p>
+                    <h4 id="statUsers" class="text-2xl font-black text-emerald-900">0</h4>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                    <p class="text-xs text-blue-600 font-semibold uppercase">लाइव ज़मीनें / लिस्टिंग्स</p>
+                    <h4 class="text-2xl font-black text-blue-900">3</h4>
+                </div>
+                <div class="bg-amber-50 p-4 rounded-xl border border-amber-100">
+                    <p class="text-xs text-amber-600 font-semibold uppercase">सक्रिय इन्क्वायरी</p>
+                    <h4 class="text-2xl font-black text-amber-900">12</h4>
+                </div>
+            </div>
+
+            <!-- Registered Users Table -->
+            <h3 class="text-lg font-bold text-gray-800 mb-3 border-l-4 border-emerald-600 pl-2">रजिस्टर्ड यूज़र्स की सूची</h3>
+            <div class="overflow-x-auto border rounded-xl mb-8">
+                <table class="w-full text-left text-sm text-gray-600">
+                    <thead class="bg-gray-100 text-gray-700 uppercase text-xs font-bold">
+                        <tr>
+                            <th class="py-3 px-4">नाम</th>
+                            <th class="py-3 px-4">मोबाइल</th>
+                            <th class="py-3 px-4">प्रकार (Role)</th>
+                            <th class="py-3 px-4">तारीख</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <tr>
+                            <td colspan="4" class="py-4 text-center text-gray-400">अभी कोई नया यूजर रजिस्टर नहीं हुआ है।</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Add New Property Form (Admin Feature) -->
+            <h3 class="text-lg font-bold text-gray-800 mb-3 border-l-4 border-emerald-600 pl-2">नई ज़मीन / प्रॉपर्टी जोड़ें</h3>
+            <form onsubmit="adminAddProperty(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 bg-gray-50 p-4 rounded-xl border">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">प्रॉपर्टी का शीर्षक *</label>
+                    <input type="text" id="propTitle" required placeholder="उदा. हाईवे टच 2 बीघा प्लॉट" class="w-full p-2 border rounded-lg text-sm bg-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">लोकेशन / पता *</label>
+                    <input type="text" id="propLoc" required placeholder="उदा. जपला स्टेशन रोड, हुसैनाबाद" class="w-full p-2 border rounded-lg text-sm bg-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">कीमत *</label>
+                    <input type="text" id="propPrice" required placeholder="उदा. ₹ 10 लाख / कट्ठा" class="w-full p-2 border rounded-lg text-sm bg-white">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-700 mb-1">कैटेगरी / प्रकार *</label>
+                    <select id="propCat" class="w-full p-2 border rounded-lg text-sm bg-white">
+                        <option value="residential general">आवासीय (जनरल)</option>
+                        <option value="agri cnt">कृषि (CNT मुक्त)</option>
+                        <option value="industrial general">इंडस्ट्रियल / कमर्शियल</option>
+                    </select>
+                </div>
+                <div class="md:col-span-2">
+                    <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2 rounded-lg text-sm transition">
+                        + लाइव साइट पर प्रॉपर्टी पब्लिश करें
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-8 border-t border-gray-800 mt-12 text-center text-xs">
+        <p class="text-white font-bold text-sm mb-1">जमींदार लैंड बाज़ार • Hussainabad (Japla), Palamu, Jharkhand</p>
+        <p>© 2026 jamindarlandbazaar.in | सर्वाधिकार सुरक्षित।</p>
+    </footer>
+
+    <!-- Logic Script -->
+    <script>
+        // Store users in localStorage
+        let registeredUsers = JSON.parse(localStorage.getItem('jlb_users')) || [];
+
+        function updateUsersUI() {
+            const tableBody = document.getElementById('usersTableBody');
+            const statUsers = document.getElementById('statUsers');
+            statUsers.innerText = registeredUsers.length;
+
+            if (registeredUsers.length === 0) {
+                tableBody.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-gray-400">अभी कोई नया यूजर रजिस्टर नहीं हुआ है।</td></tr>`;
+                return;
+            }
+
+            tableBody.innerHTML = registeredUsers.map(u => `
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="py-2.5 px-4 font-semibold text-gray-800">${u.name}</td>
+                    <td class="py-2.5 px-4">${u.phone}</td>
+                    <td class="py-2.5 px-4"><span class="bg-emerald-100 text-emerald-800 text-xs px-2 py-0.5 rounded-full uppercase">${u.role}</span></td>
+                    <td class="py-2.5 px-4 text-xs text-gray-400">${u.date}</td>
+                </tr>
+            `).join('');
+        }
+
+        function openModal(id) {
+            document.getElementById(id).classList.remove('hidden');
+            document.getElementById(id).classList.add('flex');
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
+            document.getElementById(id).classList.remove('flex');
+        }
+
+        function handleRegistration(e) {
+            e.preventDefault();
+            const name = document.getElementById('regName').value;
+            const phone = document.getElementById('regPhone').value;
+            const role = document.getElementById('regRole').value;
+
+            registeredUsers.push({
+                name: name,
+                phone: phone,
+                role: role,
+                date: new Date().toLocaleDateString('hi-IN')
+            });
+
+            localStorage.setItem('jlb_users', JSON.stringify(registeredUsers));
+            alert(`धन्यवाद ${name}! आपका रजिस्ट्रेशन सफलतापूर्वक पूरा हुआ। हमारी टीम जल्द ही आपसे संपर्क करेगी।`);
+            closeModal('registerModal');
+            e.target.reset();
+            updateUsersUI();
+        }
+
+        function handleAdminLogin(e) {
+            e.preventDefault();
+            const pass = document.getElementById('adminPassInput').value;
+            if (pass === 'admin123') {
+                closeModal('adminModal');
+                document.getElementById('adminDashboard').classList.remove('hidden');
+                updateUsersUI();
+            } else {
+                alert('गलत पासवर्ड! कृपया सही पासवर्ड दर्ज करें।');
+            }
+        }
+
+        function closeAdminDashboard() {
+            document.getElementById('adminDashboard').classList.add('hidden');
+        }
+
+        function adminAddProperty(e) {
+            e.preventDefault();
+            const title = document.getElementById('propTitle').value;
+            const loc = document.getElementById('propLoc').value;
+            const price = document.getElementById('propPrice').value;
+            const cat = document.getElementById('propCat').value;
+
+            const grid = document.getElementById('propertyGrid');
+            const newCard = document.createElement('div');
+            newCard.className = "prop-card bg-white rounded-xl shadow-md overflow-hidden border border-gray-100 hover:shadow-xl transition";
+            newCard.setAttribute('data-cat', cat);
+            newCard.innerHTML = `
+                <div class="bg-emerald-100 h-40 flex items-center justify-center text-emerald-800 text-5xl">
+                    <i class="fas fa-map-marked-alt"></i>
+                </div>
+                <div class="p-5">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="bg-emerald-100 text-emerald-800 text-xs px-2.5 py-0.5 rounded-full font-bold">नया प्लॉट</span>
+                        <span class="text-emerald-700 font-bold text-lg">${price}</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-gray-800">${title}</h3>
+                    <p class="text-gray-500 text-sm mb-3"><i class="fas fa-map-marker-alt text-red-500 mr-1"></i> ${loc}</p>
+                    <button onclick="openModal('registerModal')" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-medium py-2 rounded-lg text-sm transition">
+                        रजिस्ट्रेशन कर संपर्क करें
+                    </button>
+                </div>
+            `;
+            grid.prepend(newCard);
+            alert('प्रॉपर्टी सफलतापूर्वक लाइव कर दी गई है!');
+            closeAdminDashboard();
+            e.target.reset();
+            searchProperties();
+        }
+
+        function filterCategory(cat, btn) {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active-filter'));
+            btn.classList.add('active-filter');
+
+            const cards = document.querySelectorAll('.prop-card');
+            let count = 0;
+            cards.forEach(card => {
+                const cardCat = card.getAttribute('data-cat');
+                if (cat === 'all' || cardCat.includes(cat)) {
+                    card.style.display = 'block';
+                    count++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            document.getElementById('propCount').innerText = `दिखाई जा रही ज़मीनें: ${count}`;
+        }
+
+        function searchProperties() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.prop-card');
+            let count = 0;
+            cards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    card.style.display = 'block';
+                    count++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+            document.getElementById('propCount').innerText = `दिखाई जा रही ज़मीनें: ${count}`;
+        }
+    </script>
+</body>
+</html>
