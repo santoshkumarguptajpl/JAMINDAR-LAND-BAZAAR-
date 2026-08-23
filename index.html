@@ -1216,13 +1216,28 @@
         description: document.getElementById('postDesc').value || "Verified plot ready for immediate registry in Jharkhand.",
         image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&auto=format&fit=crop&q=60"
       };
+          newProp.status = "pending";
 
+    if (typeof db !== 'undefined') {
+      db.collection("properties").doc(newProp.id).set(newProp)
+        .then(() => {
+          alert(`सफलतापूर्वक सबमिट हुआ! आपकी प्रॉपर्टी ID है: ${newProp.id}। आपकी लिस्टिंग एडमिन द्वारा वेरीफाई होने के बाद लाइव होगी।`);
+          document.getElementById('postPropertyForm').reset();
+          switchView('view-home');
+        })
+        .catch((error) => {
+          console.error("Database Error: ", error);
+          alert("डेटाबेस में सेव करने में त्रुटि आई। कृपया पुनः प्रयास करें।");
+        });
+    } else {
       properties.unshift(newProp);
       renderGrids();
-      alert(`सफलतापूर्वक सबमिट हुआ! आपकी प्रॉपर्टी ID है: ${newProp.id}। यह अब लाइव सर्च में उपलब्ध है।`);
+      alert(`सफलतापूर्वक सबमिट हुआ! आपकी प्रॉपर्टी ID है: ${newProp.id}`);
       document.getElementById('postPropertyForm').reset();
       switchView('view-listings');
     }
+  }
+
 
     // 10. ADMIN DASHBOARD AUTH & TABLE
     function verifyAdminPin() {
