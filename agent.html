@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Portal - Jamindar Land Bazaar</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen text-gray-800">
+
+  <!-- Header -->
+  <header class="bg-emerald-800 text-white p-4 shadow-md flex justify-between items-center">
+    <h1 class="text-lg font-bold"><i class="fa-solid fa-user-tie mr-2"></i>एजेंट पार्टनर पोर्टल</h1>
+    <button id="logoutBtn" onclick="logoutAgent()" class="hidden text-xs bg-red-600 px-3 py-1.5 rounded hover:bg-red-700">लॉगआउट</button>
+  </header>
+
+  <main class="max-w-xl mx-auto p-4">
+
+    <!-- 1. OTP LOGIN BOX -->
+    <div id="authSection" class="bg-white p-6 rounded-2xl shadow border mt-6">
+      <h2 class="text-xl font-bold text-gray-800 mb-2">एजेंट लॉगिन / रजिस्ट्रेशन</h2>
+      <p class="text-xs text-gray-500 mb-4">अपने मोबाइल नंबर पर OTP प्राप्त करके लॉगिन करें।</p>
+      
+      <div id="phoneStep">
+        <label class="block text-xs font-bold text-gray-700 mb-1">मोबाइल नंबर (10 अंक)</label>
+        <div class="flex">
+          <span class="inline-flex items-center px-3 text-sm bg-gray-200 border border-r-0 border-gray-300 rounded-l-lg font-semibold">+91</span>
+          <input type="tel" id="agentPhone" placeholder="उदा. 9308424700" maxlength="10" class="w-full border p-2.5 rounded-r-lg text-sm border-gray-300">
+        </div>
+        <div id="recaptcha-container" class="mt-3"></div>
+        <button onclick="sendOTP()" class="w-full mt-4 bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-lg text-sm transition">OTP भेजें</button>
+      </div>
+
+      <div id="otpStep" class="hidden mt-4">
+        <label class="block text-xs font-bold text-gray-700 mb-1">दर्ज करें 6 अंकों का OTP</label>
+        <input type="text" id="otpCode" placeholder="उदा. 123456" maxlength="6" class="w-full border p-2.5 rounded-lg text-sm border-gray-300 tracking-widest text-center text-lg font-bold">
+        <button onclick="verifyOTP()" class="w-full mt-4 bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-lg text-sm transition">OTP सत्यापित करें</button>
+      </div>
+    </div>
+
+    <!-- 2. AGENT PROFILE & DASHBOARD -->
+    <div id="profileSection" class="hidden space-y-4 mt-4">
+      
+      <!-- Profile Card -->
+      <div class="bg-white p-6 rounded-2xl shadow border">
+        <div class="flex items-center space-x-3 border-b pb-4 mb-4">
+          <div class="w-14 h-14 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center text-2xl font-bold">
+            <i class="fa-solid fa-id-badge"></i>
+          </div>
+          <div>
+            <h3 id="displayAgentName" class="text-lg font-bold text-gray-800">एजेंट प्रोफाइल</h3>
+            <p id="displayAgentPhone" class="text-xs text-gray-500"></p>
+            <span id="agentStatusBadge" class="inline-block mt-1 text-[10px] px-2 py-0.5 rounded font-bold bg-amber-100 text-amber-800">वेरिफिकेशन पेंडिंग</span>
+          </div>
+        </div>
+
+        <form id="agentProfileForm" onsubmit="saveAgentProfile(event)" class="space-y-3">
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1">पूरा नाम *</label>
+            <input type="text" id="profName" required class="w-full border rounded-lg p-2 text-sm">
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">व्हाट्सएप नंबर *</label>
+              <input type="tel" id="profWhatsapp" required class="w-full border rounded-lg p-2 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">ईमेल आईडी</label>
+              <input type="email" id="profEmail" class="w-full border rounded-lg p-2 text-sm">
+            </div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">मुख्य कार्य जिला *</label>
+              <input type="text" id="profDistrict" placeholder="उदा. Palamu" required class="w-full border rounded-lg p-2 text-sm">
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-gray-700 mb-1">ब्लॉक / एरिया *</label>
+              <input type="text" id="profBlock" placeholder="उदा. Hussainabad (Japla)" required class="w-full border rounded-lg p-2 text-sm">
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1">अनुभव (वर्षों में) / बायो</label>
+            <textarea id="profBio" rows="2" placeholder="उदा. 5 वर्षों से हुसैनाबाद और मेदिनीनगर में प्रॉपर्टी डीलिंग का अनुभव..." class="w-full border rounded-lg p-2 text-sm"></textarea>
+          </div>
+          <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-lg text-sm mt-2">
+            प्रोफाइल अपडेट करें
+          </button>
+        </form>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    // 1. Firebase कॉन्फ़िगरेशन (index.html वाली कीज यहाँ लगाएँ)
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    let confirmationResultObj = null;
+    let currentAgentUid = null;
+
+    // reCAPTCHA इनिशियलाइज़
+    window.onload = () => {
+      window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
+        size: 'invisible'
+      });
+      
+      auth.onAuthStateChanged(user => {
+        if (user) {
+          currentAgentUid = user.uid;
+          showDashboard(user);
+        } else {
+          showLogin();
+        }
+      });
+    };
+
+    // OTP भेजना
+    function sendOTP() {
+      const phone = document.getElementById('agentPhone').value.trim();
+      if (phone.length !== 10) return alert('कृपया 10 अंकों का वैध मोबाइल नंबर दर्ज करें!');
+      
+      const fullPhone = "+91" + phone;
+      auth.signInWithPhoneNumber(fullPhone, window.recaptchaVerifier)
+        .then(confirmationResult => {
+          confirmationResultObj = confirmationResult;
+          document.getElementById('phoneStep').classList.add('hidden');
+          document.getElementById('otpStep').classList.remove('hidden');
+          alert('OTP आपके मोबाइल पर भेज दिया गया है!');
+        }).catch(err => {
+          alert('OTP भेजने में त्रुटि: ' + err.message);
+        });
+    }
+
+    // OTP वेरिफाई करना
+    function verifyOTP() {
+      const code = document.getElementById('otpCode').value.trim();
+      if (code.length !== 6) return alert('कृपया 6 अंकों का OTP दर्ज करें!');
+
+      confirmationResultObj.confirm(code)
+        .then(result => {
+          const user = result.user;
+          currentAgentUid = user.uid;
+          showDashboard(user);
+        }).catch(err => {
+          alert('गलत OTP! कृपया पुनः प्रयास करें।');
+        });
+    }
+
+    // डैशबोर्ड और प्रोफाइल लोड करना
+    async function showDashboard(user) {
+      document.getElementById('authSection').classList.add('hidden');
+      document.getElementById('profileSection').classList.remove('hidden');
+      document.getElementById('logoutBtn').classList.remove('hidden');
+      document.getElementById('displayAgentPhone').innerText = user.phoneNumber || '';
+
+      // Firestore से एजेंट डेटा लाना
+      const doc = await db.collection('agents').doc(user.uid).get();
+      if (doc.exists) {
+        const data = doc.data();
+        document.getElementById('profName').value = data.name || '';
+        document.getElementById('displayAgentName').innerText = data.name || 'एजेंट प्रोफाइल';
+        document.getElementById('profWhatsapp').value = data.whatsapp || '';
+        document.getElementById('profEmail').value = data.email || '';
+        document.getElementById('profDistrict').value = data.district || '';
+        document.getElementById('profBlock').value = data.block || '';
+        document.getElementById('profBio').value = data.bio || '';
+        
+        if(data.isVerified) {
+          const badge = document.getElementById('agentStatusBadge');
+          badge.className = "inline-block mt-1 text-[10px] px-2 py-0.5 rounded font-bold bg-emerald-100 text-emerald-800";
+          badge.innerHTML = '<i class="fa-solid fa-circle-check"></i> 100% वेरिफाइड एजेंट';
+        }
+      }
+    }
+
+    // प्रोफाइल सेव करना
+    async function saveAgentProfile(e) {
+      e.preventDefault();
+      if (!currentAgentUid) return;
+
+      const profileData = {
+        name: document.getElementById('profName').value,
+        whatsapp: document.getElementById('profWhatsapp').value,
+        email: document.getElementById('profEmail').value,
+        district: document.getElementById('profDistrict').value,
+        block: document.getElementById('profBlock').value,
+        bio: document.getElementById('profBio').value,
+        phone: auth.currentUser.phoneNumber,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      try {
+        await db.collection('agents').doc(currentAgentUid).set(profileData, { merge: true });
+        alert('प्रोफाइल सफलतापूर्वक अपडेट हो गई!');
+        document.getElementById('displayAgentName').innerText = profileData.name;
+      } catch (err) {
+        alert('डेटा सेव करने में त्रुटि: ' + err.message);
+      }
+    }
+
+    function showLogin() {
+      document.getElementById('authSection').classList.remove('hidden');
+      document.getElementById('profileSection').classList.add('hidden');
+      document.getElementById('logoutBtn').classList.add('hidden');
+    }
+
+    function logoutAgent() {
+      auth.signOut().then(() => showLogin());
+    }
+  </script>
+</body>
+</html>
