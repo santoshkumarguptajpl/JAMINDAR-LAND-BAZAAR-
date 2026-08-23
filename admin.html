@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard - Jamindar Land Bazaar</title>
+  
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  
+  <style>
+    * { box-sizing: border-box; font-family: sans-serif; }
+    body { margin: 0; padding: 15px; background: #f4f6f9; }
+    .admin-container { max-width: 1100px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    h2 { color: #1a237e; margin-top: 0; }
+    .admin-tabs { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 2px solid #ddd; padding-bottom: 10px; overflow-x: auto; }
+    .tab-btn { padding: 8px 14px; border: none; background: #e0e0e0; cursor: pointer; border-radius: 4px; font-weight: bold; white-space: nowrap; }
+    .tab-btn.active { background: #1a237e; color: #fff; }
+    .table-responsive { overflow-x: auto; }
+    .admin-table { width: 100%; border-collapse: collapse; text-align: left; }
+    .admin-table th, .admin-table td { padding: 10px; border-bottom: 1px solid #ddd; font-size: 14px; }
+    .admin-table th { background: #fafafa; }
+    .btn-approve { background: #2e7d32; color: #fff; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; }
+    .btn-reject { background: #c62828; color: #fff; border: none; padding: 6px 10px; border-radius: 4px; cursor: pointer; margin-left: 4px; }
+  </style>
+</head>
+<body>
+
+<div class="admin-container">
+  <h2>Jamindar Land Bazaar - Property Management</h2>
+
+  <div class="admin-tabs">
+    <button class="tab-btn active" onclick="switchTab('pending', this)">Pending Review</button>
+    <button class="tab-btn" onclick="switchTab('approved', this)">Approved (Live)</button>
+    <button class="tab-btn" onclick="switchTab('rejected', this)">Rejected</button>
+    <button class="tab-btn" onclick="switchTab('all', this)">All Records</button>
+  </div>
+
+  <div class="table-responsive">
+    <table class="admin-table">
+      <thead>
+        <tr>
+          <th>Property ID</th>
+          <th>विक्रेता (Seller)</th>
+          <th>लोकेशन</th>
+          <th>विवरण</th>
+          <th>कीमत</th>
+          <th>स्थिति</th>
+          <th>एक्शन</th>
+        </tr>
+      </thead>
+      <tbody id="adminPropertyRows">
+        <tr><td colspan="7" style="text-align:center;">डेटा लोड हो रहा है...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  // यदि script.js में firebase पहले से शुरू है तो यह उसे उपयोग करेगा
+  const db = firebase.firestore();
+  let currentTab = 'pending';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    loadAdminProperties('pending');
+  });
+
+  function switchTab(status, btnElement) {
+    currentTab = status;
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    btnElement.classList.add('active');
+    loadAdminProperties(status);
+  }
+
+  async function loadAdminProperties(statusFilter) {
+    const tbody = document.getElementById('adminPropertyRows');
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">डेटा लोड हो रहा है...</td></tr>';
+
+    try {
+      let query = db.collection("properties");
+      if (statusFilter !== 'all') {
+        query = query.where("status", "==", statusFilter);
+      }
+
+      const snapshot = await query.get();
+      if (snapshot.empty) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">कोई रिकॉर्ड नहीं मिला।</td></tr>';
+        return;
+      }
+
+      let rowsHTML = '';
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const docId = doc.id;
+        const badgeColor = data.status === 'approved' ? '#2e7d32' : data.status === 'rejected' ? '#c62828' : '#e65100';
+
+        rowsHTML += `
+          <tr>
+            <td><strong>${data.propertyId || docId}</strong></td>
+            <td>${data.sellerName || '-'}<br><small>${data.sellerPhone || '-'}</small></td>
+            <td>${data.district || '-'}<br><small>${data.village || ''}</small></td>
+            <td>${data.propertyType || '-'}<br><small>${data.landCategory || ''}</small></td>
+            <td>${data.area || '-'} ${data.areaUnit || ''}<br><strong>₹${Number(data.price || 0).toLocaleString('en-IN')}</strong></td>
+            <td><span style="color:${badgeColor}; font-weight:bold; text-transform:uppercase;">${data.status}</span></td>
+            <td>
+              ${data.status !== 'approved' ? `<button class="btn-approve" onclick="updateStatus('${docId}', 'approved')">Approve</button>` : ''}
+              ${data.status !== 'rejected' ? `<button class="btn-reject" onclick="updateStatus('${docId}', 'rejected')">Reject</button>` : ''}
+            </td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = rowsHTML;
+    } catch (error) {
+      console.error("Admin Load Error:", error);
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:red;">डेटा लोड करने में त्रुटि आई।</td></tr>';
+    }
+  }
+
+  async function updateStatus(docId, newStatus) {
+    if (!confirm(`क्या आप ${docId} को ${newStatus.toUpperCase()} करना चाहते हैं?`)) return;
+
+    try {
+      await db.collection("properties").doc(docId).update({
+        status: newStatus,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      alert(`प्रॉपर्टी को सफलतापूर्वक ${newStatus} कर दिया गया!`);
+      loadAdminProperties(currentTab);
+    } catch (error) {
+      console.error("Status Update Error:", error);
+      alert("अपडेट विफल रहा।");
+    }
+  }
+</script>
+</body>
+</html>
