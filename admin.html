@@ -43,6 +43,8 @@
           <th>Property ID</th>
           <th>विक्रेता (Seller)</th>
           <th>लोकेशन</th>
+                        <th>खाता / प्लॉट</th>
+
           <th>विवरण</th>
           <th>कीमत</th>
           <th>स्थिति</th>
@@ -50,7 +52,7 @@
         </tr>
       </thead>
       <tbody id="adminPropertyRows">
-        <tr><td colspan="7" style="text-align:center;">डेटा लोड हो रहा है...</td></tr>
+        <tr><td colspan="8" style="text-align:center;">डेटा लोड हो रहा है...</td></tr>
       </tbody>
     </table>
   </div>
@@ -74,7 +76,7 @@
 
   async function loadAdminProperties(statusFilter) {
     const tbody = document.getElementById('adminPropertyRows');
-    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">डेटा लोड हो रहा है...</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;">डेटा लोड हो रहा है...</td></tr>';
 
     try {
       let query = db.collection("properties");
@@ -84,7 +86,7 @@
 
       const snapshot = await query.get();
       if (snapshot.empty) {
-        tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;">कोई रिकॉर्ड नहीं मिला।</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;">कोई रिकॉर्ड नहीं मिला।</td></tr>';
         return;
       }
 
@@ -99,6 +101,11 @@
             <td><strong>${data.propertyId || docId}</strong></td>
             <td>${data.sellerName || '-'}<br><small>${data.sellerPhone || '-'}</small></td>
             <td>${data.district || '-'}<br><small>${data.village || ''}</small></td>
+                        <td>
+              <strong>खाता:</strong> ${data.khataNo || '-'}<br>
+              <small><strong>प्लॉट:</strong> ${data.plotNo || '-'}</small>
+            </td>
+
             <td>${data.propertyType || '-'}<br><small>${data.landCategory || ''}</small></td>
             <td>${data.area || '-'} ${data.areaUnit || ''}<br><strong>₹${Number(data.price || 0).toLocaleString('en-IN')}</strong></td>
             <td><span style="color:${badgeColor}; font-weight:bold; text-transform:uppercase;">${data.status}</span></td>
