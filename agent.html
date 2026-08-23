@@ -6,91 +6,121 @@
   <title>Agent Portal - Jamindar Land Bazaar</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 </head>
-<body class="bg-gray-100 min-h-screen text-gray-800">
+<body class="bg-gray-100 min-h-screen text-gray-800 font-sans">
 
   <!-- Header -->
   <header class="bg-emerald-800 text-white p-4 shadow-md flex justify-between items-center">
-    <h1 class="text-lg font-bold"><i class="fa-solid fa-user-tie mr-2"></i>एजेंट पार्टनर पोर्टल</h1>
-    <button id="logoutBtn" onclick="logoutAgent()" class="hidden text-xs bg-red-600 px-3 py-1.5 rounded hover:bg-red-700">लॉगआउट</button>
+    <div class="flex items-center space-x-2">
+      <i class="fa-solid fa-user-tie text-amber-400 text-xl"></i>
+      <h1 class="text-base font-bold">Jamindar Land Bazaar | एजेंट पोर्टल</h1>
+    </div>
+    <div id="headerActions" class="space-x-2">
+      <a href="index.html" class="text-xs bg-emerald-900 hover:bg-emerald-950 px-3 py-1.5 rounded text-white inline-block">होम</a>
+      <button id="logoutBtn" onclick="logoutAgent()" class="hidden text-xs bg-red-600 hover:bg-red-700 px-3 py-1.5 rounded text-white">लॉगआउट</button>
+    </div>
   </header>
 
   <main class="max-w-xl mx-auto p-4">
 
-    <!-- 1. OTP LOGIN BOX -->
-    <div id="authSection" class="bg-white p-6 rounded-2xl shadow border mt-6">
-      <h2 class="text-xl font-bold text-gray-800 mb-2">एजेंट लॉगिन / रजिस्ट्रेशन</h2>
-      <p class="text-xs text-gray-500 mb-4">अपने मोबाइल नंबर पर OTP प्राप्त करके लॉगिन करें।</p>
+    <!-- 1. LOGIN / SIGNUP CARD -->
+    <div id="authCard" class="bg-white p-6 rounded-2xl shadow border border-gray-200 mt-4">
       
-      <div id="phoneStep">
-        <label class="block text-xs font-bold text-gray-700 mb-1">मोबाइल नंबर (10 अंक)</label>
-        <div class="flex">
-          <span class="inline-flex items-center px-3 text-sm bg-gray-200 border border-r-0 border-gray-300 rounded-l-lg font-semibold">+91</span>
-          <input type="tel" id="agentPhone" placeholder="उदा. 9308424700" maxlength="10" class="w-full border p-2.5 rounded-r-lg text-sm border-gray-300">
-        </div>
-        <div id="recaptcha-container" class="mt-3"></div>
-        <button onclick="sendOTP()" class="w-full mt-4 bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-lg text-sm transition">OTP भेजें</button>
+      <!-- Tabs -->
+      <div class="flex border-b border-gray-200 mb-6">
+        <button id="tabLoginBtn" onclick="switchAuthTab('login')" class="w-1/2 py-2 text-sm font-bold text-emerald-700 border-b-2 border-emerald-700">एजेंट लॉगिन</button>
+        <button id="tabSignupBtn" onclick="switchAuthTab('signup')" class="w-1/2 py-2 text-sm font-bold text-gray-500 hover:text-gray-700">नया रजिस्ट्रेशन</button>
       </div>
 
-      <div id="otpStep" class="hidden mt-4">
-        <label class="block text-xs font-bold text-gray-700 mb-1">दर्ज करें 6 अंकों का OTP</label>
-        <input type="text" id="otpCode" placeholder="उदा. 123456" maxlength="6" class="w-full border p-2.5 rounded-lg text-sm border-gray-300 tracking-widest text-center text-lg font-bold">
-        <button onclick="verifyOTP()" class="w-full mt-4 bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-lg text-sm transition">OTP सत्यापित करें</button>
-      </div>
+      <!-- Login Form -->
+      <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">मोबाइल नंबर</label>
+          <input type="tel" id="loginPhone" required maxlength="10" placeholder="उदा. 9308424700" class="w-full border p-2.5 rounded-lg text-sm border-gray-300 focus:outline-emerald-600">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">पासवर्ड</label>
+          <input type="password" id="loginPass" required placeholder="अपना पासवर्ड दर्ज करें" class="w-full border p-2.5 rounded-lg text-sm border-gray-300 focus:outline-emerald-600">
+        </div>
+        <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-lg text-sm transition shadow">लॉगिन करें</button>
+      </form>
+
+      <!-- Sign Up Form -->
+      <form id="signupForm" onsubmit="handleSignup(event)" class="space-y-4 hidden">
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">एजेंट का पूरा नाम *</label>
+          <input type="text" id="regName" required placeholder="उदा. संतोष कुमार" class="w-full border p-2.5 rounded-lg text-sm border-gray-300 focus:outline-emerald-600">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">मोबाइल नंबर (यही यूजर आईडी होगा) *</label>
+          <input type="tel" id="regPhone" required maxlength="10" placeholder="उदा. 9308424700" class="w-full border p-2.5 rounded-lg text-sm border-gray-300 focus:outline-emerald-600">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">कार्य जिला *</label>
+          <input type="text" id="regDistrict" required placeholder="उदा. पलामू / गढ़वा" class="w-full border p-2.5 rounded-lg text-sm border-gray-300 focus:outline-emerald-600">
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-700 mb-1">नया पासवर्ड बनाएं (कम से कम 4 अंक) *</label>
+          <input type="password" id="regPass" required placeholder="उदा. 123456 या गुप्त पासवर्ड" class="w-full border p-2.5 rounded-lg text-sm border-gray-300 focus:outline-emerald-600">
+        </div>
+        <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-lg text-sm transition shadow">अकाउंट बनाएं और लॉगिन करें</button>
+      </form>
+
     </div>
 
-    <!-- 2. AGENT PROFILE & DASHBOARD -->
-    <div id="profileSection" class="hidden space-y-4 mt-4">
+    <!-- 2. AGENT PROFILE DASHBOARD -->
+    <div id="profileSection" class="hidden space-y-4 mt-2">
       
-      <!-- Profile Card -->
-      <div class="bg-white p-6 rounded-2xl shadow border">
-        <div class="flex items-center space-x-3 border-b pb-4 mb-4">
-          <div class="w-14 h-14 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center text-2xl font-bold">
-            <i class="fa-solid fa-id-badge"></i>
+      <!-- Profile Header Card -->
+      <div class="bg-white p-5 rounded-2xl shadow border border-gray-200">
+        <div class="flex items-center space-x-3 border-b border-gray-100 pb-4 mb-4">
+          <div class="w-14 h-14 bg-emerald-100 text-emerald-800 rounded-full flex items-center justify-center text-2xl font-bold border border-emerald-300">
+            <i class="fa-solid fa-user-check"></i>
           </div>
           <div>
-            <h3 id="displayAgentName" class="text-lg font-bold text-gray-800">एजेंट प्रोफाइल</h3>
+            <h3 id="displayAgentName" class="text-base font-bold text-gray-800">एजेंट नाम</h3>
             <p id="displayAgentPhone" class="text-xs text-gray-500"></p>
-            <span id="agentStatusBadge" class="inline-block mt-1 text-[10px] px-2 py-0.5 rounded font-bold bg-amber-100 text-amber-800">वेरिफिकेशन पेंडिंग</span>
+            <span class="inline-block mt-1 text-[10px] px-2 py-0.5 rounded font-bold bg-emerald-100 text-emerald-800 border border-emerald-300">
+              <i class="fa-solid fa-circle-check"></i> एक्टिव पार्टनर
+            </span>
           </div>
         </div>
 
         <form id="agentProfileForm" onsubmit="saveAgentProfile(event)" class="space-y-3">
           <div>
             <label class="block text-xs font-bold text-gray-700 mb-1">पूरा नाम *</label>
-            <input type="text" id="profName" required class="w-full border rounded-lg p-2 text-sm">
+            <input type="text" id="profName" required class="w-full border rounded-lg p-2.5 text-sm border-gray-300">
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div>
               <label class="block text-xs font-bold text-gray-700 mb-1">व्हाट्सएप नंबर *</label>
-              <input type="tel" id="profWhatsapp" required class="w-full border rounded-lg p-2 text-sm">
+              <input type="tel" id="profWhatsapp" required class="w-full border rounded-lg p-2.5 text-sm border-gray-300">
             </div>
             <div>
               <label class="block text-xs font-bold text-gray-700 mb-1">ईमेल आईडी</label>
-              <input type="email" id="profEmail" class="w-full border rounded-lg p-2 text-sm">
+              <input type="email" id="profEmail" placeholder="वैकल्पिक" class="w-full border rounded-lg p-2.5 text-sm border-gray-300">
             </div>
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="block text-xs font-bold text-gray-700 mb-1">मुख्य कार्य जिला *</label>
-              <input type="text" id="profDistrict" placeholder="उदा. Palamu" required class="w-full border rounded-lg p-2 text-sm">
+              <label class="block text-xs font-bold text-gray-700 mb-1">मुख्य जिला *</label>
+              <input type="text" id="profDistrict" required class="w-full border rounded-lg p-2.5 text-sm border-gray-300">
             </div>
             <div>
               <label class="block text-xs font-bold text-gray-700 mb-1">ब्लॉक / एरिया *</label>
-              <input type="text" id="profBlock" placeholder="उदा. Hussainabad (Japla)" required class="w-full border rounded-lg p-2 text-sm">
+              <input type="text" id="profBlock" required placeholder="उदा. हुसैनाबाद (जपला)" class="w-full border rounded-lg p-2.5 text-sm border-gray-300">
             </div>
           </div>
           <div>
-            <label class="block text-xs font-bold text-gray-700 mb-1">अनुभव (वर्षों में) / बायो</label>
-            <textarea id="profBio" rows="2" placeholder="उदा. 5 वर्षों से हुसैनाबाद और मेदिनीनगर में प्रॉपर्टी डीलिंग का अनुभव..." class="w-full border rounded-lg p-2 text-sm"></textarea>
+            <label class="block text-xs font-bold text-gray-700 mb-1">अनुभव एवं परिचय (बायो)</label>
+            <textarea id="profBio" rows="2" placeholder="उदा. 5 वर्षों से हुसैनाबाद और मेदिनीनगर में प्रॉपर्टी डीलिंग का अनुभव..." class="w-full border rounded-lg p-2.5 text-sm border-gray-300"></textarea>
           </div>
-          <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-lg text-sm mt-2">
-            प्रोफाइल अपडेट करें
+          <div>
+            <label class="block text-xs font-bold text-gray-700 mb-1">पासवर्ड बदलें</label>
+            <input type="password" id="profPass" placeholder="नया पासवर्ड तभी डालें जब बदलना हो" class="w-full border rounded-lg p-2.5 text-sm border-gray-300">
+          </div>
+          <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-2.5 rounded-lg text-sm mt-2 transition shadow">
+            प्रोफाइल सेव करें
           </button>
         </form>
       </div>
@@ -100,131 +130,137 @@
   </main>
 
   <script>
-    // 1. Firebase कॉन्फ़िगरेशन (index.html वाली कीज यहाँ लगाएँ)
-    const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
+    let currentAgent = null;
 
-    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-
-    let confirmationResultObj = null;
-    let currentAgentUid = null;
-
-    // reCAPTCHA इनिशियलाइज़
-    window.onload = () => {
-      window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', {
-        size: 'invisible'
-      });
-      
-      auth.onAuthStateChanged(user => {
-        if (user) {
-          currentAgentUid = user.uid;
-          showDashboard(user);
-        } else {
-          showLogin();
-        }
-      });
+    // पेज लोड होने पर चेक करें कि पहले से लॉगिन है या नहीं
+    window.onload = function() {
+      const savedAgent = localStorage.getItem('current_jlb_agent');
+      if (savedAgent) {
+        currentAgent = JSON.parse(savedAgent);
+        showDashboard(currentAgent);
+      }
     };
 
-    // OTP भेजना
-    function sendOTP() {
-      const phone = document.getElementById('agentPhone').value.trim();
-      if (phone.length !== 10) return alert('कृपया 10 अंकों का वैध मोबाइल नंबर दर्ज करें!');
-      
-      const fullPhone = "+91" + phone;
-      auth.signInWithPhoneNumber(fullPhone, window.recaptchaVerifier)
-        .then(confirmationResult => {
-          confirmationResultObj = confirmationResult;
-          document.getElementById('phoneStep').classList.add('hidden');
-          document.getElementById('otpStep').classList.remove('hidden');
-          alert('OTP आपके मोबाइल पर भेज दिया गया है!');
-        }).catch(err => {
-          alert('OTP भेजने में त्रुटि: ' + err.message);
-        });
-    }
-
-    // OTP वेरिफाई करना
-    function verifyOTP() {
-      const code = document.getElementById('otpCode').value.trim();
-      if (code.length !== 6) return alert('कृपया 6 अंकों का OTP दर्ज करें!');
-
-      confirmationResultObj.confirm(code)
-        .then(result => {
-          const user = result.user;
-          currentAgentUid = user.uid;
-          showDashboard(user);
-        }).catch(err => {
-          alert('गलत OTP! कृपया पुनः प्रयास करें।');
-        });
-    }
-
-    // डैशबोर्ड और प्रोफाइल लोड करना
-    async function showDashboard(user) {
-      document.getElementById('authSection').classList.add('hidden');
-      document.getElementById('profileSection').classList.remove('hidden');
-      document.getElementById('logoutBtn').classList.remove('hidden');
-      document.getElementById('displayAgentPhone').innerText = user.phoneNumber || '';
-
-      // Firestore से एजेंट डेटा लाना
-      const doc = await db.collection('agents').doc(user.uid).get();
-      if (doc.exists) {
-        const data = doc.data();
-        document.getElementById('profName').value = data.name || '';
-        document.getElementById('displayAgentName').innerText = data.name || 'एजेंट प्रोफाइल';
-        document.getElementById('profWhatsapp').value = data.whatsapp || '';
-        document.getElementById('profEmail').value = data.email || '';
-        document.getElementById('profDistrict').value = data.district || '';
-        document.getElementById('profBlock').value = data.block || '';
-        document.getElementById('profBio').value = data.bio || '';
-        
-        if(data.isVerified) {
-          const badge = document.getElementById('agentStatusBadge');
-          badge.className = "inline-block mt-1 text-[10px] px-2 py-0.5 rounded font-bold bg-emerald-100 text-emerald-800";
-          badge.innerHTML = '<i class="fa-solid fa-circle-check"></i> 100% वेरिफाइड एजेंट';
-        }
+    function switchAuthTab(tab) {
+      if (tab === 'login') {
+        document.getElementById('loginForm').classList.remove('hidden');
+        document.getElementById('signupForm').classList.add('hidden');
+        document.getElementById('tabLoginBtn').className = "w-1/2 py-2 text-sm font-bold text-emerald-700 border-b-2 border-emerald-700";
+        document.getElementById('tabSignupBtn').className = "w-1/2 py-2 text-sm font-bold text-gray-500 hover:text-gray-700";
+      } else {
+        document.getElementById('loginForm').classList.add('hidden');
+        document.getElementById('signupForm').classList.remove('hidden');
+        document.getElementById('tabSignupBtn').className = "w-1/2 py-2 text-sm font-bold text-emerald-700 border-b-2 border-emerald-700";
+        document.getElementById('tabLoginBtn').className = "w-1/2 py-2 text-sm font-bold text-gray-500 hover:text-gray-700";
       }
     }
 
-    // प्रोफाइल सेव करना
-    async function saveAgentProfile(e) {
+    // नया एजेंट साइन-अप
+    function handleSignup(e) {
       e.preventDefault();
-      if (!currentAgentUid) return;
+      const phone = document.getElementById('regPhone').value.trim();
+      const name = document.getElementById('regName').value.trim();
+      const district = document.getElementById('regDistrict').value.trim();
+      const pass = document.getElementById('regPass').value.trim();
 
-      const profileData = {
-        name: document.getElementById('profName').value,
-        whatsapp: document.getElementById('profWhatsapp').value,
-        email: document.getElementById('profEmail').value,
-        district: document.getElementById('profDistrict').value,
-        block: document.getElementById('profBlock').value,
-        bio: document.getElementById('profBio').value,
-        phone: auth.currentUser.phoneNumber,
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      if (phone.length !== 10) return alert('कृपया 10 अंकों का वैध मोबाइल नंबर दर्ज करें!');
+      if (pass.length < 4) return alert('पासवर्ड कम से कम 4 अक्षरों/अंकों का होना चाहिए!');
+
+      let agentsDb = JSON.parse(localStorage.getItem('jlb_agents_db') || '{}');
+      if (agentsDb[phone]) {
+        return alert('यह मोबाइल नंबर पहले से रजिस्टर्ड है! कृपया लॉगिन करें।');
+      }
+
+      const newAgent = {
+        name: name,
+        phone: phone,
+        district: district,
+        whatsapp: phone,
+        block: '',
+        email: '',
+        bio: '',
+        password: pass
       };
 
-      try {
-        await db.collection('agents').doc(currentAgentUid).set(profileData, { merge: true });
-        alert('प्रोफाइल सफलतापूर्वक अपडेट हो गई!');
-        document.getElementById('displayAgentName').innerText = profileData.name;
-      } catch (err) {
-        alert('डेटा सेव करने में त्रुटि: ' + err.message);
-      }
+      agentsDb[phone] = newAgent;
+      localStorage.setItem('jlb_agents_db', JSON.stringify(agentsDb));
+      localStorage.setItem('current_jlb_agent', JSON.stringify(newAgent));
+      
+      currentAgent = newAgent;
+      alert('रजिस्ट्रेशन सफल रहा!');
+      showDashboard(currentAgent);
     }
 
-    function showLogin() {
-      document.getElementById('authSection').classList.remove('hidden');
+    // एजेंट लॉगिन
+    function handleLogin(e) {
+      e.preventDefault();
+      const phone = document.getElementById('loginPhone').value.trim();
+      const pass = document.getElementById('loginPass').value.trim();
+
+      let agentsDb = JSON.parse(localStorage.getItem('jlb_agents_db') || '{}');
+      const agent = agentsDb[phone];
+
+      if (!agent || agent.password !== pass) {
+        return alert('मोबाइल नंबर या पासवर्ड गलत है!');
+      }
+
+      currentAgent = agent;
+      localStorage.setItem('current_jlb_agent', JSON.stringify(agent));
+      showDashboard(currentAgent);
+    }
+
+    // प्रोफाइल डैशबोर्ड दिखाना
+    function showDashboard(agent) {
+      document.getElementById('authCard').classList.add('hidden');
+      document.getElementById('profileSection').classList.remove('hidden');
+      document.getElementById('logoutBtn').classList.remove('hidden');
+
+      document.getElementById('displayAgentName').innerText = agent.name;
+      document.getElementById('displayAgentPhone').innerText = '+91 ' + agent.phone;
+
+      document.getElementById('profName').value = agent.name || '';
+      document.getElementById('profWhatsapp').value = agent.whatsapp || agent.phone || '';
+      document.getElementById('profEmail').value = agent.email || '';
+      document.getElementById('profDistrict').value = agent.district || '';
+      document.getElementById('profBlock').value = agent.block || '';
+      document.getElementById('profBio').value = agent.bio || '';
+    }
+
+    // प्रोफाइल अपडेट करना
+    function saveAgentProfile(e) {
+      e.preventDefault();
+      if (!currentAgent) return;
+
+      let agentsDb = JSON.parse(localStorage.getItem('jlb_agents_db') || '{}');
+      
+      currentAgent.name = document.getElementById('profName').value.trim();
+      currentAgent.whatsapp = document.getElementById('profWhatsapp').value.trim();
+      currentAgent.email = document.getElementById('profEmail').value.trim();
+      currentAgent.district = document.getElementById('profDistrict').value.trim();
+      currentAgent.block = document.getElementById('profBlock').value.trim();
+      currentAgent.bio = document.getElementById('profBio').value.trim();
+
+      const newPass = document.getElementById('profPass').value.trim();
+      if (newPass.length >= 4) {
+        currentAgent.password = newPass;
+      }
+
+      agentsDb[currentAgent.phone] = currentAgent;
+      localStorage.setItem('jlb_agents_db', JSON.stringify(agentsDb));
+      localStorage.setItem('current_jlb_agent', JSON.stringify(currentAgent));
+
+      document.getElementById('displayAgentName').innerText = currentAgent.name;
+      alert('प्रोफाइल सफलतापूर्वक अपडेट हो गई!');
+    }
+
+    // लॉगआउट
+    function logoutAgent() {
+      localStorage.removeItem('current_jlb_agent');
+      currentAgent = null;
+      document.getElementById('authCard').classList.remove('hidden');
       document.getElementById('profileSection').classList.add('hidden');
       document.getElementById('logoutBtn').classList.add('hidden');
-    }
-
-    function logoutAgent() {
-      auth.signOut().then(() => showLogin());
+      document.getElementById('loginForm').reset();
     }
   </script>
 </body>
