@@ -6,8 +6,8 @@
   <title>JAMINDAR LAND BAZAAR - A Professional Land Buying & Selling Platform in Jharkhand</title>
 
   <!-- SEO Meta Tags -->
-  <meta name="description" content="Buy, Sell & Discover Verified Land, CNT Plots, General Plots, Residential & Agricultural land in Jharkhand." />
-  <meta name="keywords" content="Jamindar Land Bazaar, Jharkhand Real Estate, CNT Plot Jharkhand, Buy Land Japla Palamu, Ranchi Plot" />
+  <meta name="description" content="Buy, Sell & Discover Verified Land, CNT Plots, General Plots, Residential & Agricultural land in Jharkhand with Khata & Plot details." />
+  <meta name="keywords" content="Jamindar Land Bazaar, Jharkhand Real Estate, CNT Plot Jharkhand, Khata Plot Japla, Buy Land Japla Palamu, Ranchi Plot" />
 
   <!-- Tailwind CSS & FontAwesome -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -54,7 +54,8 @@
       <span><i class="fa-solid fa-envelope text-amber-400 mr-1.5"></i> santosh26011988@gmail.com</span>
     </div>
     <div class="flex items-center space-x-4">
-      <span class="bg-brand-800 px-2 py-0.5 rounded text-[11px] text-amber-300 font-medium">✓ 100% Direct Seller Platform</span>
+      <a href="javascript:void(0)" onclick="switchView('view-agent-auth')" class="hover:text-amber-300 transition"><i class="fa-solid fa-user-tie text-amber-400 mr-1"></i> Agent Login</a>
+      <span class="text-emerald-700">|</span>
       <a href="javascript:void(0)" onclick="switchView('view-admin-auth')" class="hover:text-amber-300 transition"><i class="fa-solid fa-lock text-amber-400 mr-1"></i> Admin</a>
     </div>
   </div>
@@ -83,8 +84,8 @@
           <a href="javascript:void(0)" onclick="filterAndShowProperties('All')" class="hover:text-amber-300 transition">All Properties</a>
           <a href="javascript:void(0)" onclick="filterAndShowProperties('General')" class="hover:text-amber-300 transition">General Plots</a>
           <a href="javascript:void(0)" onclick="filterAndShowProperties('CNT')" class="hover:text-amber-300 transition">CNT Plots</a>
-          <a href="javascript:void(0)" onclick="filterAndShowProperties('Verified')" class="hover:text-amber-300 transition">Verified</a>
           <a href="javascript:void(0)" onclick="switchView('view-calculator')" class="hover:text-amber-300 transition">Land Calculator</a>
+          <a href="javascript:void(0)" onclick="switchView('view-agent-auth')" class="hover:text-amber-300 transition">Agent Panel</a>
           <a href="javascript:void(0)" onclick="switchView('view-about')" class="hover:text-amber-300 transition">About</a>
           <a href="javascript:void(0)" onclick="switchView('view-contact')" class="hover:text-amber-300 transition">Contact</a>
         </nav>
@@ -96,7 +97,7 @@
           </button>
         </div>
 
-        <!-- Mobile Menu Toggle Button (3-Line Bars) -->
+        <!-- Mobile Menu Toggle Button -->
         <div class="flex items-center sm:hidden">
           <button onclick="toggleMobileMenu()" class="text-emerald-100 hover:text-white p-2 text-xl focus:outline-none">
             <i class="fa-solid fa-bars"></i>
@@ -114,6 +115,7 @@
       <a href="javascript:void(0)" onclick="filterAndShowProperties('CNT')" class="block py-2 text-emerald-100 hover:text-amber-300 border-b border-emerald-800/50">📑 CNT Plots</a>
       <a href="javascript:void(0)" onclick="switchView('view-calculator')" class="block py-2 text-emerald-100 hover:text-amber-300 border-b border-emerald-800/50">📐 Land Calculator</a>
       <a href="javascript:void(0)" onclick="switchView('view-post')" class="block py-2 text-amber-300 font-bold border-b border-emerald-800/50">➕ Post Land Free</a>
+      <a href="javascript:void(0)" onclick="switchView('view-agent-auth')" class="block py-2 text-emerald-100 hover:text-amber-300 border-b border-emerald-800/50">👔 Agent Panel</a>
       <a href="javascript:void(0)" onclick="switchView('view-about')" class="block py-2 text-emerald-100 hover:text-amber-300 border-b border-emerald-800/50">ℹ️ About Us</a>
       <a href="javascript:void(0)" onclick="switchView('view-contact')" class="block py-2 text-emerald-100 hover:text-amber-300 border-b border-emerald-800/50">📞 Contact Us</a>
       <a href="javascript:void(0)" onclick="switchView('view-admin-auth')" class="block py-2 text-emerald-300 hover:text-white">🔒 Admin Panel</a>
@@ -126,18 +128,18 @@
     <section class="relative bg-gradient-to-br from-brand-900 via-brand-800 to-emerald-950 text-white py-16 px-4">
       <div class="max-w-4xl mx-auto text-center space-y-4">
         <span class="bg-amber-500/20 text-amber-300 border border-amber-400/40 text-xs px-3 py-1 rounded-full uppercase tracking-wider font-semibold">
-          झारखंड का अपना विश्वसनीय भूमि मंच
+          खाता व प्लॉट नंबर के साथ सत्यापित ज़मीन
         </span>
         <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">
           खरीदें या बेचें ज़मीन, <span class="text-amber-400">सीधे और सुरक्षित</span>
         </h1>
         <p class="text-emerald-100 text-sm sm:text-base max-w-2xl mx-auto">
-          पलामू, जपला, डालटनगंज, गढ़वा, राँची समेत पूरे झारखंड में प्लॉट, खेती की ज़मीन और कमर्शियल प्रॉपर्टी खोजें या मुफ्त में लिस्ट करें।
+          पलामू, हुसैनाबाद (जपला), डालटनगंज, गढ़वा, राँची समेत पूरे झारखंड में प्लॉट और कृषि भूमि खोजें।
         </p>
 
         <!-- Search Bar -->
         <div class="bg-white p-3 rounded-2xl shadow-2xl max-w-3xl mx-auto flex flex-col md:flex-row gap-2 mt-6 text-gray-800">
-          <input type="text" id="searchInput" placeholder="स्थान, ब्लॉक या ज़िला खोजें (उदा. जपला, पलामू)..." class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-brand-600 text-sm" />
+          <input type="text" id="searchInput" placeholder="स्थान, खाता नं., प्लॉट नं. या ज़िला खोजें..." class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:border-brand-600 text-sm" />
           <select id="searchType" class="px-4 py-3 rounded-xl border border-gray-200 focus:outline-none text-sm bg-gray-50 font-medium text-gray-700">
             <option value="All">सभी किस्में (All)</option>
             <option value="General">General Plot</option>
@@ -169,14 +171,12 @@
       <div class="flex justify-between items-end mb-6">
         <div>
           <h2 class="text-xl sm:text-2xl font-black text-gray-900">ताज़ा ज़मीन लिस्टिंग</h2>
-          <p class="text-xs text-gray-500">सीधे ज़मीन मालिकों द्वारा पोस्ट की गई संपत्तियां</p>
+          <p class="text-xs text-gray-500">खाता और प्लॉट नंबर सहित सत्यापित विवरण</p>
         </div>
         <button onclick="filterAndShowProperties('All')" class="text-xs text-brand-700 font-bold hover:underline">सभी देखें →</button>
       </div>
 
-      <div id="propertyGridHome" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <!-- Dynamically Rendered via JS -->
-      </div>
+      <div id="propertyGridHome" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </section>
   </main>
 
@@ -185,7 +185,7 @@
     <div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b pb-4">
       <div>
         <h2 id="listingPageTitle" class="text-2xl font-black text-gray-900">सभी उपलब्ध ज़मीन</h2>
-        <p class="text-xs text-gray-500">पूरी लिस्टिंग और विवरण देखें</p>
+        <p class="text-xs text-gray-500">पूरी लिस्टिंग, खाता व प्लॉट विवरण</p>
       </div>
       <div class="flex gap-2">
         <button onclick="filterAndShowProperties('All')" class="text-xs px-3 py-1.5 bg-gray-200 rounded-lg font-medium">All</button>
@@ -201,8 +201,8 @@
     <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-gray-100">
       <div class="text-center mb-6">
         <span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-3 py-1 rounded-full uppercase">निःशुल्क विज्ञापन</span>
-        <h2 class="text-2xl font-black text-gray-900 mt-2">अपनी ज़मीन मुफ्त में पोस्ट करें</h2>
-        <p class="text-xs text-gray-500">ज़मीन का सही विवरण भरें ताकि खरीदार आपसे तुरंत संपर्क कर सकें</p>
+        <h2 class="text-2xl font-black text-gray-900 mt-2">अपनी ज़मीन पोस्ट करें</h2>
+        <p class="text-xs text-gray-500">खाता व प्लॉट नंबर के साथ सटीक जानकारी भरें</p>
       </div>
 
       <form id="postPropertyForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
@@ -231,9 +231,22 @@
           </div>
         </div>
 
+        <!-- NEW: KHATA & PLOT NUMBER FIELDS -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-amber-50/60 p-3 rounded-xl border border-amber-200/60">
+          <div>
+            <label class="block text-xs font-bold text-amber-900 mb-1">खाता नंबर (Khata No.) *</label>
+            <input type="text" id="pKhata" required placeholder="उदा. 45" class="w-full text-sm px-3 py-2.5 rounded-lg border border-amber-300 focus:border-brand-600 focus:outline-none bg-white" />
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-amber-900 mb-1">प्लॉट / खसरा नंबर (Plot / Khesra No.) *</label>
+            <input type="text" id="pPlot" required placeholder="उदा. 112, 114" class="w-full text-sm px-3 py-2.5 rounded-lg border border-amber-300 focus:border-brand-600 focus:outline-none bg-white" />
+          </div>
+        </div>
+
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div>
-            <label class="block text-xs font-bold text-gray-700 mb-1">प्रॉपर्टी की श्रेणी (Category) *</label>
+            <label class="block text-xs font-bold text-gray-700 mb-1">प्रॉपर्टी श्रेणी (Category) *</label>
             <select id="pCategory" required class="w-full text-sm px-3 py-2.5 rounded-lg border border-gray-300 focus:border-brand-600 focus:outline-none bg-white">
               <option value="Residential">Residential (आवासीय)</option>
               <option value="Commercial">Commercial (व्यावसायिक)</option>
@@ -269,18 +282,18 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label class="block text-xs font-bold text-gray-700 mb-1">आपका नाम (Seller Name) *</label>
+            <label class="block text-xs font-bold text-gray-700 mb-1">मालिक / एजेंट का नाम (Seller Name) *</label>
             <input type="text" id="pSellerName" required placeholder="उदा. संतोष कुमार" class="w-full text-sm px-3 py-2.5 rounded-lg border border-gray-300 focus:border-brand-600 focus:outline-none" />
           </div>
           <div>
-            <label class="block text-xs font-bold text-gray-700 mb-1">मोबाइल नंबर (WhatsApp No.) *</label>
+            <label class="block text-xs font-bold text-gray-700 mb-1">WhatsApp / Phone Number *</label>
             <input type="tel" id="pSellerPhone" required placeholder="उदा. 9308424700" class="w-full text-sm px-3 py-2.5 rounded-lg border border-gray-300 focus:border-brand-600 focus:outline-none" />
           </div>
         </div>
 
         <div>
           <label class="block text-xs font-bold text-gray-700 mb-1">विस्तृत विवरण (Description)</label>
-          <textarea id="pDesc" rows="3" placeholder="ज़मीन के बारे में अतिरिक्त जानकारी (जैसे बाउंड्री, पानी की सुविधा, कागज़ात आदि)..." class="w-full text-sm px-3 py-2 rounded-lg border border-gray-300 focus:border-brand-600 focus:outline-none"></textarea>
+          <textarea id="pDesc" rows="3" placeholder="ज़मीन के बारे में अतिरिक्त जानकारी (जैसे बाउंड्री, चौहद्दी, पानी, बिजली)..." class="w-full text-sm px-3 py-2 rounded-lg border border-gray-300 focus:border-brand-600 focus:outline-none"></textarea>
         </div>
 
         <button type="submit" class="w-full bg-brand-700 hover:bg-brand-600 text-white font-black py-3.5 rounded-xl shadow-lg transition text-base flex items-center justify-center gap-2">
@@ -294,7 +307,7 @@
   <section id="view-calculator" class="hidden max-w-4xl mx-auto px-4 py-8">
     <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-gray-100">
       <h2 class="text-2xl font-black text-gray-900 text-center mb-2">झारखंड भूमि माप कैलकुलेटर</h2>
-      <p class="text-xs text-gray-500 text-center mb-6">डिसमिल, कट्ठा, बीघा, वर्ग फीट और एकड़ में तुरंत माप बदलें</p>
+      <p class="text-xs text-gray-500 text-center mb-6">डिसमिल, कट्ठा, बीघा, वर्ग फीट और एकड़ में तुरंत रूपांतरण</p>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
         <div>
@@ -328,27 +341,65 @@
     </div>
   </section>
 
-  <!-- ==================== VIEW 5: ABOUT US ==================== -->
+  <!-- ==================== VIEW 5: AGENT AUTH ==================== -->
+  <section id="view-agent-auth" class="hidden max-w-md mx-auto px-4 py-16">
+    <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 text-center">
+      <div class="w-12 h-12 bg-amber-100 text-amber-800 rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
+        <i class="fa-solid fa-user-tie"></i>
+      </div>
+      <h2 class="text-xl font-bold text-gray-900 mb-2">एजेंट / पार्टनर पोर्टल</h2>
+      <p class="text-xs text-gray-500 mb-4">एसोसिएट पिन दर्ज करें (Default: 9999)</p>
+      <input type="password" id="agentPinInput" placeholder="Agent PIN" class="w-full px-4 py-2.5 border rounded-xl mb-3 text-center tracking-widest text-lg focus:outline-none focus:border-brand-600" />
+      <button onclick="verifyAgentPin()" class="w-full bg-amber-600 text-white font-bold py-2.5 rounded-xl hover:bg-amber-500 transition text-sm">एजेंट पैनल खोलें</button>
+    </div>
+  </section>
+
+  <!-- ==================== VIEW 6: AGENT DASHBOARD ==================== -->
+  <section id="view-agent-dashboard" class="hidden max-w-5xl mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-6">
+      <div>
+        <h2 class="text-2xl font-black text-gray-900">Agent & Partner Panel</h2>
+        <p class="text-xs text-gray-500">सभी खाता व प्लॉट नंबर की त्वरित सूची</p>
+      </div>
+      <button onclick="switchView('view-post')" class="bg-brand-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold">+ New Listing</button>
+    </div>
+    <div class="overflow-x-auto bg-white rounded-2xl shadow border border-gray-100">
+      <table class="w-full text-left text-xs text-gray-700">
+        <thead class="bg-gray-100 uppercase text-gray-600">
+          <tr>
+            <th class="p-3">ID & Title</th>
+            <th class="p-3">Khata / Plot</th>
+            <th class="p-3">Location</th>
+            <th class="p-3">Price & Area</th>
+            <th class="p-3">Contact</th>
+          </tr>
+        </thead>
+        <tbody id="agentTableBody" class="divide-y divide-gray-100"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ==================== VIEW 7: ABOUT US ==================== -->
   <section id="view-about" class="hidden max-w-4xl mx-auto px-4 py-8">
     <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-gray-100 space-y-4">
       <h2 class="text-2xl font-black text-gray-900">About JAMINDAR LAND BAZAAR</h2>
       <p class="text-sm text-gray-600 leading-relaxed">
-        <strong>JAMINDAR LAND BAZAAR</strong> झारखंड का प्रमुख डिजिटल रियल एस्टेट और भूमि सूचना मंच है। हमारा उद्देश्य पलामू (जपला, डालटनगंज), गढ़वा, राँची और आसपास के क्षेत्रों में ज़मीन के खरीदारों और वास्तविक मालिकों (Direct Sellers) को एक पारदर्शी, सुरक्षित और बिचौलिया-मुक्त मंच प्रदान करना है।
+        <strong>JAMINDAR LAND BAZAAR</strong> झारखंड का प्रमुख डिजिटल रियल एस्टेट और भूमि सूचना मंच है। हमारा उद्देश्य पलामू (जपला, डालटनगंज), गढ़वा, राँची और आसपास के क्षेत्रों में ज़मीन के खरीदारों और वास्तविक मालिकों को खाता व प्लॉट नंबर के साथ पारदर्शी जानकारी प्रदान करना है।
       </p>
       <div class="bg-amber-50 p-4 rounded-xl border border-amber-200 text-xs text-amber-900">
-        <strong>कानूनी सूचना:</strong> कृपया किसी भी भूमि सौदे से पहले संबंधित अंचल कार्यालय / निबंधन विभाग से मूल दस्तावेजों (खतियान, शुद्धि पत्र, रसीद) की जाँच अवश्य करें।
+        <strong>कानूनी सूचना:</strong> किसी भी भूमि सौदे से पूर्व संबंधित अंचल कार्यालय / Jharbhoomi पोर्टल से खाता, प्लॉट और रसीद की आधिकारिक जांच अवश्य कर लें।
       </div>
     </div>
   </section>
 
-  <!-- ==================== VIEW 6: CONTACT US ==================== -->
+  <!-- ==================== VIEW 8: CONTACT US ==================== -->
   <section id="view-contact" class="hidden max-w-3xl mx-auto px-4 py-8">
     <div class="bg-white p-6 sm:p-8 rounded-2xl shadow-xl border border-gray-100">
       <h2 class="text-2xl font-black text-gray-900 mb-4 text-center">संपर्क करें (Contact Us)</h2>
       <div class="space-y-4 text-sm text-gray-700">
         <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
           <i class="fa-solid fa-location-dot text-brand-700 text-lg"></i>
-          <div><strong>कार्यालय:</strong> जपला (हुसैनाबाद), पलामू, झारखंड - 822116</div>
+          <div><strong>कार्यालय:</strong> हुसैनाबाद (जपला), पलामू, झारखंड - 822116</div>
         </div>
         <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-xl">
           <i class="fa-solid fa-phone text-brand-700 text-lg"></i>
@@ -362,20 +413,20 @@
     </div>
   </section>
 
-  <!-- ==================== VIEW 7: ADMIN AUTH ==================== -->
+  <!-- ==================== VIEW 9: ADMIN AUTH ==================== -->
   <section id="view-admin-auth" class="hidden max-w-md mx-auto px-4 py-16">
     <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 text-center">
       <div class="w-12 h-12 bg-emerald-100 text-brand-800 rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
         <i class="fa-solid fa-lock"></i>
       </div>
       <h2 class="text-xl font-bold text-gray-900 mb-2">एडमिन लॉगिन</h2>
-      <p class="text-xs text-gray-500 mb-4">प्रॉपर्टी प्रबंधित करने के लिए 4-अंकों का पिन दर्ज करें</p>
-      <input type="password" id="adminPinInput" placeholder="Enter PIN (Default: 1234)" class="w-full px-4 py-2.5 border rounded-xl mb-3 text-center tracking-widest text-lg focus:outline-none focus:border-brand-600" />
+      <p class="text-xs text-gray-500 mb-4">प्रॉपर्टी प्रबंधित करने के लिए पिन दर्ज करें (Default: 1234)</p>
+      <input type="password" id="adminPinInput" placeholder="Admin PIN" class="w-full px-4 py-2.5 border rounded-xl mb-3 text-center tracking-widest text-lg focus:outline-none focus:border-brand-600" />
       <button onclick="verifyAdminPin()" class="w-full bg-brand-800 text-white font-bold py-2.5 rounded-xl hover:bg-brand-700 transition text-sm">प्रवेश करें</button>
     </div>
   </section>
 
-  <!-- ==================== VIEW 8: ADMIN DASHBOARD ==================== -->
+  <!-- ==================== VIEW 10: ADMIN DASHBOARD ==================== -->
   <section id="view-admin-dashboard" class="hidden max-w-6xl mx-auto px-4 py-8">
     <div class="flex justify-between items-center mb-6">
       <h2 class="text-2xl font-black text-gray-900">Admin Management Panel</h2>
@@ -386,6 +437,7 @@
         <thead class="bg-gray-100 uppercase text-gray-600">
           <tr>
             <th class="p-3">ID & Title</th>
+            <th class="p-3">Khata / Plot</th>
             <th class="p-3">Location</th>
             <th class="p-3">Type</th>
             <th class="p-3">Price & Area</th>
@@ -393,9 +445,7 @@
             <th class="p-3 text-right">Action</th>
           </tr>
         </thead>
-        <tbody id="adminTableBody" class="divide-y divide-gray-100">
-          <!-- Dynamically Rendered via JS -->
-        </tbody>
+        <tbody id="adminTableBody" class="divide-y divide-gray-100"></tbody>
       </table>
     </div>
   </section>
@@ -421,7 +471,7 @@
         </ul>
       </div>
       <div>
-        <h4 class="text-white font-bold uppercase text-[11px] tracking-wider mb-3">Jharkhand Districts</h4>
+        <h4 class="text-white font-bold uppercase text-[11px] tracking-wider mb-3">Jharkhand Focus</h4>
         <ul class="space-y-1.5 text-[11px]">
           <li><a href="javascript:void(0)" onclick="quickDistrictSearch('Palamu')" class="hover:text-amber-300">Palamu (जपला / मेदिनीनगर)</a></li>
           <li><a href="javascript:void(0)" onclick="quickDistrictSearch('Garhwa')" class="hover:text-amber-300">Garhwa (गढ़वा)</a></li>
@@ -429,8 +479,9 @@
         </ul>
       </div>
       <div>
-        <h4 class="text-white font-bold uppercase text-[11px] tracking-wider mb-3">Legal & Support</h4>
+        <h4 class="text-white font-bold uppercase text-[11px] tracking-wider mb-3">Panels & Support</h4>
         <ul class="space-y-1.5 text-[11px]">
+          <li><a href="javascript:void(0)" onclick="switchView('view-agent-auth')" class="hover:text-amber-300">Agent Portal</a></li>
           <li><a href="javascript:void(0)" onclick="switchView('view-about')" class="hover:text-amber-300">About Platform</a></li>
           <li><a href="javascript:void(0)" onclick="switchView('view-contact')" class="hover:text-amber-300">Help & Support</a></li>
         </ul>
@@ -461,15 +512,16 @@
       <i class="fa-solid fa-calculator text-sm mb-0.5"></i>
       <span class="text-[10px]">Calc</span>
     </button>
-    <button onclick="switchView('view-contact')" class="flex flex-col items-center hover:text-amber-400">
-      <i class="fa-solid fa-phone text-sm mb-0.5"></i>
-      <span class="text-[10px]">Contact</span>
+    <button onclick="switchView('view-agent-auth')" class="flex flex-col items-center hover:text-amber-400">
+      <i class="fa-solid fa-user-tie text-sm mb-0.5"></i>
+      <span class="text-[10px]">Agent</span>
     </button>
   </div>
 
   <!-- ==================== JAVASCRIPT LOGIC ENGINE ==================== -->
   <script>
     const ADMIN_PIN = "1234";
+    const AGENT_PIN = "9999";
 
     // 1. MOBILE MENU TOGGLE
     function toggleMobileMenu() {
@@ -488,6 +540,8 @@
         'view-calculator', 
         'view-about', 
         'view-contact', 
+        'view-agent-auth',
+        'view-agent-dashboard',
         'view-admin-auth', 
         'view-admin-dashboard'
       ];
@@ -516,6 +570,8 @@
         title: "Prime Residential Plot near Deori Road",
         category: "Residential",
         classType: "General",
+        khata: "42",
+        plot: "108",
         area: "5.0 Decimal",
         areaVal: 5,
         price: "₹ 8,50,000",
@@ -536,6 +592,8 @@
         title: "Commercial Highway Land on Japla-Daltonganj Road",
         category: "Commercial",
         classType: "General",
+        khata: "115",
+        plot: "320",
         area: "12.0 Decimal",
         areaVal: 12,
         price: "₹ 24,00,000",
@@ -556,6 +614,8 @@
         title: "Fertile Agricultural Land with Boring Facility",
         category: "Agricultural",
         classType: "General",
+        khata: "78",
+        plot: "512",
         area: "50.0 Decimal",
         areaVal: 50,
         price: "₹ 15,00,000",
@@ -576,7 +636,7 @@
     const savedProps = localStorage.getItem('jlb_saved_properties');
     let properties = savedProps ? JSON.parse(savedProps) : defaultProps;
 
-    // 4. CARD HTML BUILDER
+    // 4. CARD HTML BUILDER (Includes Khata & Plot Badge)
     function buildCard(p) {
       return `
         <div class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition border border-gray-100 flex flex-col justify-between">
@@ -593,6 +653,13 @@
                 <i class="fa-solid fa-location-dot"></i> ${p.block}, ${p.district}
               </div>
               <h3 class="font-bold text-gray-900 text-base leading-snug mb-2">${p.title}</h3>
+              
+              <!-- KHATA & PLOT BADGE -->
+              <div class="flex gap-2 my-2 text-[11px]">
+                <span class="bg-amber-100 text-amber-900 font-semibold px-2 py-0.5 rounded">खाता: <strong>${p.khata || 'N/A'}</strong></span>
+                <span class="bg-emerald-100 text-emerald-900 font-semibold px-2 py-0.5 rounded">प्लॉट: <strong>${p.plot || 'N/A'}</strong></span>
+              </div>
+
               <p class="text-xs text-gray-500 line-clamp-2 mb-4">${p.description}</p>
             </div>
             <div>
@@ -606,8 +673,8 @@
                   <div class="text-sm font-black text-emerald-700">${p.price}</div>
                 </div>
               </div>
-              <a href="https://wa.me/91${p.sellerPhone}?text=${encodeURIComponent('नमस्ते, मुझे आपकी ज़मीन लिस्टिंग (' + p.id + ' - ' + p.title + ') में रुचि है। कृपया विवरण दें।')}" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl transition text-xs flex items-center justify-center gap-2 shadow">
-                <i class="fa-brands fa-whatsapp text-sm"></i> मालिक से WhatsApp पर बात करें
+              <a href="https://wa.me/91${p.sellerPhone}?text=${encodeURIComponent('नमस्ते, मुझे आपकी ज़मीन (खाता: ' + (p.khata||'') + ', प्लॉट: ' + (p.plot||'') + ' - ' + p.title + ') में रुचि है। कृपया विवरण दें।')}" target="_blank" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl transition text-xs flex items-center justify-center gap-2 shadow">
+                <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp पर बात करें
               </a>
             </div>
           </div>
@@ -655,6 +722,8 @@
           p.title.toLowerCase().includes(query) ||
           p.district.toLowerCase().includes(query) ||
           p.block.toLowerCase().includes(query) ||
+          (p.khata && p.khata.toString().includes(query)) ||
+          (p.plot && p.plot.toString().includes(query)) ||
           p.description.toLowerCase().includes(query);
         const matchesType = (type === 'All') || (p.classType === type) || (p.category === type);
         return matchesQuery && matchesType;
@@ -666,7 +735,7 @@
       renderGrids(filtered);
     }
 
-    // 7. HANDLE PROPERTY SUBMISSION
+    // 7. HANDLE PROPERTY SUBMISSION (Captures Khata & Plot)
     function handleFormSubmit(e) {
       e.preventDefault();
       const newProp = {
@@ -674,6 +743,8 @@
         title: document.getElementById('pTitle').value,
         category: document.getElementById('pCategory').value,
         classType: document.getElementById('pClassType').value,
+        khata: document.getElementById('pKhata').value,
+        plot: document.getElementById('pPlot').value,
         area: document.getElementById('pArea').value + " Decimal",
         areaVal: parseFloat(document.getElementById('pArea').value) || 0,
         price: "₹ " + Number(document.getElementById('pPrice').value).toLocaleString('en-IN'),
@@ -693,7 +764,7 @@
       properties.unshift(newProp);
       localStorage.setItem('jlb_saved_properties', JSON.stringify(properties));
       renderGrids();
-      alert(`सफलतापूर्वक सबमिट हुआ! आपकी प्रॉपर्टी ID है: ${newProp.id}`);
+      alert(`सफलतापूर्वक सबमिट हुआ!\nप्रॉपर्टी ID: ${newProp.id}\nखाता: ${newProp.khata}, प्लॉट: ${newProp.plot}`);
       document.getElementById('postPropertyForm').reset();
       switchView('view-listings');
     }
@@ -718,14 +789,39 @@
       document.getElementById('resSqYards').innerText = (sq / 9).toFixed(1);
     }
 
-    // 9. ADMIN FUNCTIONS
+    // 9. AGENT PORTAL LOGIC
+    function verifyAgentPin() {
+      const pin = document.getElementById('agentPinInput').value;
+      if (pin === AGENT_PIN) {
+        switchView('view-agent-dashboard');
+        renderAgentTable();
+      } else {
+        alert('गलत एजेंट पिन! कृपया सही पिन दर्ज करें।');
+      }
+    }
+
+    function renderAgentTable() {
+      const tbody = document.getElementById('agentTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = properties.map(p => `
+        <tr class="hover:bg-gray-50">
+          <td class="p-3 font-bold">${p.id}<div class="text-[11px] text-gray-500 font-normal">${p.title}</div></td>
+          <td class="p-3"><span class="bg-amber-100 text-amber-900 px-1.5 py-0.5 rounded font-bold">ख: ${p.khata||'-'}</span> / <span class="bg-emerald-100 text-emerald-900 px-1.5 py-0.5 rounded font-bold">प्लॉट: ${p.plot||'-'}</span></td>
+          <td class="p-3">${p.block}, ${p.district}</td>
+          <td class="p-3 font-bold text-emerald-700">${p.price}<div class="text-[11px] text-gray-500">${p.area}</div></td>
+          <td class="p-3">${p.sellerName}<br><a href="tel:${p.sellerPhone}" class="text-blue-600 font-bold">${p.sellerPhone}</a></td>
+        </tr>
+      `).join('');
+    }
+
+    // 10. ADMIN LOGIC
     function verifyAdminPin() {
       const pin = document.getElementById('adminPinInput').value;
       if (pin === ADMIN_PIN) {
         switchView('view-admin-dashboard');
         renderAdminTable();
       } else {
-        alert('गलत पासवर्ड! कृपया सही एडमिन पासवर्ड दर्ज करें।');
+        alert('गलत एडमिन पासवर्ड! कृपया सही पिन दर्ज करें।');
       }
     }
 
@@ -734,7 +830,8 @@
       if (!tbody) return;
       tbody.innerHTML = properties.map(p => `
         <tr class="hover:bg-gray-50">
-          <td class="p-3"><span class="font-bold">${p.id}</span> - ${p.title}</td>
+          <td class="p-3"><span class="font-bold">${p.id}</span><div class="text-gray-500">${p.title}</div></td>
+          <td class="p-3">ख: ${p.khata||'-'} / प्ल: ${p.plot||'-'}</td>
           <td class="p-3">${p.block}, ${p.district}</td>
           <td class="p-3"><span class="px-2 py-0.5 rounded bg-amber-100 text-amber-900">${p.classType}</span></td>
           <td class="p-3">${p.price} (${p.area})</td>
@@ -752,10 +849,11 @@
         localStorage.setItem('jlb_saved_properties', JSON.stringify(properties));
         renderGrids();
         renderAdminTable();
+        renderAgentTable();
       }
     }
 
-    // 10. INITIAL RUN
+    // 11. INITIAL LOAD
     window.addEventListener('DOMContentLoaded', () => {
       renderGrids();
     });
