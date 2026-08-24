@@ -879,8 +879,9 @@
   <!-- ================================================================= -->
   <script>
     // 1. MASTER PROPERTY DATABASE (Sample Demo Listings for Jharkhand)
-    let properties = [
-      {
+        const savedProps = localStorage.getItem('jlb_saved_properties');
+    let properties = savedProps ? JSON.parse(savedProps) : [
+
         id: "JLB-PAL-0001",
         title: "Prime Residential Plot near Deori Road",
         category: "Residential",
@@ -1253,7 +1254,10 @@
         });
     } else {
       properties.unshift(newProp);
-      renderGrids();
+localStorage.setItem('jlb_saved_properties', JSON.stringify(properties));
+renderGrids();
+
+  
       alert(`सफलतापूर्वक सबमिट हुआ! आपकी प्रॉपर्टी ID है: ${newProp.id}`);
       document.getElementById('postPropertyForm').reset();
       switchView('view-listings');
