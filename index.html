@@ -879,6 +879,43 @@
   <!-- JAVASCRIPT LOGIC ENGINE -->
   <!-- ================================================================= -->
   <script>
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  if (menu) {
+    menu.classList.toggle('hidden');
+  }
+}
+
+function switchView(viewId) {
+  const views = [
+    'view-home', 
+    'view-listings', 
+    'view-post', 
+    'view-calculator', 
+    'view-about', 
+    'view-contact', 
+    'view-legal', 
+    'view-admin-auth', 
+    'view-admin-dashboard'
+  ];
+  views.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('hidden');
+  });
+  
+  const target = document.getElementById(viewId);
+  if (target) {
+    target.classList.remove('hidden');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  const menu = document.getElementById('mobileMenu');
+  if (menu && !menu.classList.contains('hidden')) {
+    menu.classList.add('hidden');
+  }
+}
+
+
     // 1. MASTER PROPERTY DATABASE (Sample Demo Listings for Jharkhand)
         const savedProps = localStorage.getItem('jlb_saved_properties');
     let properties = savedProps ? JSON.parse(savedProps) : [
