@@ -74,70 +74,72 @@
     loadAdminProperties(status);
   }
 
-  async function loadAdminProperties(statusFilter) {
-    const tbody = document.getElementById('adminPropertyRows');
-    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;">डेटा लोड हो रहा है...</td></tr>';
+      function loadAdminProperties(statusFilter) {
+      const tbody = document.getElementById('adminPropertyRows');
+      const savedProps = localStorage.getItem('jlb_saved_properties');
+      const properties = savedProps ? JSON.parse(savedProps) : [];
 
-    try {
-      let query = db.collection("properties");
-      if (statusFilter !== 'all') {
-        query = query.where("status", "==", statusFilter);
-      }
+      if (!tbody) return;
 
-      const snapshot = await query.get();
-      if (snapshot.empty) {
-        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;">कोई रिकॉर्ड नहीं मिला।</td></tr>';
+      if (properties.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;">कोई रिकॉर्ड नहीं मिला</td></tr>';
         return;
       }
 
-      let rowsHTML = '';
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        const docId = doc.id;
-        const badgeColor = data.status === 'approved' ? '#2e7d32' : data.status === 'rejected' ? '#c62828' : '#e65100';
+      let filtered = properties;
+      if (statusFilter !== 'all') {
+        filtered = properties.filter(p => (p.status || 'pending') === statusFilter);
+      }
 
-        rowsHTML += `
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;">इस केटेगरी में कोई रिकॉर्ड नहीं है</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(p => {
+        const status = p.status || 'pending';
+        const badgeColor = status === 'approved' ? '#2e7d32' : status === 'rejected' ? '#c62828' : '#e65100';
+
+        return `
           <tr>
-            <td><strong>${data.propertyId || docId}</strong></td>
-            <td>${data.sellerName || '-'}<br><small>${data.sellerPhone || '-'}</small></td>
-            <td>${data.district || '-'}<br><small>${data.village || ''}</small></td>
-                        <td>
-              <strong>खाता:</strong> ${data.khataNo || '-'}<br>
-              <small><strong>प्लॉट:</strong> ${data.plotNo || '-'}</small>
-            </td>
-
-            <td>${data.propertyType || '-'}<br><small>${data.landCategory || ''}</small></td>
-            <td>${data.area || '-'} ${data.areaUnit || ''}<br><strong>₹${Number(data.price || 0).toLocaleString('en-IN')}</strong></td>
-            <td><span style="color:${badgeColor}; font-weight:bold; text-transform:uppercase;">${data.status}</span></td>
+            <td><strong>${p.id}</strong></td>
+            <td>${p.sellerName || '-'}<br><small>${p.sellerPhone || '-'}</small></td>
+            <td>${p.district || '-'}<br><small>${p.village || p.block || '-'}</small></td>
             <td>
-              ${data.status !== 'approved' ? `<button class="btn-approve" onclick="updateStatus('${docId}', 'approved')">Approve</button>` : ''}
-              ${data.status !== 'rejected' ? `<button class="btn-reject" onclick="updateStatus('${docId}', 'rejected')">Reject</button>` : ''}
+              <strong>खाता:</strong> ${p.khataNo || '-'}<br>
+              <small><strong>प्लॉट:</strong> ${p.plotNo || '-'}</small>
+            </td>
+            <td>${p.category || '-'}<br><small>${p.classType || '-'}</small></td>
+            <td>${p.area || '-'}<br><strong>₹${Number(p.priceVal || 0).toLocaleString('en-IN')}</strong></td>
+            <td><span style="color:${badgeColor}; font-weight:bold; text-transform:uppercase;">${status}</span></td>
+            <td>
+              <button class="btn-approve" onclick="updateLocalStatus('${p.id}', 'approved')">Approve</button>
+              <button class="btn-reject" onclick="updateLocalStatus('${p.id}', 'rejected')">Reject</button>
             </td>
           </tr>
         `;
-      });
-      tbody.innerHTML = rowsHTML;
-    } catch (error) {
-      console.error("Admin Load Error:", error);
-      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; color:red;">डेटा लोड करने में त्रुटि आई।</td></tr>';
+      }).join('');
     }
-  }
 
-  async function updateStatus(docId, newStatus) {
-    if (!confirm(`क्या आप ${docId} को ${newStatus.toUpperCase()} करना चाहते हैं?`)) return;
+    function updateLocalStatus(id, newStatus) {
+      if (!confirm(`क्या आप वाकई प्रॉपर्टी ${id} को ${newStatus.toUpperCase()} करना चाहते हैं?`)) return;
 
-    try {
-      await db.collection("properties").doc(docId).update({
-        status: newStatus,
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      let savedProps = localStorage.getItem('jlb_saved_properties');
+      let properties = savedProps ? JSON.parse(savedProps) : [];
+
+      properties = properties.map(p => {
+        if (p.id === id) {
+          p.status = newStatus;
+        }
+        return p;
       });
+
+            localStorage.setItem('jlb_saved_properties', JSON.stringify(properties));
+
       alert(`प्रॉपर्टी को सफलतापूर्वक ${newStatus} कर दिया गया!`);
       loadAdminProperties(currentTab);
-    } catch (error) {
-      console.error("Status Update Error:", error);
-      alert("अपडेट विफल रहा।");
     }
-  }
+
 </script>
 </body>
 </html>
