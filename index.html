@@ -1,1108 +1,798 @@
 <!DOCTYPE html>
-<html lang="hi" class="scroll-smooth">
+<html lang="hi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="JAMINDAR LAND BAZAAR - झारखंड का विश्वसनीय डिजिटल भूमि बाजार। खाता, प्लॉट, रकबा और सत्यापित जमीन की जानकारी।" />
-  <meta name="theme-color" content="#064e3b" />
-  <title>JAMINDAR LAND BAZAAR | झारखंड का विश्वसनीय डिजिटल भूमि बाजार</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="JAMINDAR LAND BAZAAR - Jharkhand Land Buying & Selling Platform">
+<title>JAMINDAR LAND BAZAAR | Jharkhand Land Marketplace</title>
 
-  <!-- Tailwind CSS & FontAwesome -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
-  <style>
-    body { font-family: 'Plus Jakarta Sans', sans-serif; }
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    .hero-gradient { background: linear-gradient(135deg, #064e3b 0%, #047857 50%, #0f766e 100%); }
-    .card-shadow { box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05); }
-    .gold-badge { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
-  </style>
+<style>
+*{box-sizing:border-box}
+body{font-family:"Noto Sans Devanagari",sans-serif;background:#f8fafc;color:#0f172a}
+.hidden-view{display:none!important}
+.card{background:#fff;border:1px solid #e2e8f0;border-radius:18px;box-shadow:0 5px 20px rgba(15,23,42,.06)}
+.btn{border-radius:10px;padding:.65rem 1rem;font-weight:700;transition:.2s}
+.btn:hover{transform:translateY(-1px)}
+input,select,textarea{outline:none}
+input:focus,select:focus,textarea:focus{box-shadow:0 0 0 3px rgba(5,150,105,.14);border-color:#059669}
+.badge{display:inline-flex;align-items:center;border-radius:999px;padding:.22rem .65rem;font-size:.72rem;font-weight:800}
+.modal{background:rgba(15,23,42,.65);backdrop-filter:blur(5px)}
+</style>
 </head>
 
-<body class="bg-[#f8fafc] text-slate-800 antialiased pb-24 md:pb-0 select-none">
+<body>
 
 <!-- TOP BAR -->
-<div class="bg-[#022c22] text-emerald-200 text-xs py-2 px-4 hidden md:block border-b border-emerald-900/60">
-  <div class="max-w-7xl mx-auto flex justify-between items-center">
-    <div class="flex items-center gap-6">
-      <span><i class="fa-solid fa-shield-halved text-amber-400 mr-1.5"></i> सत्यापित खाता व प्लॉट विवरण</span>
-      <span><i class="fa-solid fa-phone text-amber-400 mr-1.5"></i> +91 9308424700</span>
-      <span><i class="fa-solid fa-location-dot text-amber-400 mr-1.5"></i> जपला, पलामू, झारखंड</span>
+<div class="bg-slate-950 text-white text-sm">
+  <div class="max-w-7xl mx-auto px-4 py-2 flex flex-wrap gap-3 justify-between">
+    <div class="flex flex-wrap gap-4">
+      <span><i class="fa-solid fa-phone text-amber-400 mr-1"></i> +91 9308424700</span>
+      <span><i class="fa-solid fa-location-dot text-amber-400 mr-1"></i> जपला, पलामू, झारखंड</span>
     </div>
-    <div class="flex items-center gap-4 font-semibold">
-      <button onclick="switchView('view-agent-auth')" class="text-emerald-300 hover:text-amber-400 transition">
-        <i class="fa-solid fa-user-tie mr-1"></i> एजेंट पैनल
-      </button>
-      <span class="text-emerald-800">|</span>
-      <button onclick="switchView('view-admin-auth')" class="text-emerald-300 hover:text-amber-400 transition">
-        <i class="fa-solid fa-lock mr-1"></i> एडमिन पैनल
-      </button>
+    <div class="flex gap-3">
+      <button onclick="showView('adminLogin')" class="hover:text-amber-300"><i class="fa-solid fa-lock mr-1"></i> Admin</button>
+      <button onclick="showView('agentLogin')" class="hover:text-amber-300"><i class="fa-solid fa-user-tie mr-1"></i> Agent</button>
     </div>
   </div>
 </div>
 
-<!-- NAVBAR -->
-<header class="sticky top-0 z-40 bg-[#064e3b] text-white shadow-md border-b border-emerald-800">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-16">
-      <button onclick="switchView('view-home')" class="flex items-center gap-3 text-left focus:outline-none">
-        <div class="w-10 h-10 rounded-xl gold-badge flex items-center justify-center text-slate-950 font-black text-xl shadow-lg">J</div>
-        <div>
-          <div class="font-extrabold text-base md:text-xl tracking-tight leading-tight">
-            JAMINDAR <span class="text-amber-400">LAND BAZAAR</span>
-          </div>
-          <p class="text-[10px] text-emerald-300 tracking-wider font-semibold">झारखंड का विश्वसनीय डिजिटल भूमि बाज़ार</p>
-        </div>
-      </button>
-
-      <nav class="hidden md:flex items-center gap-5 text-sm font-semibold">
-        <button onclick="switchView('view-home')" class="hover:text-amber-300 transition">मुख्य पृष्ठ</button>
-        <button onclick="filterAndShowProperties('All')" class="hover:text-amber-300 transition">सभी ज़मीन</button>
-        <button onclick="filterAndShowProperties('General')" class="hover:text-amber-300 transition">General प्लॉट</button>
-        <button onclick="filterAndShowProperties('CNT')" class="hover:text-amber-300 transition">CNT प्लॉट</button>
-        <button onclick="switchView('view-calculator')" class="hover:text-amber-300 transition">भूमि कैलकुलेटर</button>
-        <button onclick="switchView('view-contact')" class="hover:text-amber-300 transition">संपर्क</button>
-      </nav>
-
-      <div class="hidden sm:flex items-center">
-        <button onclick="switchView('view-post')" class="gold-badge hover:brightness-110 text-slate-950 font-extrabold px-4 py-2 rounded-xl text-xs shadow-md transition">
-          <i class="fa-solid fa-plus-circle mr-1"></i> मुफ़्त विज्ञापन
-        </button>
-      </div>
-
-      <button onclick="toggleMobileMenu()" class="md:hidden text-emerald-100 p-2 text-xl focus:outline-none">
-        <i class="fa-solid fa-bars"></i>
-      </button>
-    </div>
+<!-- NAV -->
+<header class="sticky top-0 z-40 bg-emerald-800 text-white shadow-lg">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+    <button onclick="showView('home')" class="text-left">
+      <div class="font-extrabold text-xl">JAMINDAR <span class="text-amber-300">LAND BAZAAR</span></div>
+      <div class="text-[11px] text-emerald-100">प्रामाणिक भूमि खरीद-बिक्री प्लेटफॉर्म</div>
+    </button>
+    <nav class="hidden md:flex items-center gap-2">
+      <button onclick="showView('home')" class="btn hover:bg-emerald-700">मुख्य पृष्ठ</button>
+      <button onclick="showListings('All')" class="btn hover:bg-emerald-700">सभी जमीन</button>
+      <button onclick="showListings('General')" class="btn hover:bg-emerald-700">General Plot</button>
+      <button onclick="showListings('CNT')" class="btn hover:bg-emerald-700">CNT Plot</button>
+      <button onclick="showView('post')" class="btn bg-amber-400 text-slate-900">जमीन बेचें</button>
+      <button onclick="showView('calculator')" class="btn hover:bg-emerald-700">कैलकुलेटर</button>
+      <button id="navLogout" onclick="logout()" class="btn bg-red-600 hover:bg-red-700 hidden">Logout</button>
+    </nav>
+    <button onclick="toggleMenu()" class="md:hidden text-2xl"><i class="fa-solid fa-bars"></i></button>
   </div>
-
-  <div id="mobileMenu" class="hidden md:hidden bg-[#043327] border-t border-emerald-900 px-4 py-3 space-y-2 text-sm font-semibold">
-    <button onclick="switchView('view-home')" class="block w-full text-left py-2 text-emerald-100 border-b border-emerald-800/40">🏠 मुख्य पृष्ठ</button>
-    <button onclick="filterAndShowProperties('All')" class="block w-full text-left py-2 text-emerald-100 border-b border-emerald-800/40">📋 सभी उपलब्ध ज़मीन</button>
-    <button onclick="filterAndShowProperties('General')" class="block w-full text-left py-2 text-emerald-100 border-b border-emerald-800/40">🏷️ General प्लॉट</button>
-    <button onclick="filterAndShowProperties('CNT')" class="block w-full text-left py-2 text-emerald-100 border-b border-emerald-800/40">📑 CNT प्लॉट</button>
-    <button onclick="switchView('view-calculator')" class="block w-full text-left py-2 text-emerald-100 border-b border-emerald-800/40">📐 भूमि कैलकुलेटर</button>
-    <button onclick="switchView('view-post')" class="block w-full text-left py-2 text-amber-300 border-b border-emerald-800/40">➕ जमीन पोस्ट करें</button>
-    <button onclick="switchView('view-agent-auth')" class="block w-full text-left py-2 text-emerald-100 border-b border-emerald-800/40">👔 एजेंट पैनल</button>
-    <button onclick="switchView('view-contact')" class="block w-full text-left py-2 text-emerald-100 border-b border-emerald-800/40">📞 संपर्क</button>
-    <button onclick="switchView('view-admin-auth')" class="block w-full text-left py-2 text-amber-400">🔒 एडमिन लॉगिन</button>
+  <div id="mobileMenu" class="hidden md:hidden px-4 pb-4 space-y-1">
+    <button onclick="showView('home');toggleMenu()" class="w-full text-left p-3 rounded-lg hover:bg-emerald-700">मुख्य पृष्ठ</button>
+    <button onclick="showListings('All');toggleMenu()" class="w-full text-left p-3 rounded-lg hover:bg-emerald-700">सभी जमीन</button>
+    <button onclick="showListings('General');toggleMenu()" class="w-full text-left p-3 rounded-lg hover:bg-emerald-700">General Plot</button>
+    <button onclick="showListings('CNT');toggleMenu()" class="w-full text-left p-3 rounded-lg hover:bg-emerald-700">CNT Plot</button>
+    <button onclick="showView('post');toggleMenu()" class="w-full text-left p-3 rounded-lg bg-amber-400 text-slate-900">जमीन बेचें</button>
+    <button onclick="showView('calculator');toggleMenu()" class="w-full text-left p-3 rounded-lg hover:bg-emerald-700">कैलकुलेटर</button>
   </div>
 </header>
 
-<!-- ==================== VIEW 1: HOME ==================== -->
-<main id="view-home" class="block">
-  <section class="hero-gradient text-white py-14 px-4 relative overflow-hidden">
-    <div class="max-w-4xl mx-auto text-center relative z-10">
-      <span class="bg-emerald-900/70 border border-emerald-400/30 text-emerald-200 text-xs px-3.5 py-1 rounded-full font-bold inline-flex items-center gap-1.5">
-        <i class="fa-solid fa-circle-check text-amber-400"></i> विश्वसनीय भूमि पोर्टल
-      </span>
-      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight mt-3">
-        खरीदें या बेचें ज़मीन, <span class="text-amber-400">सीधे और सुरक्षित</span>
-      </h1>
-      <p class="text-emerald-100 text-sm sm:text-base max-w-2xl mx-auto mt-3">
-        पलामू, हुसैनाबाद (जपला), गढ़वा, राँची समेत पूरे झारखंड में खाता, प्लॉट और रकबा सहित सटीक जानकारी।
-      </p>
+<main class="min-h-screen">
 
-      <div class="bg-white p-2.5 sm:p-3 rounded-2xl shadow-2xl max-w-3xl mx-auto flex flex-col md:flex-row gap-2 mt-6 text-gray-800 text-left">
-        <div class="flex-1 flex items-center bg-slate-50 rounded-xl px-3 border border-slate-200">
-          <i class="fa-solid fa-magnifying-glass text-slate-400 mr-2"></i>
-          <input id="searchInput" type="text" placeholder="स्थान, खाता नं., प्लॉट नं., ID या ज़िला खोजें..." class="w-full py-2.5 text-sm bg-transparent focus:outline-none">
+<!-- HOME -->
+<section id="home" class="view">
+  <div class="bg-gradient-to-br from-emerald-950 via-emerald-800 to-emerald-700 text-white">
+    <div class="max-w-7xl mx-auto px-4 py-16 md:py-20">
+      <div class="max-w-3xl">
+        <span class="badge bg-amber-400 text-slate-900 mb-4"><i class="fa-solid fa-circle-check mr-1"></i> विश्वसनीय भूमि प्लेटफॉर्म</span>
+        <h1 class="text-3xl md:text-5xl font-extrabold leading-tight">झारखंड में जमीन खोजें, खरीदें और बेचें</h1>
+        <p class="mt-4 text-emerald-100 text-base md:text-lg">General Plot, CNT Plot, Residential, Commercial, Agricultural और अन्य भूमि की जानकारी एक ही स्थान पर।</p>
+      </div>
+
+      <div class="card mt-8 p-4 md:p-5 text-slate-800">
+        <div class="grid md:grid-cols-12 gap-3">
+          <input id="homeSearch" class="md:col-span-7 border border-slate-300 rounded-xl px-4 py-3" placeholder="जिला, प्रखंड, गांव, खाता, प्लॉट या Seller खोजें...">
+          <select id="homeType" class="md:col-span-3 border border-slate-300 rounded-xl px-4 py-3">
+            <option value="All">सभी प्रकार</option>
+            <option value="General">General Plot</option>
+            <option value="CNT">CNT Plot</option>
+            <option value="Residential">Residential</option>
+            <option value="Commercial">Commercial</option>
+            <option value="Agricultural">Agricultural</option>
+            <option value="Industrial">Industrial</option>
+          </select>
+          <button onclick="homeSearch()" class="md:col-span-2 btn bg-emerald-700 hover:bg-emerald-800 text-white"><i class="fa-solid fa-magnifying-glass mr-1"></i> खोजें</button>
         </div>
-        <select id="searchType" class="px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 font-semibold focus:outline-none">
-          <option value="All">सभी प्रकार</option>
-          <option value="General">General Plot</option>
-          <option value="CNT">CNT Plot</option>
-          <option value="Commercial">Commercial</option>
-          <option value="Residential">Residential</option>
-          <option value="Agricultural">Agricultural</option>
-          <option value="Industrial">Industrial</option>
-        </select>
-        <button onclick="handleSearch()" class="bg-[#064e3b] hover:bg-[#043327] text-white font-bold px-6 py-2.5 rounded-xl text-sm transition shadow-md">
-          खोजें
-        </button>
       </div>
-    </div>
-  </section>
-
-  <section class="max-w-7xl mx-auto px-4 py-6">
-    <div class="flex gap-2.5 overflow-x-auto no-scrollbar pb-1">
-      <button onclick="filterAndShowProperties('All')" class="px-4 py-2 rounded-xl bg-[#064e3b] text-white text-xs font-bold whitespace-nowrap shadow-sm">सभी ज़मीन</button>
-      <button onclick="filterAndShowProperties('General')" class="px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-bold whitespace-nowrap shadow-sm">General Plots</button>
-      <button onclick="filterAndShowProperties('CNT')" class="px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-bold whitespace-nowrap shadow-sm">CNT Plots</button>
-      <button onclick="quickDistrictSearch('Palamu')" class="px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-bold whitespace-nowrap shadow-sm">पलामू (हुसैनाबाद/जपला)</button>
-      <button onclick="quickDistrictSearch('Garhwa')" class="px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-bold whitespace-nowrap shadow-sm">गढ़वा</button>
-      <button onclick="quickDistrictSearch('Ranchi')" class="px-4 py-2 rounded-xl bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 text-xs font-bold whitespace-nowrap shadow-sm">राँची</button>
-    </div>
-  </section>
-
-  <section class="max-w-7xl mx-auto px-4 py-4">
-    <div class="flex justify-between items-end mb-6">
-      <div>
-        <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900">उपलब्ध स्वीकृत ज़मीन (Approved Listings)</h2>
-        <p class="text-xs text-slate-500 mt-1">खाता, प्लॉट और रकबा के साथ सत्यापित लिस्टिंग</p>
-      </div>
-      <button onclick="filterAndShowProperties('All')" class="text-xs text-[#064e3b] font-bold hover:underline">सभी देखें →</button>
-    </div>
-    <div id="propertyGridHome" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div class="col-span-full text-center py-12 text-slate-400">
-        <i class="fa-solid fa-spinner fa-spin text-2xl mb-2 text-emerald-700"></i>
-        <p class="text-xs">क्लाउड से डेटा लोड हो रहा है...</p>
-      </div>
-    </div>
-  </section>
-</main>
-
-<!-- ==================== VIEW 2: ALL LISTINGS ==================== -->
-<section id="view-listings" class="hidden max-w-7xl mx-auto px-4 py-8">
-  <div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-200 pb-4">
-    <div>
-      <h2 id="listingPageTitle" class="text-2xl font-extrabold text-slate-900">सभी उपलब्ध ज़मीन</h2>
-      <p class="text-xs text-slate-500">संपूर्ण खाता व प्लॉट विवरण</p>
-    </div>
-    <div class="flex gap-2">
-      <button onclick="filterAndShowProperties('All')" class="text-xs px-3.5 py-1.5 bg-slate-200 rounded-lg font-bold">सभी</button>
-      <button onclick="filterAndShowProperties('General')" class="text-xs px-3.5 py-1.5 bg-slate-200 rounded-lg font-bold">General</button>
-      <button onclick="filterAndShowProperties('CNT')" class="text-xs px-3.5 py-1.5 bg-slate-200 rounded-lg font-bold">CNT</button>
     </div>
   </div>
-  <div id="propertyGridAll" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-</section>
 
-<!-- ==================== VIEW 3: POST PROPERTY ==================== -->
-<section id="view-post" class="hidden max-w-3xl mx-auto px-4 py-8">
-  <div class="bg-white p-6 sm:p-8 rounded-3xl card-shadow border border-slate-100">
-    <div class="text-center mb-6">
-      <span class="gold-badge text-slate-950 text-[11px] font-extrabold px-3 py-1 rounded-full uppercase">निःशुल्क विज्ञापन</span>
-      <h2 class="text-2xl font-black text-slate-900 mt-2">अपनी ज़मीन पोस्ट करें</h2>
-      <p class="text-xs text-slate-500">विवरण दर्ज करें (एडमिन की मंजूरी के बाद वेबसाइट पर दिखाई देगी)</p>
+  <div class="max-w-7xl mx-auto px-4 py-10">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <button onclick="showListings('All')" class="card p-5 text-left hover:border-emerald-500"><i class="fa-solid fa-map-location-dot text-2xl text-emerald-700"></i><div class="font-bold mt-3">सभी जमीन</div><div id="countAll" class="text-sm text-slate-500">लोड हो रहा है...</div></button>
+      <button onclick="showListings('General')" class="card p-5 text-left hover:border-emerald-500"><i class="fa-solid fa-house text-2xl text-emerald-700"></i><div class="font-bold mt-3">General Plot</div><div id="countGeneral" class="text-sm text-slate-500">—</div></button>
+      <button onclick="showListings('CNT')" class="card p-5 text-left hover:border-emerald-500"><i class="fa-solid fa-file-shield text-2xl text-emerald-700"></i><div class="font-bold mt-3">CNT Plot</div><div id="countCNT" class="text-sm text-slate-500">—</div></button>
+      <button onclick="showView('post')" class="card p-5 text-left hover:border-emerald-500"><i class="fa-solid fa-bullhorn text-2xl text-emerald-700"></i><div class="font-bold mt-3">जमीन बेचें</div><div class="text-sm text-slate-500">Free listing भेजें</div></button>
     </div>
 
-    <form id="postPropertyForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
-      <div>
-        <label class="block text-xs font-bold text-slate-700 mb-1">प्रॉपर्टी का शीर्षक (Title) *</label>
-        <input id="pTitle" required type="text" placeholder="उदा. 10 डिसमिल कमर्शियल प्लॉट, जपला मेन रोड" class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:outline-none">
-      </div>
+    <div class="flex items-end justify-between gap-3 mt-12 mb-5">
+      <div><h2 class="text-2xl font-extrabold">Approved Listings</h2><p class="text-slate-500">सत्यापित/स्वीकृत संपत्तियां</p></div>
+      <button onclick="showListings('All')" class="text-emerald-700 font-bold">सभी देखें →</button>
+    </div>
+    <div id="homeGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div class="card p-10 text-center text-slate-500 col-span-full">जमीन की जानकारी लोड हो रही है...</div>
+    </div>
+  </div>
+</section>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">ज़िला (District) *</label>
-          <select id="pDistrict" required class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:outline-none bg-white">
-            <option value="Palamu">Palamu (पलामू)</option>
-            <option value="Garhwa">Garhwa (गढ़वा)</option>
-            <option value="Ranchi">Ranchi (राँची)</option>
-            <option value="Dhanbad">Dhanbad (धनबाद)</option>
-            <option value="Latehar">Latehar (लातेहार)</option>
-            <option value="Chatra">Chatra (चतरा)</option>
-            <option value="Other">अन्य जिला (Jharkhand)</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">ब्लॉक / इलाका (Block / Area) *</label>
-          <input id="pBlock" required type="text" placeholder="उदा. Hussainabad (Japla)" class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:outline-none">
-        </div>
-      </div>
+<!-- LISTINGS -->
+<section id="listings" class="view hidden-view max-w-7xl mx-auto px-4 py-8">
+  <div class="flex flex-wrap items-end justify-between gap-4 mb-6">
+    <div><h2 id="listingTitle" class="text-3xl font-extrabold">सभी जमीन</h2><p class="text-slate-500">Approved property listings</p></div>
+    <button onclick="showView('home')" class="btn bg-slate-200 hover:bg-slate-300"><i class="fa-solid fa-arrow-left mr-1"></i> वापस</button>
+  </div>
+  <div class="card p-4 mb-6 grid md:grid-cols-4 gap-3">
+    <input id="listingSearch" class="border rounded-xl px-3 py-2 md:col-span-2" placeholder="जिला / गांव / प्लॉट / खाता / नाम">
+    <select id="listingDistrict" class="border rounded-xl px-3 py-2"><option value="">सभी जिले</option></select>
+    <button onclick="renderListings()" class="btn bg-emerald-700 text-white">खोजें</button>
+  </div>
+  <div id="listingGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+</section>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-amber-50/70 p-3.5 rounded-2xl border border-amber-200">
-        <div>
-          <label class="block text-xs font-extrabold text-amber-950 mb-1">खाता नंबर (Khata No.) *</label>
-          <input id="pKhata" required type="text" placeholder="उदा. 45" class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-amber-300 focus:border-emerald-600 focus:outline-none bg-white">
-        </div>
-        <div>
-          <label class="block text-xs font-extrabold text-amber-950 mb-1">प्लॉट / खसरा नंबर (Plot No.) *</label>
-          <input id="pPlot" required type="text" placeholder="उदा. 112, 114" class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-amber-300 focus:border-emerald-600 focus:outline-none bg-white">
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">प्रॉपर्टी श्रेणी (Category) *</label>
-          <select id="pCategory" required class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:outline-none bg-white">
-            <option value="Residential">Residential (आवासीय)</option>
-            <option value="Commercial">Commercial (व्यावसायिक)</option>
-            <option value="Agricultural">Agricultural (कृषि)</option>
-            <option value="Industrial">Industrial (औद्योगिक)</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">ज़मीन की क़िस्म (Class Type) *</label>
-          <select id="pClassType" required class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:outline-none bg-white">
-            <option value="General">General (फ्री होल्ड)</option>
-            <option value="CNT">CNT Free / Permitted</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">रकबा (डिसमिल में) *</label>
-          <input id="pArea" required type="number" min="0" step="any" placeholder="उदा. 5.5" class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:outline-none">
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">कुल क़ीमत (₹ में) *</label>
-          <input id="pPrice" required type="number" min="0" placeholder="उदा. 1200000" class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:outline-none">
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">रास्ता (Road Width)</label>
-          <input id="pRoad" type="text" placeholder="उदा. 20 Feet Paved Road" class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:outline-none">
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">विक्रेता का नाम (Seller Name) *</label>
-          <input id="pSellerName" required type="text" placeholder="उदा. संतोष कुमार" class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:outline-none">
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-700 mb-1">WhatsApp / फोन नंबर *</label>
-          <input id="pSellerPhone" required type="tel" inputmode="numeric" placeholder="उदा. 9308424700" class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-300 focus:border-emerald-600 focus:outline-none">
-        </div>
-      </div>
-
-      <div>
-        <label class="block text-xs font-bold text-slate-700 mb-1">अतिरिक्त विवरण (Description)</label>
-        <textarea id="pDesc" rows="3" placeholder="बाउंड्री, चौहद्दी, पानी, बिजली या अन्य विशेषताएँ..." class="w-full text-sm px-3.5 py-2 rounded-xl border border-slate-300 focus:border-emerald-600 focus:outline-none"></textarea>
-      </div>
-
-      <button id="submitBtn" type="submit" class="w-full bg-[#064e3b] hover:bg-[#043327] text-white font-extrabold py-3.5 rounded-xl shadow-lg transition text-sm flex items-center justify-center gap-2">
-        <i class="fa-solid fa-cloud-arrow-up mr-1"></i> ज़मीन का विज्ञापन सबमिट करें
-      </button>
+<!-- POST -->
+<section id="post" class="view hidden-view max-w-5xl mx-auto px-4 py-8">
+  <div class="card p-5 md:p-8">
+    <div class="flex justify-between gap-4 mb-6">
+      <div><h2 class="text-2xl font-extrabold">जमीन बेचने के लिए विवरण भेजें</h2><p class="text-slate-500">Submit करने के बाद listing Admin approval के लिए जाएगी।</p></div>
+      <button onclick="showView('home')" class="btn bg-slate-200 h-fit">वापस</button>
+    </div>
+    <form id="propertyForm" class="grid md:grid-cols-2 gap-4">
+      <div><label class="font-bold text-sm">Seller Name *</label><input id="sellerName" required class="w-full border rounded-xl px-3 py-2 mt-1"></div>
+      <div><label class="font-bold text-sm">WhatsApp / Phone *</label><input id="sellerPhone" required class="w-full border rounded-xl px-3 py-2 mt-1" inputmode="numeric"></div>
+      <div><label class="font-bold text-sm">Title *</label><input id="pTitle" required class="w-full border rounded-xl px-3 py-2 mt-1" placeholder="जैसे 278 Decimal जमीन"></div>
+      <div><label class="font-bold text-sm">Category *</label><select id="category" class="w-full border rounded-xl px-3 py-2 mt-1"><option>Residential</option><option>Commercial</option><option>Agricultural</option><option>Industrial</option></select></div>
+      <div><label class="font-bold text-sm">Class Type *</label><select id="classType" class="w-full border rounded-xl px-3 py-2 mt-1"><option>General</option><option>CNT</option></select></div>
+      <div><label class="font-bold text-sm">District *</label><input id="district" required class="w-full border rounded-xl px-3 py-2 mt-1" value="Palamu"></div>
+      <div><label class="font-bold text-sm">Block</label><input id="block" class="w-full border rounded-xl px-3 py-2 mt-1" value="Hussainabad"></div>
+      <div><label class="font-bold text-sm">Village</label><input id="village" class="w-full border rounded-xl px-3 py-2 mt-1"></div>
+      <div><label class="font-bold text-sm">Khata</label><input id="khata" class="w-full border rounded-xl px-3 py-2 mt-1"></div>
+      <div><label class="font-bold text-sm">Plot</label><input id="plot" class="w-full border rounded-xl px-3 py-2 mt-1"></div>
+      <div><label class="font-bold text-sm">Area (Decimal) *</label><input id="area" required type="number" step="any" class="w-full border rounded-xl px-3 py-2 mt-1"></div>
+      <div><label class="font-bold text-sm">Price (₹) *</label><input id="price" required type="number" step="any" class="w-full border rounded-xl px-3 py-2 mt-1"></div>
+      <div><label class="font-bold text-sm">Road</label><input id="road" class="w-full border rounded-xl px-3 py-2 mt-1" value="Paved Road"></div>
+      <div><label class="font-bold text-sm">Facing</label><input id="facing" class="w-full border rounded-xl px-3 py-2 mt-1" value="North/East"></div>
+      <div class="md:col-span-2"><label class="font-bold text-sm">Image URL</label><input id="image" type="url" class="w-full border rounded-xl px-3 py-2 mt-1" placeholder="https://...jpg"></div>
+      <div class="md:col-span-2"><label class="font-bold text-sm">Description</label><textarea id="description" rows="4" class="w-full border rounded-xl px-3 py-2 mt-1" placeholder="जमीन के बारे में विवरण..."></textarea></div>
+      <div class="md:col-span-2"><button id="submitBtn" class="btn bg-emerald-700 hover:bg-emerald-800 text-white w-full"><i class="fa-solid fa-paper-plane mr-2"></i> जमीन की जानकारी भेजें</button></div>
     </form>
   </div>
 </section>
 
-<!-- ==================== VIEW 4: CALCULATOR ==================== -->
-<section id="view-calculator" class="hidden max-w-4xl mx-auto px-4 py-8">
-  <div class="bg-white p-6 sm:p-8 rounded-3xl card-shadow border border-slate-100">
-    <h2 class="text-2xl font-black text-slate-900 text-center mb-1">झारखंड भूमि माप कैलकुलेटर</h2>
-    <p class="text-xs text-slate-500 text-center mb-6">डिसमिल, कट्ठा, बीघा, वर्ग फीट, वर्ग गज और एकड़ रूपांतरण</p>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-      <div>
-        <label class="block text-xs font-bold text-slate-700 mb-1">डिसमिल (Decimal) दर्ज करें</label>
-        <input id="calcDecimalInput" oninput="calculateFromDecimal(this.value)" type="number" step="any" placeholder="उदा. 10" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-emerald-600">
-      </div>
-      <div>
-        <label class="block text-xs font-bold text-slate-700 mb-1">वर्ग फीट (Sq. Ft.) दर्ज करें</label>
-        <input id="calcSqftInput" oninput="calculateFromSqft(this.value)" type="number" step="any" placeholder="उदा. 4356" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-emerald-600">
-      </div>
+<!-- CALCULATOR -->
+<section id="calculator" class="view hidden-view max-w-4xl mx-auto px-4 py-8">
+  <div class="card p-6 md:p-8">
+    <h2 class="text-2xl font-extrabold">भूमि क्षेत्रफल कैलकुलेटर</h2>
+    <p class="text-slate-500 mb-6">1 Decimal = 435.6 Sq. Ft. के आधार पर।</p>
+    <div class="grid md:grid-cols-2 gap-4">
+      <div><label class="font-bold text-sm">Decimal</label><input id="decimalInput" type="number" step="any" oninput="calcFromDecimal()" class="w-full border rounded-xl px-3 py-3 mt-1"></div>
+      <div><label class="font-bold text-sm">Sq. Ft.</label><input id="sqftInput" type="number" step="any" oninput="calcFromSqft()" class="w-full border rounded-xl px-3 py-3 mt-1"></div>
     </div>
-    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
-      <div class="bg-emerald-50/70 p-4 rounded-2xl border border-emerald-100"><div class="text-[11px] text-emerald-800 font-bold uppercase">कट्ठा (Kattha)</div><div id="resKattha" class="text-xl font-extrabold text-emerald-950 mt-1">0</div></div>
-      <div class="bg-emerald-50/70 p-4 rounded-2xl border border-emerald-100"><div class="text-[11px] text-emerald-800 font-bold uppercase">बीघा (Bigha)</div><div id="resBigha" class="text-xl font-extrabold text-emerald-950 mt-1">0</div></div>
-      <div class="bg-emerald-50/70 p-4 rounded-2xl border border-emerald-100"><div class="text-[11px] text-emerald-800 font-bold uppercase">एकड़ (Acre)</div><div id="resAcre" class="text-xl font-extrabold text-emerald-950 mt-1">0</div></div>
-      <div class="bg-emerald-50/70 p-4 rounded-2xl border border-emerald-100"><div class="text-[11px] text-emerald-800 font-bold uppercase">वर्ग गज (Sq. Yards)</div><div id="resSqYards" class="text-xl font-extrabold text-emerald-950 mt-1">0</div></div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mt-6">
+      <div class="bg-emerald-50 p-4 rounded-xl"><div class="text-xs text-slate-500">Decimal</div><div id="rDecimal" class="text-xl font-extrabold">0</div></div>
+      <div class="bg-emerald-50 p-4 rounded-xl"><div class="text-xs text-slate-500">Sq. Ft.</div><div id="rSqft" class="text-xl font-extrabold">0</div></div>
+      <div class="bg-emerald-50 p-4 rounded-xl"><div class="text-xs text-slate-500">Dhur</div><div id="rDhur" class="text-xl font-extrabold">0</div></div>
+      <div class="bg-emerald-50 p-4 rounded-xl"><div class="text-xs text-slate-500">Katha</div><div id="rKatha" class="text-xl font-extrabold">0</div></div>
     </div>
   </div>
 </section>
 
-<!-- ==================== VIEW 5: CONTACT ==================== -->
-<section id="view-contact" class="hidden max-w-3xl mx-auto px-4 py-8">
-  <div class="bg-white p-6 sm:p-8 rounded-3xl card-shadow border border-slate-100">
-    <h2 class="text-2xl font-black text-slate-900 text-center mb-5">संपर्क विवरण</h2>
-    <div class="space-y-4 text-sm text-slate-700">
-      <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-2xl border border-slate-100">
-        <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold"><i class="fa-solid fa-location-dot"></i></div>
-        <div><strong>कार्यालय:</strong> हुसैनाबाद (जपला), पलामू, झारखंड - 822116</div>
-      </div>
-      <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-2xl border border-slate-100">
-        <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold"><i class="fa-solid fa-phone"></i></div>
-        <div><strong>WhatsApp / कॉल:</strong> +91 9308424700</div>
-      </div>
-      <div class="flex items-center gap-3 p-4 bg-slate-50 rounded-2xl border border-slate-100">
-        <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold"><i class="fa-solid fa-envelope"></i></div>
-        <div><strong>ईमेल:</strong> santosh26011988@gmail.com</div>
-      </div>
+<!-- CONTACT -->
+<section id="contact" class="view hidden-view max-w-4xl mx-auto px-4 py-8">
+  <div class="card p-8">
+    <h2 class="text-2xl font-extrabold">संपर्क करें</h2>
+    <div class="mt-5 space-y-3">
+      <div class="p-4 bg-slate-50 rounded-xl"><b>मोबाइल / WhatsApp:</b> +91 9308424700</div>
+      <div class="p-4 bg-slate-50 rounded-xl"><b>Email:</b> santosh26011988@gmail.com</div>
+      <div class="p-4 bg-slate-50 rounded-xl"><b>स्थान:</b> जपला, हुसैनाबाद, पलामू, झारखंड</div>
     </div>
   </div>
 </section>
 
-<!-- ==================== VIEW 6: AGENT AUTH ==================== -->
-<section id="view-agent-auth" class="hidden max-w-md mx-auto px-4 py-16">
-  <div class="bg-white p-6 sm:p-8 rounded-3xl card-shadow border border-slate-100 text-center">
-    <div class="w-12 h-12 bg-amber-100 text-amber-800 rounded-2xl flex items-center justify-center mx-auto mb-3 text-xl">
-      <i class="fa-solid fa-user-tie"></i>
-    </div>
-    <h2 class="text-xl font-bold text-slate-900 mb-1">एजेंट / पार्टनर पोर्टल</h2>
-    <p class="text-xs text-slate-500 mb-4">पिन दर्ज करें (PIN: 9999)</p>
-    <input id="agentPinInput" type="password" placeholder="PIN" class="w-full px-4 py-3 border rounded-xl mb-3 text-center tracking-widest text-lg focus:outline-none focus:border-emerald-600">
-    <button onclick="verifyAgentPin()" class="w-full bg-[#064e3b] text-white font-bold py-3 rounded-xl hover:bg-[#043327] transition text-sm">प्रवेश करें</button>
+<!-- ADMIN LOGIN -->
+<section id="adminLogin" class="view hidden-view max-w-md mx-auto px-4 py-12">
+  <div class="card p-7">
+    <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-700 grid place-items-center text-2xl mx-auto"><i class="fa-solid fa-user-shield"></i></div>
+    <h2 class="text-2xl font-extrabold text-center mt-4">Admin Login</h2>
+    <p class="text-center text-slate-500 text-sm mb-6">Firebase secure login</p>
+    <form onsubmit="adminLogin(event)" class="space-y-4">
+      <input id="adminEmail" required type="email" class="w-full border rounded-xl px-3 py-3" placeholder="Admin Email">
+      <input id="adminPassword" required type="password" class="w-full border rounded-xl px-3 py-3" placeholder="Password">
+      <button class="btn bg-emerald-700 text-white w-full">Login</button>
+    </form>
+    <button onclick="showView('home')" class="w-full mt-3 text-slate-500">← मुख्य पृष्ठ</button>
+    <p id="loginMsg" class="text-center text-sm mt-3"></p>
   </div>
 </section>
 
-<!-- ==================== VIEW 7: AGENT DASHBOARD ==================== -->
-<section id="view-agent-dashboard" class="hidden max-w-6xl mx-auto px-4 py-8">
-  <div class="flex justify-between items-center mb-6">
-    <div>
-      <h2 class="text-2xl font-extrabold text-slate-900">Agent Master Data</h2>
-      <p class="text-xs text-slate-500">सभी स्वीकृत खाता व प्लॉट नंबर की सूची</p>
-    </div>
-    <button onclick="switchView('view-post')" class="bg-[#064e3b] text-white px-4 py-2 rounded-xl text-xs font-bold">+ नई ज़मीन जोड़ें</button>
+<!-- ADMIN DASHBOARD -->
+<section id="adminDashboard" class="view hidden-view max-w-7xl mx-auto px-4 py-8">
+  <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+    <div><h2 class="text-3xl font-extrabold">Admin Dashboard</h2><p id="adminIdentity" class="text-slate-500"></p></div>
+    <button onclick="logout()" class="btn bg-red-600 text-white">Logout</button>
   </div>
-  <div class="overflow-x-auto bg-white rounded-2xl card-shadow border border-slate-100">
-    <table class="w-full text-left text-xs min-w-[750px] text-slate-700">
-      <thead class="bg-slate-100 font-bold uppercase text-slate-600">
-        <tr>
-          <th class="p-3.5">ID / Title</th>
-          <th class="p-3.5">खाता / प्लॉट</th>
-          <th class="p-3.5">स्थान</th>
-          <th class="p-3.5">क़ीमत / रकबा</th>
-          <th class="p-3.5">सत्यापन</th>
-          <th class="p-3.5">संपर्क</th>
-        </tr>
-      </thead>
-      <tbody id="agentTableBody" class="divide-y divide-slate-100"></tbody>
+
+  <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+    <div class="card p-5"><div class="text-sm text-slate-500">Total</div><div id="statTotal" class="text-3xl font-extrabold">0</div></div>
+    <div class="card p-5"><div class="text-sm text-amber-700">Pending</div><div id="statPending" class="text-3xl font-extrabold">0</div></div>
+    <div class="card p-5"><div class="text-sm text-emerald-700">Approved</div><div id="statApproved" class="text-3xl font-extrabold">0</div></div>
+    <div class="card p-5"><div class="text-sm text-red-700">Rejected</div><div id="statRejected" class="text-3xl font-extrabold">0</div></div>
+  </div>
+
+  <div class="card p-4">
+    <div class="flex flex-wrap gap-2 mb-4">
+      <button onclick="setAdminTab('ALL')" id="tabALL" class="btn bg-emerald-700 text-white">ALL</button>
+      <button onclick="setAdminTab('PENDING')" id="tabPENDING" class="btn bg-slate-100">PENDING</button>
+      <button onclick="setAdminTab('APPROVED')" id="tabAPPROVED" class="btn bg-slate-100">APPROVED</button>
+      <button onclick="setAdminTab('REJECTED')" id="tabREJECTED" class="btn bg-slate-100">REJECTED</button>
+      <input id="adminSearch" oninput="renderAdminTable()" class="border rounded-xl px-3 py-2 flex-1 min-w-[220px]" placeholder="ID, जिला, गांव, खाता, प्लॉट, नाम...">
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full min-w-[1000px] text-sm">
+        <thead class="bg-slate-100">
+          <tr><th class="p-3 text-left">ID</th><th class="p-3 text-left">Date</th><th class="p-3 text-left">Title / Location</th><th class="p-3 text-left">Khata / Plot</th><th class="p-3 text-left">Area / Price</th><th class="p-3 text-left">Seller</th><th class="p-3">Status</th><th class="p-3">Verification</th><th class="p-3">Actions</th></tr>
+        </thead>
+        <tbody id="adminTableBody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- AGENT LOGIN -->
+<section id="agentLogin" class="view hidden-view max-w-md mx-auto px-4 py-12">
+  <div class="card p-7">
+    <div class="w-14 h-14 rounded-2xl bg-amber-100 text-amber-700 grid place-items-center text-2xl mx-auto"><i class="fa-solid fa-user-tie"></i></div>
+    <h2 class="text-2xl font-extrabold text-center mt-4">Agent Portal</h2>
+    <form onsubmit="agentLogin(event)" class="mt-6 space-y-4">
+      <input id="agentPin" required type="password" class="w-full border rounded-xl px-3 py-3" placeholder="Agent PIN">
+      <button class="btn bg-emerald-700 text-white w-full">Continue</button>
+    </form>
+    <button onclick="showView('home')" class="w-full mt-3 text-slate-500">← मुख्य पृष्ठ</button>
+  </div>
+</section>
+
+<!-- AGENT DASHBOARD -->
+<section id="agentDashboard" class="view hidden-view max-w-7xl mx-auto px-4 py-8">
+  <div class="flex justify-between gap-3 mb-6"><div><h2 class="text-3xl font-extrabold">Agent Master Data</h2><p class="text-slate-500">Approved listings की संपर्क जानकारी</p></div><button onclick="showView('home')" class="btn bg-slate-200">मुख्य पृष्ठ</button></div>
+  <div class="card overflow-x-auto">
+    <table class="w-full min-w-[800px] text-sm">
+      <thead class="bg-slate-100"><tr><th class="p-3 text-left">ID</th><th class="p-3 text-left">Title</th><th class="p-3 text-left">खाता / प्लॉट</th><th class="p-3 text-left">Area</th><th class="p-3 text-left">Price</th><th class="p-3 text-left">Seller</th></tr></thead>
+      <tbody id="agentTableBody"></tbody>
     </table>
   </div>
 </section>
 
-<!-- ==================== VIEW 8: ADMIN AUTH ==================== -->
-<section id="view-admin-auth" class="hidden max-w-md mx-auto px-4 py-16">
-  <div class="bg-white p-6 sm:p-8 rounded-3xl card-shadow border border-slate-100 text-center">
-    <div class="w-12 h-12 bg-emerald-100 text-[#064e3b] rounded-2xl flex items-center justify-center mx-auto mb-3 text-xl">
-      <i class="fa-solid fa-lock"></i>
-    </div>
-    <h2 class="text-xl font-bold text-slate-900 mb-1">एडमिन कंट्रोल</h2>
-    <p class="text-xs text-slate-500 mb-4">पासवर्ड दर्ज करें (PIN: 1234)</p>
-    <input id="adminPinInput" type="password" placeholder="Admin PIN" class="w-full px-4 py-3 border rounded-xl mb-3 text-center tracking-widest text-lg focus:outline-none focus:border-emerald-600">
-    <button onclick="verifyAdminPin()" class="w-full bg-[#064e3b] text-white font-bold py-3 rounded-xl hover:bg-[#043327] transition text-sm">लॉगिन</button>
-  </div>
-</section>
+</main>
 
-<!-- ==================== VIEW 9: ADMIN DASHBOARD ==================== -->
-<section id="view-admin-dashboard" class="hidden max-w-7xl mx-auto px-4 py-8">
-  <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
-    <div>
-      <h2 class="text-2xl font-black text-slate-900">Property Management Dashboard</h2>
-      <p class="text-xs text-slate-500">Approval, rejection और verification control</p>
-    </div>
-    <button onclick="switchView('view-home')" class="text-xs bg-slate-200 hover:bg-slate-300 px-3.5 py-2 rounded-xl font-bold transition">
-      <i class="fa-solid fa-right-from-bracket mr-1"></i> लॉगआउट
-    </button>
-  </div>
-
-  <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-6">
-    <div class="bg-white p-4 rounded-2xl border border-slate-200 text-center card-shadow"><div class="text-[10px] text-slate-400 font-bold uppercase">TOTAL</div><div id="countTotal" class="text-2xl font-black text-slate-800">0</div></div>
-    <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200 text-center"><div class="text-[10px] text-amber-700 font-bold uppercase">PENDING</div><div id="countPending" class="text-2xl font-black text-amber-700">0</div></div>
-    <div class="bg-emerald-50 p-4 rounded-2xl border border-emerald-200 text-center"><div class="text-[10px] text-emerald-700 font-bold uppercase">APPROVED</div><div id="countApproved" class="text-2xl font-black text-emerald-700">0</div></div>
-    <div class="bg-rose-50 p-4 rounded-2xl border border-rose-200 text-center"><div class="text-[10px] text-rose-700 font-bold uppercase">REJECTED</div><div id="countRejected" class="text-2xl font-black text-rose-700">0</div></div>
-    <div class="bg-blue-50 p-4 rounded-2xl border border-blue-200 text-center col-span-2 sm:col-span-1"><div class="text-[10px] text-blue-700 font-bold uppercase">VERIFIED</div><div id="countVerified" class="text-2xl font-black text-blue-700">0</div></div>
-  </div>
-
-  <div class="bg-white p-4 rounded-2xl card-shadow border border-slate-100 mb-6 flex flex-col md:flex-row justify-between items-center gap-3">
-    <div class="flex flex-wrap gap-1.5 w-full md:w-auto">
-      <button onclick="setAdminTab('ALL')" id="tab-ALL" class="px-4 py-2 rounded-xl text-xs font-bold bg-[#064e3b] text-white">ALL</button>
-      <button onclick="setAdminTab('PENDING')" id="tab-PENDING" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">PENDING</button>
-      <button onclick="setAdminTab('APPROVED')" id="tab-APPROVED" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">APPROVED</button>
-      <button onclick="setAdminTab('REJECTED')" id="tab-REJECTED" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200">REJECTED</button>
-    </div>
-    <input id="adminSearchInput" oninput="renderAdminTable()" placeholder="ID, नाम, खाता, प्लॉट, मोबाइल..." class="w-full md:w-72 text-xs px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:border-emerald-600 bg-slate-50">
-  </div>
-
-  <div class="overflow-x-auto bg-white rounded-2xl card-shadow border border-slate-100">
-    <table class="w-full text-left text-xs min-w-[1000px] text-slate-700">
-      <thead class="bg-slate-100 font-bold uppercase text-slate-600">
-        <tr>
-          <th class="p-3.5">ID / Date</th>
-          <th class="p-3.5">Title & Location</th>
-          <th class="p-3.5">Khata / Plot</th>
-          <th class="p-3.5">Price / Area</th>
-          <th class="p-3.5">Seller</th>
-          <th class="p-3.5">Status</th>
-          <th class="p-3.5 text-center">Verification</th>
-          <th class="p-3.5 text-right">Actions</th>
-        </tr>
-      </thead>
-      <tbody id="adminTableBody" class="divide-y divide-slate-100"></tbody>
-    </table>
-  </div>
-</section>
-
-<!-- ==================== MODAL: ADMIN DETAIL VIEW ==================== -->
-<div id="adminDetailModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm items-center justify-center p-4">
-  <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 card-shadow border border-slate-100 relative">
-    <div class="flex justify-between items-center border-b border-slate-200 pb-3 mb-4">
-      <div>
-        <h3 id="mTitle" class="text-lg font-black text-slate-900">Property Details</h3>
-        <p id="mPropertyId" class="text-xs text-slate-400 font-bold"></p>
-      </div>
-      <button onclick="closeAdminModal()" class="text-slate-400 hover:text-slate-700 text-2xl font-black">&times;</button>
-    </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-700 mb-6">
-      <div class="space-y-2">
-        <p><strong>स्थान (Location):</strong> <span id="mLocation"></span></p>
-        <p><strong>खाता / प्लॉट:</strong> <span id="mKhataPlot"></span></p>
-        <p><strong>श्रेणी (Category):</strong> <span id="mCategory"></span></p>
-        <p><strong>ज़मीन की क़िस्म:</strong> <span id="mClassType"></span></p>
-        <p><strong>रकबा (Area):</strong> <span id="mArea"></span></p>
-        <p><strong>कुल क़ीमत:</strong> <span id="mPrice" class="font-bold text-emerald-700"></span></p>
-      </div>
-      <div class="space-y-2">
-        <p><strong>विक्रेता:</strong> <span id="mSellerName"></span></p>
-        <p><strong>फोन:</strong> <span id="mSellerPhone"></span></p>
-        <p><strong>रास्ता:</strong> <span id="mRoad"></span></p>
-        <p><strong>दिशा (Facing):</strong> <span id="mFacing"></span></p>
-        <p><strong>स्थिति (Status):</strong> <span id="mStatus" class="font-bold uppercase"></span></p>
-        <p><strong>सत्यापन:</strong> <span id="mVerificationStatus" class="font-bold"></span></p>
-        <p><strong>दिनांक:</strong> <span id="mCreatedDate"></span></p>
-      </div>
-    </div>
-    <div class="border-t border-slate-100 pt-3">
-      <strong class="text-xs text-slate-800">विस्तृत विवरण:</strong>
-      <p id="mDescription" class="text-xs text-slate-500 mt-1 leading-relaxed"></p>
-    </div>
-    <div class="mt-6 flex justify-end">
-      <button onclick="closeAdminModal()" class="px-5 py-2 rounded-xl text-xs font-bold bg-slate-200 hover:bg-slate-300 text-slate-800 transition">बंद करें</button>
-    </div>
+<!-- PROPERTY MODAL -->
+<div id="propertyModal" class="modal hidden fixed inset-0 z-50 overflow-y-auto p-4">
+  <div class="max-w-3xl mx-auto my-8 card overflow-hidden">
+    <div class="bg-emerald-800 text-white p-5 flex justify-between items-center"><h3 id="modalTitle" class="text-xl font-extrabold">Property Details</h3><button onclick="closeModal()" class="text-2xl">×</button></div>
+    <div id="modalBody" class="p-5"></div>
   </div>
 </div>
 
 <!-- FOOTER -->
-<footer class="bg-[#022c22] text-slate-400 text-xs pt-12 pb-8 border-t border-emerald-950 mt-16">
-  <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-    <div class="space-y-3">
-      <div class="flex items-center gap-2.5 mb-3">
-        <div class="w-8 h-8 rounded-lg gold-badge flex items-center justify-center text-slate-950 font-black text-sm">J</div>
-        <span class="text-white font-extrabold text-base">JAMINDAR LAND BAZAAR</span>
-      </div>
-      <p class="leading-relaxed">झारखंड का डिजिटल रियल एस्टेट प्लेटफॉर्म। पलामू, हुसैनाबाद (जपला) व आसपास के क्षेत्रों में भूमि क्रय-विक्रय हेतु समर्पित।</p>
-    </div>
-    <div>
-      <h4 class="text-white font-bold uppercase tracking-wider mb-3">त्वरित नेविगेशन</h4>
-      <div class="space-y-2">
-        <button onclick="switchView('view-home')" class="block hover:text-amber-400">मुख्य पृष्ठ</button>
-        <button onclick="filterAndShowProperties('All')" class="block hover:text-amber-400">सभी उपलब्ध ज़मीन</button>
-        <button onclick="switchView('view-calculator')" class="block hover:text-amber-400">भूमि माप कैलकुलेटर</button>
-      </div>
-    </div>
-    <div>
-      <h4 class="text-white font-bold uppercase tracking-wider mb-3">हेल्पलाइन</h4>
-      <p class="text-amber-400 font-bold mb-1">📞 +91 9308424700</p>
-      <p class="text-slate-400">हुसैनाबाद (जपला), पलामू, झारखंड - 822116</p>
-    </div>
+<footer class="bg-slate-950 text-slate-300 mt-12">
+  <div class="max-w-7xl mx-auto px-4 py-10 grid md:grid-cols-3 gap-8">
+    <div><div class="text-xl font-extrabold text-white">JAMINDAR <span class="text-amber-400">LAND BAZAAR</span></div><p class="mt-3 text-sm leading-6">झारखंड में भूमि खरीद-बिक्री और संपत्ति जानकारी के लिए डिजिटल प्लेटफॉर्म।</p></div>
+    <div><h4 class="font-bold text-white mb-3">Quick Links</h4><div class="space-y-2 text-sm"><button onclick="showListings('All')" class="block hover:text-amber-400">सभी जमीन</button><button onclick="showView('post')" class="block hover:text-amber-400">जमीन बेचें</button><button onclick="showView('calculator')" class="block hover:text-amber-400">Land Calculator</button></div></div>
+    <div><h4 class="font-bold text-white mb-3">Contact</h4><p>+91 9308424700</p><p>santosh26011988@gmail.com</p><p>जपला, पलामू, झारखंड</p></div>
   </div>
-  <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-emerald-900/60 text-center text-[11px]">
-    © 2026 JAMINDAR LAND BAZAAR (jamindarlandbazaar.in) - सर्वाधिकार सुरक्षित।
-  </div>
+  <div class="border-t border-slate-800 py-4 text-center text-xs">© 2026 JAMINDAR LAND BAZAAR. All Rights Reserved.</div>
 </footer>
 
-<!-- MOBILE BOTTOM BAR -->
-<div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-slate-200 flex justify-around py-2.5 shadow-2xl">
-  <button onclick="switchView('view-home')" class="flex flex-col items-center text-slate-600 hover:text-[#064e3b]">
-    <i class="fa-solid fa-house text-base mb-1"></i>
-    <span class="text-[10px] font-bold">Home</span>
-  </button>
-  <button onclick="filterAndShowProperties('All')" class="flex flex-col items-center text-slate-600 hover:text-[#064e3b]">
-    <i class="fa-solid fa-magnifying-glass text-base mb-1"></i>
-    <span class="text-[10px] font-bold">Browse</span>
-  </button>
-  <button onclick="switchView('view-post')" class="flex flex-col items-center -mt-5">
-    <div class="w-11 h-11 gold-badge text-slate-950 rounded-full flex items-center justify-center shadow-lg border-2 border-white">
-      <i class="fa-solid fa-plus text-base font-black"></i>
-    </div>
-    <span class="text-[10px] font-extrabold text-[#064e3b] mt-0.5">Post</span>
-  </button>
-  <button onclick="switchView('view-calculator')" class="flex flex-col items-center text-slate-600 hover:text-[#064e3b]">
-    <i class="fa-solid fa-calculator text-base mb-1"></i>
-    <span class="text-[10px] font-bold">Calc</span>
-  </button>
-  <button onclick="switchView('view-agent-auth')" class="flex flex-col items-center text-slate-600 hover:text-[#064e3b]">
-    <i class="fa-solid fa-user-tie text-base mb-1"></i>
-    <span class="text-[10px] font-bold">Agent</span>
-  </button>
-</div>
-
-<!-- JAVASCRIPT LOGIC -->
 <script>
+/* =========================================================
+   FIREBASE CONFIGURATION
+   ========================================================= */
 const firebaseConfig = {
-  apiKey: "AIzaSyDlgpoDePEXHgJcvcAU0aBakVexwGTAqYA",
+  apiKey: "AIzaSyD1gpoDePEXHgJcvCAU0aBakVexwGTAqYA",
   authDomain: "jamindar-land-bazaar.firebaseapp.com",
   projectId: "jamindar-land-bazaar",
   storageBucket: "jamindar-land-bazaar.firebasestorage.app",
   messagingSenderId: "608702998809",
   appId: "1:608702998809:web:6a25f6b8d177e31ba27d88",
-  measurementId: "G-4WSSGYP88Q"
+  measurementId: "G-4WSSYGP88Q"
 };
 
 firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
 const db = firebase.firestore();
 
-const ADMIN_PIN = "1234";
+/* Agent PIN is separate from Admin security. */
 const AGENT_PIN = "9999";
 
-let allPropertiesMaster = [];
-let currentAdminTab = "ALL";
+let allProperties = [];
+let adminTab = "ALL";
+let unsubscribeProperties = null;
+let currentAdmin = null;
 
-// XSS Sanitizer
-function escapeHtml(str) {
-  if (str === null || str === undefined) return "";
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
+/* =========================================================
+   BASIC HELPERS
+   ========================================================= */
+const $ = id => document.getElementById(id);
+
+function esc(v){
+  return String(v ?? "").replace(/[&<>"']/g,m=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[m]));
 }
 
-function normalizePhone(phone) {
-  let p = String(phone || "").replace(/\D/g, "");
-  if (p.length === 10) p = "91" + p;
+function money(v){
+  const n = Number(v || 0);
+  return "₹ " + n.toLocaleString("en-IN");
+}
+
+function phoneNumber(v){
+  let p = String(v || "").replace(/\D/g,"");
+  if(p.length===10) p="91"+p;
   return p;
 }
 
-function toggleMobileMenu() {
-  const menu = document.getElementById("mobileMenu");
-  if (menu) menu.classList.toggle("hidden");
+function whatsapp(v,title){
+  const p = phoneNumber(v);
+  const text = encodeURIComponent(`नमस्ते, मुझे आपकी जमीन की जानकारी चाहिए।\nProperty: ${title || ""}`);
+  return p ? `https://wa.me/${p}?text=${text}` : "#";
 }
 
-function switchView(viewId) {
-  const views = [
-    "view-home", "view-listings", "view-post", "view-calculator", "view-contact",
-    "view-agent-auth", "view-agent-dashboard", "view-admin-auth", "view-admin-dashboard"
-  ];
-
-  views.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.classList.add("hidden");
-  });
-
-  const target = document.getElementById(viewId);
-  if (target) {
-    target.classList.remove("hidden");
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
-
-  const menu = document.getElementById("mobileMenu");
-  if (menu && !menu.classList.contains("hidden")) menu.classList.add("hidden");
+function formatDate(ts){
+  if(!ts) return "—";
+  try{
+    const d = ts.toDate ? ts.toDate() : new Date(ts);
+    return d.toLocaleDateString("hi-IN");
+  }catch(e){return "—"}
 }
 
-// REALTIME FIRESTORE LISTENER
-function listenToProperties() {
-  db.collection("properties").onSnapshot(snapshot => {
-    const list = [];
-    snapshot.forEach(doc => {
-      const d = doc.data();
-      const safeStatus = d.status ? d.status : "pending";
-      const safeVerStatus = d.verificationStatus ? d.verificationStatus : (d.verified ? "verified" : "unverified");
-      const safeVerified = safeVerStatus === "verified" || d.verified === true;
-
-      list.push({
-        id: doc.id,
-        propertyId: d.propertyId || doc.id,
-        sellerId: d.sellerId || "GUEST_SELLER",
-        sellerName: d.sellerName || "N/A",
-        sellerPhone: d.sellerPhone || "",
-        title: d.title || "Land Listing",
-        description: d.description || "",
-        district: d.district || "",
-        block: d.block || "",
-        panchayat: d.panchayat || "",
-        village: d.village || d.block || "",
-        khata: d.khata || "",
-        plot: d.plot || "",
-        category: d.category || "Residential",
-        classType: d.classType || "General",
-        area: d.area || "0 Decimal",
-        areaVal: Number(d.areaVal || 0),
-        areaUnit: d.areaUnit || "Decimal",
-        price: d.price || "₹ 0",
-        priceVal: Number(d.priceVal || 0),
-        road: d.road || "",
-        roadDetails: d.roadDetails || "",
-        facing: d.facing || "",
-        landmark: d.landmark || "",
-        image: d.image || "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&auto=format&fit=crop&q=60",
-        images: Array.isArray(d.images) ? d.images : [],
-        documents: Array.isArray(d.documents) ? d.documents : [],
-        status: safeStatus,
-        verificationStatus: safeVerStatus,
-        verified: safeVerified,
-        createdAt: d.createdAt && d.createdAt.toDate ? d.createdAt.toDate() : (d.createdAt ? new Date(d.createdAt) : new Date()),
-        updatedAt: d.updatedAt && d.updatedAt.toDate ? d.updatedAt.toDate() : (d.updatedAt ? new Date(d.updatedAt) : new Date())
-      });
-    });
-
-    list.sort((a, b) => b.createdAt - a.createdAt);
-    allPropertiesMaster = list;
-
-    renderPublicViews();
-    renderAdminDashboard();
-    renderAgentTable();
-  }, error => {
-    console.error("Firestore listen error:", error);
-  });
+function showView(id){
+  document.querySelectorAll(".view").forEach(v=>v.classList.add("hidden-view"));
+  const el=$(id);
+  if(el) el.classList.remove("hidden-view");
+  window.scrollTo({top:0,behavior:"smooth"});
+  if(id==="listings") renderListings();
+  if(id==="agentDashboard") renderAgentTable();
+  if(id==="adminDashboard") renderAdminTable();
 }
 
-function getApprovedProperties() {
-  return allPropertiesMaster.filter(p => p.status === "approved");
+function toggleMenu(){ $("mobileMenu").classList.toggle("hidden"); }
+
+function showListings(type="All"){
+  window.listingType = type || "All";
+  showView("listings");
 }
 
-function renderPublicViews() {
-  const approved = getApprovedProperties();
-  renderGrids(approved);
+function homeSearch(){
+  window.listingType = $("homeType").value;
+  window.listingQuery = $("homeSearch").value.trim().toLowerCase();
+  showView("listings");
+  $("listingSearch").value = window.listingQuery || "";
+  renderListings();
 }
 
-function buildCard(p) {
-  const safeTitle = escapeHtml(p.title);
-  const safeBlock = escapeHtml(p.block);
-  const safeDistrict = escapeHtml(p.district);
-  const safeKhata = escapeHtml(p.khata);
-  const safePlot = escapeHtml(p.plot);
-  const safeDesc = escapeHtml(p.description);
-  const safeArea = escapeHtml(p.area);
-  const safePrice = escapeHtml(p.price);
-  const phone = normalizePhone(p.sellerPhone);
-  const safeClass = escapeHtml(p.classType);
-  const image = escapeHtml(p.image);
-
-  const verifyBadge = p.verified
-    ? '<div class="absolute top-3 right-3 bg-emerald-600 text-white text-[10px] font-extrabold px-2.5 py-1 rounded-lg shadow-md flex items-center gap-1"><i class="fa-solid fa-circle-check"></i> Verified</div>'
-    : "";
-
-  const whatsappText = encodeURIComponent(
-    `नमस्ते, मुझे आपकी ज़मीन (खाता: ${p.khata}, प्लॉट: ${p.plot} - ${p.title}) में रुचि है।`
-  );
-
+/* =========================================================
+   PROPERTY CARD / PUBLIC DATA
+   ========================================================= */
+function propertyCard(p){
+  const image = p.image || "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=900&q=80";
+  const verified = p.verified === true || p.verificationStatus === "verified";
+  const location = [p.village,p.block,p.district].filter(Boolean).join(", ");
   return `
-    <div class="bg-white rounded-3xl overflow-hidden card-shadow hover:shadow-2xl transition duration-300 border border-slate-100 flex flex-col justify-between">
-      <div class="relative h-48 bg-slate-100">
-        <img src="${image}" alt="${safeTitle}" class="w-full h-full object-cover" loading="lazy"
-             onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&auto=format&fit=crop&q=60'">
-        <div class="absolute top-3 left-3 bg-[#064e3b]/95 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm">
-          ${safeClass} Land
-        </div>
-        ${verifyBadge}
+  <article class="card overflow-hidden hover:-translate-y-1 transition">
+    <div class="relative h-48 bg-slate-100">
+      <img src="${esc(image)}" alt="${esc(p.title)}" class="w-full h-full object-cover" loading="lazy"
+           onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=900&q=80'">
+      <div class="absolute top-3 left-3 badge bg-emerald-700 text-white">${esc(p.classType || "General")}</div>
+      ${verified ? '<div class="absolute top-3 right-3 badge bg-emerald-500 text-white"><i class="fa-solid fa-circle-check mr-1"></i>Verified</div>' : ""}
+    </div>
+    <div class="p-5">
+      <div class="text-xs text-amber-700 font-bold mb-1"><i class="fa-solid fa-location-dot mr-1"></i>${esc(location || "Jharkhand")}</div>
+      <h3 class="font-extrabold text-lg leading-snug">${esc(p.title || "Land Listing")}</h3>
+      <div class="flex flex-wrap gap-2 mt-3 text-xs">
+        <span class="badge bg-amber-50 text-amber-800">खाता: ${esc(p.khata || "—")}</span>
+        <span class="badge bg-emerald-50 text-emerald-800">प्लॉट: ${esc(p.plot || "—")}</span>
       </div>
-
-      <div class="p-5 flex-1 flex flex-col justify-between">
-        <div>
-          <div class="text-xs text-amber-700 font-extrabold mb-1.5 gap-1.5 flex items-center">
-            <i class="fa-solid fa-location-dot"></i> ${safeBlock}, ${safeDistrict}
-          </div>
-          <h3 class="font-extrabold text-slate-900 text-base leading-snug mb-2">${safeTitle}</h3>
-
-          <div class="flex flex-wrap gap-2 my-2.5 text-xs">
-            <span class="bg-amber-100/80 text-amber-950 font-bold px-2.5 py-1 rounded-lg border border-amber-200">खाता: <strong>${safeKhata || "N/A"}</strong></span>
-            <span class="bg-emerald-100/80 text-emerald-950 font-bold px-2.5 py-1 rounded-lg border border-emerald-200">प्लॉट: <strong>${safePlot || "N/A"}</strong></span>
-          </div>
-
-          <p class="text-xs text-slate-500 mb-4 leading-relaxed line-clamp-2">${safeDesc}</p>
-        </div>
-
-        <div>
-          <div class="bg-slate-50 p-3.5 rounded-2xl flex justify-between items-center mb-4 border border-slate-100">
-            <div><div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">रकबा</div><div class="text-sm font-black text-slate-800">${safeArea}</div></div>
-            <div class="text-right"><div class="text-[10px] text-slate-400 font-bold uppercase tracking-wider">कुल क़ीमत</div><div class="text-sm font-black text-emerald-700">${safePrice}</div></div>
-          </div>
-          ${
-            phone
-            ? `<a href="https://wa.me/${phone}?text=${whatsappText}" target="_blank" rel="noopener noreferrer"
-                class="w-full bg-[#064e3b] hover:bg-[#043327] text-white font-extrabold py-3 rounded-xl transition text-xs flex items-center justify-center gap-2 shadow-md">
-                <i class="fa-brands fa-whatsapp text-sm text-emerald-400"></i> सीधे विक्रेता से बात करें
-               </a>`
-            : `<div class="w-full bg-slate-200 text-slate-500 font-bold py-3 rounded-xl text-xs text-center">संपर्क नंबर उपलब्ध नहीं</div>`
-          }
-        </div>
+      <div class="grid grid-cols-2 gap-3 mt-4">
+        <div><div class="text-xs text-slate-500">Area</div><div class="font-extrabold">${esc(p.area)} Decimal</div></div>
+        <div><div class="text-xs text-slate-500">Price</div><div class="font-extrabold text-emerald-700">${money(p.price)}</div></div>
+      </div>
+      <div class="mt-4 flex gap-2">
+        <button onclick="openProperty('${esc(p.id)}')" class="btn bg-slate-100 hover:bg-slate-200 flex-1">Details</button>
+        <a href="${whatsapp(p.sellerPhone,p.title)}" target="_blank" rel="noopener" class="btn bg-emerald-700 hover:bg-emerald-800 text-white flex-1 text-center"><i class="fa-brands fa-whatsapp mr-1"></i> WhatsApp</a>
       </div>
     </div>
-  `;
+  </article>`;
 }
 
-function renderGrids(items) {
-  const homeGrid = document.getElementById("propertyGridHome");
-  const allGrid = document.getElementById("propertyGridAll");
-  const empty = '<p class="col-span-full text-center py-10 text-slate-400">कोई स्वीकृत प्रॉपर्टी नहीं मिली।</p>';
-
-  if (homeGrid) homeGrid.innerHTML = items.length ? items.slice(0, 6).map(buildCard).join("") : empty;
-  if (allGrid) allGrid.innerHTML = items.length ? items.map(buildCard).join("") : empty;
+function getApproved(){
+  return allProperties.filter(p=>p.status==="approved");
 }
 
-function filterAndShowProperties(type) {
-  switchView("view-listings");
-  const approved = getApprovedProperties();
-  const title = document.getElementById("listingPageTitle");
-
-  if (type === "All") {
-    title.innerText = "सभी उपलब्ध ज़मीन";
-    renderGrids(approved);
-  } else if (type === "General" || type === "CNT") {
-    title.innerText = `${type} श्रेणी की ज़मीन`;
-    renderGrids(approved.filter(p => p.classType === type));
-  } else {
-    title.innerText = `${type} प्रकार की ज़मीन`;
-    renderGrids(approved.filter(p => p.category === type));
-  }
+function renderHome(){
+  const approved=getApproved();
+  $("countAll").textContent = `${approved.length} approved listings`;
+  $("countGeneral").textContent = `${approved.filter(p=>p.classType==="General").length} listings`;
+  $("countCNT").textContent = `${approved.filter(p=>p.classType==="CNT").length} listings`;
+  $("homeGrid").innerHTML = approved.length
+    ? approved.slice(0,6).map(propertyCard).join("")
+    : `<div class="card p-10 text-center text-slate-500 col-span-full">अभी कोई approved listing उपलब्ध नहीं है।</div>`;
 }
 
-function quickDistrictSearch(dist) {
-  switchView("view-listings");
-  document.getElementById("listingPageTitle").innerText = `${dist} ज़िले की लिस्टिंग`;
-  renderGrids(getApprovedProperties().filter(p => p.district.toLowerCase() === dist.toLowerCase()));
+function fillDistricts(){
+  const ds=[...new Set(getApproved().map(p=>p.district).filter(Boolean))].sort();
+  $("listingDistrict").innerHTML='<option value="">सभी जिले</option>'+ds.map(d=>`<option value="${esc(d)}">${esc(d)}</option>`).join("");
 }
 
-function handleSearch() {
-  const query = document.getElementById("searchInput").value.toLowerCase().trim();
-  const type = document.getElementById("searchType").value;
+function renderListings(){
+  const q=(window.listingQuery || $("listingSearch")?.value || "").toLowerCase().trim();
+  const district=$("listingDistrict")?.value || "";
+  const type=window.listingType || "All";
 
-  const filtered = getApprovedProperties().filter(p => {
-    const textMatch = !query ||
-      p.title.toLowerCase().includes(query) ||
-      p.district.toLowerCase().includes(query) ||
-      p.block.toLowerCase().includes(query) ||
-      p.village.toLowerCase().includes(query) ||
-      p.propertyId.toLowerCase().includes(query) ||
-      p.sellerName.toLowerCase().includes(query) ||
-      String(p.khata).toLowerCase().includes(query) ||
-      String(p.plot).toLowerCase().includes(query) ||
-      p.description.toLowerCase().includes(query);
-
-    const typeMatch = type === "All" || p.classType === type || p.category === type;
-    return textMatch && typeMatch;
+  let list=getApproved().filter(p=>{
+    const typeMatch=type==="All" || p.classType===type || p.category===type;
+    const districtMatch=!district || String(p.district||"").toLowerCase()===district.toLowerCase();
+    const text=[p.id,p.title,p.district,p.block,p.village,p.khata,p.plot,p.sellerName,p.description].join(" ").toLowerCase();
+    return typeMatch && districtMatch && (!q || text.includes(q));
   });
 
-  switchView("view-listings");
-  document.getElementById("listingPageTitle").innerText = `खोज परिणाम (${filtered.length} स्वीकृत प्रॉपर्टी मिली)`;
-  renderGrids(filtered);
+  $("listingTitle").textContent = type==="All" ? `सभी जमीन (${list.length})` : `${type} (${list.length})`;
+  $("listingGrid").innerHTML=list.length
+    ? list.map(propertyCard).join("")
+    : `<div class="card p-10 text-center text-slate-500 col-span-full">आपकी खोज के अनुसार कोई approved property नहीं मिली।</div>`;
 }
 
-// UNIQUE PROPERTY ID GENERATOR
-function generateUniquePropertyId() {
-  const year = new Date().getFullYear();
-  const randomStr = Math.random().toString(36).substring(2, 8).toUpperCase();
-  return `JLB-${year}-${randomStr}`;
+function openProperty(id){
+  const p=allProperties.find(x=>x.id===id);
+  if(!p)return;
+  $("modalTitle").textContent=p.title || "Property Details";
+  $("modalBody").innerHTML=`
+    <div class="grid md:grid-cols-2 gap-5">
+      <img src="${esc(p.image || "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=900&q=80")}" class="w-full h-64 object-cover rounded-2xl">
+      <div class="space-y-2 text-sm">
+        <p><b>ID:</b> ${esc(p.propertyId || p.id)}</p>
+        <p><b>Location:</b> ${esc([p.village,p.block,p.district].filter(Boolean).join(", "))}</p>
+        <p><b>Khata:</b> ${esc(p.khata || "—")} &nbsp; <b>Plot:</b> ${esc(p.plot || "—")}</p>
+        <p><b>Category:</b> ${esc(p.category || "—")} &nbsp; <b>Class:</b> ${esc(p.classType || "—")}</p>
+        <p><b>Area:</b> ${esc(p.area)} Decimal</p>
+        <p><b>Price:</b> <span class="text-emerald-700 font-extrabold">${money(p.price)}</span></p>
+        <p><b>Road:</b> ${esc(p.road || "—")} &nbsp; <b>Facing:</b> ${esc(p.facing || "—")}</p>
+        <p><b>Seller:</b> ${esc(p.sellerName || "—")}</p>
+        <p><b>Posted:</b> ${formatDate(p.createdAt)}</p>
+        <a href="${whatsapp(p.sellerPhone,p.title)}" target="_blank" rel="noopener" class="btn bg-emerald-700 text-white inline-block mt-2"><i class="fa-brands fa-whatsapp mr-1"></i> Seller से WhatsApp करें</a>
+      </div>
+    </div>
+    <div class="mt-5 p-4 bg-slate-50 rounded-xl"><b>विवरण:</b><p class="mt-2 text-slate-600 whitespace-pre-wrap">${esc(p.description || "कोई अतिरिक्त विवरण नहीं।")}</p></div>`;
+  $("propertyModal").classList.remove("hidden");
 }
 
-// FORM SUBMISSION
-async function handleFormSubmit(e) {
+function closeModal(){ $("propertyModal").classList.add("hidden"); }
+
+/* =========================================================
+   FIRESTORE REALTIME LISTENER
+   ========================================================= */
+function listenProperties(){
+  if(unsubscribeProperties) unsubscribeProperties();
+  unsubscribeProperties=db.collection("properties").onSnapshot(snapshot=>{
+    const list=[];
+    snapshot.forEach(doc=>{
+      const d=doc.data()||{};
+      list.push({
+        id:doc.id,
+        propertyId:d.propertyId || doc.id,
+        sellerId:d.sellerId || "",
+        sellerName:d.sellerName || "",
+        sellerPhone:d.sellerPhone || "",
+        title:d.title || "Land Listing",
+        description:d.description || "",
+        district:d.district || "",
+        block:d.block || "",
+        panchayat:d.panchayat || "",
+        village:d.village || "",
+        khata:d.khata || "",
+        plot:d.plot || "",
+        category:d.category || "Residential",
+        classType:d.classType || "General",
+        area:Number(d.areaVal ?? d.area ?? 0),
+        areaUnit:d.areaUnit || "Decimal",
+        price:Number(d.priceVal ?? d.price ?? 0),
+        road:d.road || "",
+        facing:d.facing || "",
+        image:d.image || "",
+        status:d.status || "pending",
+        verificationStatus:d.verificationStatus || (d.verified ? "verified" : "unverified"),
+        verified:d.verified === true,
+        createdAt:d.createdAt || null,
+        updatedAt:d.updatedAt || null
+      });
+    });
+    list.sort((a,b)=>{
+      const aa=a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
+      const bb=b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
+      return bb-aa;
+    });
+    allProperties=list;
+    renderHome();
+    fillDistricts();
+    if(!$("listings").classList.contains("hidden-view")) renderListings();
+    if(!$("adminDashboard").classList.contains("hidden-view")) renderAdminTable();
+    if(!$("agentDashboard").classList.contains("hidden-view")) renderAgentTable();
+  },err=>{
+    console.error("Firestore listener:",err);
+    $("homeGrid").innerHTML=`<div class="card p-8 text-center text-red-600 col-span-full">Firestore data load नहीं हो पाया। Firebase Rules और connection जांचें।</div>`;
+  });
+}
+
+/* =========================================================
+   PROPERTY SUBMISSION
+   ========================================================= */
+$("propertyForm").addEventListener("submit",async e=>{
   e.preventDefault();
+  const btn=$("submitBtn");
+  btn.disabled=true;
+  btn.innerHTML='<i class="fa-solid fa-spinner fa-spin mr-2"></i> भेजा जा रहा है...';
 
-  const btn = document.getElementById("submitBtn");
-  if (btn.disabled) return;
+  try{
+    /* Current Firestore rules require a signed-in user for property creation.
+       If the visitor is not logged in, use Firebase Anonymous Auth. */
+    if(!auth.currentUser){
+      try{
+        await auth.signInAnonymously();
+      }catch(authErr){
+        throw new Error("Property submit करने के लिए Firebase Authentication में Anonymous sign-in enable करें.");
+      }
+    }
 
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Submitting...';
+    const propertyId="JLB-"+new Date().getFullYear()+"-"+Math.random().toString(36).slice(2,8).toUpperCase();
+    const areaVal=Number($("area").value||0);
+    const priceVal=Number($("price").value||0);
 
-  const customId = generateUniquePropertyId();
-  const rawPrice = parseFloat(document.getElementById("pPrice").value) || 0;
-  const rawArea = parseFloat(document.getElementById("pArea").value) || 0;
+    const data={
+      propertyId,
+      sellerId:auth.currentUser?.uid || "GUEST_SELLER",
+      sellerName:$("sellerName").value.trim(),
+      sellerPhone:$("sellerPhone").value.trim(),
+      title:$("pTitle").value.trim(),
+      description:$("description").value.trim(),
+      district:$("district").value.trim(),
+      block:$("block").value.trim(),
+      village:$("village").value.trim(),
+      khata:$("khata").value.trim(),
+      plot:$("plot").value.trim(),
+      category:$("category").value,
+      classType:$("classType").value,
+      area:areaVal+" Decimal",
+      areaVal,
+      areaUnit:"Decimal",
+      price:"₹ "+priceVal.toLocaleString("en-IN"),
+      priceVal,
+      road:$("road").value.trim(),
+      facing:$("facing").value.trim(),
+      image:$("image").value.trim(),
+      images:[],
+      documents:[],
+      status:"pending",
+      verificationStatus:"unverified",
+      verified:false,
+      createdAt:firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+    };
 
-  const propertyData = {
-    propertyId: customId,
-    sellerId: "GUEST_SELLER",
-    sellerName: document.getElementById("pSellerName").value.trim(),
-    sellerPhone: document.getElementById("pSellerPhone").value.trim(),
-    title: document.getElementById("pTitle").value.trim(),
-    description: document.getElementById("pDesc").value.trim() || "Direct seller listing in Jharkhand.",
-    district: document.getElementById("pDistrict").value,
-    block: document.getElementById("pBlock").value.trim(),
-    panchayat: "",
-    village: document.getElementById("pBlock").value.trim(),
-    khata: document.getElementById("pKhata").value.trim(),
-    plot: document.getElementById("pPlot").value.trim(),
-    category: document.getElementById("pCategory").value,
-    classType: document.getElementById("pClassType").value,
-    area: rawArea + " Decimal",
-    areaVal: rawArea,
-    areaUnit: "Decimal",
-    price: "₹ " + rawPrice.toLocaleString("en-IN"),
-    priceVal: rawPrice,
-    road: document.getElementById("pRoad").value.trim() || "Paved Road",
-    roadDetails: "",
-    facing: "North/East",
-    landmark: "",
-    image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&auto=format&fit=crop&q=60",
-    images: [],
-    documents: [],
-    status: "pending",
-    verificationStatus: "unverified",
-    verified: false,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-  };
+    await db.collection("properties").doc(propertyId).set(data);
+    alert("जमीन की जानकारी सफलतापूर्वक भेज दी गई है। यह Admin approval के बाद public listing में दिखाई देगी।");
+    $("propertyForm").reset();
+    $("district").value="Palamu";
+    $("block").value="Hussainabad";
+    showView("home");
+  }catch(err){
+    console.error(err);
+    alert("Submission failed: "+err.message);
+  }finally{
+    btn.disabled=false;
+    btn.innerHTML='<i class="fa-solid fa-paper-plane mr-2"></i> जमीन की जानकारी भेजें';
+  }
+});
 
-  try {
-    await db.collection("properties").doc(customId).set(propertyData);
-    alert(`आपकी प्रॉपर्टी (ID: ${customId}) सफलतापूर्वक सबमिट हो गई है। एडमिन की मंजूरी के बाद यह वेबसाइट पर दिखाई देगी।`);
-    document.getElementById("postPropertyForm").reset();
-    switchView("view-home");
-  } catch(error) {
-    console.error("Submission Error:", error);
-    alert("Property submission failed. Please try again.");
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i> ज़मीन का विज्ञापन सबमिट करें';
+/* =========================================================
+   FIREBASE AUTH + ADMIN SECURITY
+   ========================================================= */
+async function adminLogin(e){
+  e.preventDefault();
+  $("loginMsg").textContent="Login हो रहा है...";
+  $("loginMsg").className="text-center text-sm mt-3 text-slate-500";
+  try{
+    const cred=await auth.signInWithEmailAndPassword($("adminEmail").value.trim(),$("adminPassword").value);
+    const snap=await db.collection("admins").doc(cred.user.uid).get();
+    if(!snap.exists || snap.data().role!=="admin"){
+      await auth.signOut();
+      throw new Error("इस account को Admin access नहीं दिया गया है।");
+    }
+    currentAdmin=cred.user;
+    $("adminIdentity").textContent=cred.user.email || "";
+    $("loginMsg").textContent="";
+    showView("adminDashboard");
+    renderAdminTable();
+  }catch(err){
+    console.error(err);
+    $("loginMsg").textContent=err.message || "Login failed";
+    $("loginMsg").className="text-center text-sm mt-3 text-red-600";
   }
 }
 
-// ADMIN AUTH & DASHBOARD
-function verifyAdminPin() {
-  if (document.getElementById("adminPinInput").value === ADMIN_PIN) {
-    switchView("view-admin-dashboard");
-    renderAdminDashboard();
-  } else {
-    alert("गलत पासवर्ड!");
+auth.onAuthStateChanged(async user=>{
+  currentAdmin=null;
+  $("navLogout").classList.add("hidden");
+  if(user){
+    try{
+      const snap=await db.collection("admins").doc(user.uid).get();
+      if(snap.exists && snap.data().role==="admin"){
+        currentAdmin=user;
+        $("navLogout").classList.remove("hidden");
+        $("adminIdentity").textContent=user.email || user.uid;
+      }
+    }catch(e){console.error(e)}
   }
+});
+
+async function requireAdmin(){
+  const user=auth.currentUser;
+  if(!user) return false;
+  const snap=await db.collection("admins").doc(user.uid).get();
+  return snap.exists && snap.data().role==="admin";
 }
 
-function setAdminTab(tab) {
-  currentAdminTab = tab;
-  ["ALL", "PENDING", "APPROVED", "REJECTED"].forEach(t => {
-    const btn = document.getElementById("tab-" + t);
-    if (!btn) return;
-    btn.className = t === tab
-      ? "px-4 py-2 rounded-xl text-xs font-bold bg-[#064e3b] text-white"
-      : "px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-700 hover:bg-slate-200";
+async function logout(){
+  try{await auth.signOut()}catch(e){}
+  currentAdmin=null;
+  showView("home");
+}
+
+/* =========================================================
+   ADMIN DASHBOARD
+   ========================================================= */
+function setAdminTab(tab){
+  adminTab=tab;
+  ["ALL","PENDING","APPROVED","REJECTED"].forEach(t=>{
+    const b=$("tab"+t);
+    if(!b)return;
+    b.className=t===tab ? "btn bg-emerald-700 text-white" : "btn bg-slate-100";
   });
   renderAdminTable();
 }
 
-function renderAdminDashboard() {
-  const total = allPropertiesMaster.length;
-  const pending = allPropertiesMaster.filter(p => p.status === "pending").length;
-  const approved = allPropertiesMaster.filter(p => p.status === "approved").length;
-  const rejected = allPropertiesMaster.filter(p => p.status === "rejected").length;
-  const verified = allPropertiesMaster.filter(p => p.verificationStatus === "verified" || p.verified === true).length;
+function renderAdminTable(){
+  if(!$("adminTableBody"))return;
+  let list=allProperties.slice();
+  $("statTotal").textContent=list.length;
+  $("statPending").textContent=list.filter(p=>p.status==="pending").length;
+  $("statApproved").textContent=list.filter(p=>p.status==="approved").length;
+  $("statRejected").textContent=list.filter(p=>p.status==="rejected").length;
 
-  const cT = document.getElementById("countTotal");
-  const cP = document.getElementById("countPending");
-  const cA = document.getElementById("countApproved");
-  const cR = document.getElementById("countRejected");
-  const cV = document.getElementById("countVerified");
+  if(adminTab!=="ALL") list=list.filter(p=>p.status===adminTab.toLowerCase());
 
-  if (cT) cT.innerText = total;
-  if (cP) cP.innerText = pending;
-  if (cA) cA.innerText = approved;
-  if (cR) cR.innerText = rejected;
-  if (cV) cV.innerText = verified;
+  const q=($("adminSearch")?.value||"").toLowerCase().trim();
+  if(q) list=list.filter(p=>[
+    p.id,p.propertyId,p.title,p.district,p.block,p.village,p.khata,p.plot,p.sellerName,p.sellerPhone
+  ].join(" ").toLowerCase().includes(q));
 
-  renderAdminTable();
-}
-
-function renderAdminTable() {
-  const tbody = document.getElementById("adminTableBody");
-  if (!tbody) return;
-
-  const q = (document.getElementById("adminSearchInput")?.value || "").toLowerCase().trim();
-
-  const filtered = allPropertiesMaster.filter(p => {
-    const tabMatch = currentAdminTab === "ALL" || p.status.toUpperCase() === currentAdminTab;
-    const queryMatch = !q ||
-      p.propertyId.toLowerCase().includes(q) ||
-      p.title.toLowerCase().includes(q) ||
-      p.sellerName.toLowerCase().includes(q) ||
-      p.sellerPhone.toLowerCase().includes(q) ||
-      p.district.toLowerCase().includes(q) ||
-      String(p.khata).toLowerCase().includes(q) ||
-      String(p.plot).toLowerCase().includes(q);
-    return tabMatch && queryMatch;
-  });
-
-  if (!filtered.length) {
-    tbody.innerHTML = '<tr><td colspan="8" class="p-6 text-center text-slate-400">कोई डेटा उपलब्ध नहीं है।</td></tr>';
+  if(!list.length){
+    $("adminTableBody").innerHTML='<tr><td colspan="9" class="p-10 text-center text-slate-500">कोई record नहीं मिला।</td></tr>';
     return;
   }
 
-  const statusColors = {
-    pending: "bg-amber-100 text-amber-800 border-amber-300",
-    approved: "bg-emerald-100 text-emerald-800 border-emerald-300",
-    rejected: "bg-rose-100 text-rose-800 border-rose-300"
-  };
-
-  tbody.innerHTML = filtered.map(p => {
-    const isVer = p.verificationStatus === "verified" || p.verified === true;
-    const safeId = escapeHtml(p.propertyId);
-    const safeTitle = escapeHtml(p.title);
-    const safeBlock = escapeHtml(p.block);
-    const safeDistrict = escapeHtml(p.district);
-    const safeKhata = escapeHtml(p.khata);
-    const safePlot = escapeHtml(p.plot);
-    const safePrice = escapeHtml(p.price);
-    const safeArea = escapeHtml(p.area);
-    const safeClass = escapeHtml(p.classType);
-    const safeSeller = escapeHtml(p.sellerName);
-    const safePhone = escapeHtml(p.sellerPhone);
-
-    return `
-      <tr class="hover:bg-slate-50 transition">
-        <td class="p-3.5 font-bold">
-          ${safeId}
-          <div class="text-[10px] text-slate-400 font-normal">${p.createdAt.toLocaleDateString("en-IN")}</div>
-        </td>
-        <td class="p-3.5">
-          <div class="font-bold text-slate-900">${safeTitle}</div>
-          <div class="text-[11px] text-slate-500">${safeBlock}, ${safeDistrict}</div>
-        </td>
-        <td class="p-3.5">
-          <span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded font-bold">ख: ${safeKhata || "-"}</span>
-          <span class="bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded font-bold">प्लॉट: ${safePlot || "-"}</span>
-        </td>
-        <td class="p-3.5 font-bold text-emerald-700">
-          ${safePrice}
-          <div class="text-[10px] text-slate-400 font-normal">${safeArea} (${safeClass})</div>
-        </td>
-        <td class="p-3.5">
-          <div class="font-bold text-slate-800">${safeSeller}</div>
-          <a href="tel:${safePhone}" class="text-blue-600 font-semibold">${safePhone}</a>
-        </td>
-        <td class="p-3.5">
-          <span class="text-[10px] font-extrabold uppercase px-2.5 py-1 rounded-full border ${statusColors[p.status] || "bg-slate-100"}">
-            ${escapeHtml(p.status)}
-          </span>
-        </td>
-        <td class="p-3.5 text-center">
-          <button onclick="toggleVerification('${p.id}', ${!isVer})" class="text-[10px] font-bold px-2 py-1 rounded-lg border transition ${isVer ? 'bg-emerald-600 text-white border-emerald-700' : 'bg-slate-100 text-slate-600 border-slate-300 hover:bg-slate-200'}">
-            ${isVer ? '✓ Verified' : 'Unverified'}
-          </button>
-        </td>
-        <td class="p-3.5 text-right space-x-1 whitespace-nowrap">
-          <button onclick="viewPropertyModal('${p.id}')" class="bg-slate-700 hover:bg-slate-800 text-white px-2 py-1 rounded text-[11px] font-bold">View</button>
-          ${p.status !== 'approved' ? `<button onclick="updatePropertyStatus('${p.id}', 'approved')" class="bg-emerald-600 hover:bg-emerald-700 text-white px-2 py-1 rounded text-[11px] font-bold">Approve</button>` : ''}
-          ${p.status !== 'rejected' ? `<button onclick="updatePropertyStatus('${p.id}', 'rejected')" class="bg-amber-600 hover:bg-amber-700 text-white px-2 py-1 rounded text-[11px] font-bold">Reject</button>` : ''}
-          <button onclick="deleteProperty('${p.id}')" class="bg-rose-600 hover:bg-rose-700 text-white px-2 py-1 rounded text-[11px] font-bold">Delete</button>
-        </td>
-      </tr>
-    `;
+  $("adminTableBody").innerHTML=list.map(p=>{
+    const statusClass=p.status==="approved"?"bg-emerald-100 text-emerald-800":p.status==="rejected"?"bg-red-100 text-red-800":"bg-amber-100 text-amber-800";
+    const ver=p.verified;
+    return `<tr class="border-b hover:bg-slate-50">
+      <td class="p-3 font-bold">${esc(p.propertyId)}</td>
+      <td class="p-3">${formatDate(p.createdAt)}</td>
+      <td class="p-3"><b>${esc(p.title)}</b><div class="text-xs text-slate-500">${esc([p.village,p.block,p.district].filter(Boolean).join(", "))}</div></td>
+      <td class="p-3">${esc(p.khata||"—")} / ${esc(p.plot||"—")}</td>
+      <td class="p-3">${esc(p.area)} Dec<br><b>${money(p.price)}</b></td>
+      <td class="p-3">${esc(p.sellerName)}<br><a class="text-emerald-700" href="tel:${esc(p.sellerPhone)}">${esc(p.sellerPhone)}</a></td>
+      <td class="p-3"><span class="badge ${statusClass}">${esc(p.status)}</span></td>
+      <td class="p-3"><button onclick="toggleVerification('${esc(p.id)}',${!ver})" class="badge ${ver?"bg-emerald-100 text-emerald-800":"bg-slate-100 text-slate-700"}">${ver?"Verified":"Unverified"}</button></td>
+      <td class="p-3">
+        <div class="flex flex-wrap gap-1">
+          <button onclick="openProperty('${esc(p.id)}')" class="btn bg-slate-200 text-xs">View</button>
+          ${p.status!=="approved"?`<button onclick="updateStatus('${esc(p.id)}','approved')" class="btn bg-emerald-600 text-white text-xs">Approve</button>`:""}
+          ${p.status!=="rejected"?`<button onclick="updateStatus('${esc(p.id)}','rejected')" class="btn bg-amber-500 text-white text-xs">Reject</button>`:""}
+          ${p.status!=="pending"?`<button onclick="updateStatus('${esc(p.id)}','pending')" class="btn bg-slate-600 text-white text-xs">Pending</button>`:""}
+          <button onclick="deleteProperty('${esc(p.id)}')" class="btn bg-red-600 text-white text-xs">Delete</button>
+        </div>
+      </td>
+    </tr>`;
   }).join("");
 }
 
-function viewPropertyModal(id) {
-  const p = allPropertiesMaster.find(x => x.id === id);
-  if (!p) return;
-
-  document.getElementById("mTitle").innerText = p.title;
-  document.getElementById("mPropertyId").innerText = "ID: " + p.propertyId;
-  document.getElementById("mLocation").innerText = `${p.village || p.block}, ${p.block}, ${p.district}`;
-  document.getElementById("mKhataPlot").innerText = `खाता: ${p.khata || "-"} | प्लॉट: ${p.plot || "-"}`;
-  document.getElementById("mCategory").innerText = p.category;
-  document.getElementById("mClassType").innerText = p.classType;
-  document.getElementById("mArea").innerText = p.area;
-  document.getElementById("mPrice").innerText = p.price;
-  document.getElementById("mSellerName").innerText = p.sellerName;
-  document.getElementById("mSellerPhone").innerText = p.sellerPhone;
-  document.getElementById("mRoad").innerText = p.road || "Paved Road";
-  document.getElementById("mFacing").innerText = p.facing || "North/East";
-  document.getElementById("mStatus").innerText = p.status;
-  document.getElementById("mVerificationStatus").innerText = p.verificationStatus;
-  document.getElementById("mCreatedDate").innerText = p.createdAt.toLocaleString("en-IN");
-  document.getElementById("mDescription").innerText = p.description;
-
-  const modal = document.getElementById("adminDetailModal");
-  modal.classList.remove("hidden");
-  modal.classList.add("flex");
-}
-
-function closeAdminModal() {
-  const modal = document.getElementById("adminDetailModal");
-  modal.classList.add("hidden");
-  modal.classList.remove("flex");
-}
-
-async function updatePropertyStatus(id, newStatus) {
-  try {
+async function updateStatus(id,newStatus){
+  if(!(await requireAdmin())){alert("Admin login required.");return;}
+  try{
     await db.collection("properties").doc(id).update({
-      status: newStatus,
-      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      status:newStatus,
+      updatedAt:firebase.firestore.FieldValue.serverTimestamp()
     });
-  } catch(error) {
-    console.error("Status Update Error:", error);
-    alert("Status update failed: " + error.message);
-  }
+  }catch(err){alert("Status update failed: "+err.message)}
 }
 
-async function toggleVerification(id, newState) {
-  try {
+async function toggleVerification(id,newState){
+  if(!(await requireAdmin())){alert("Admin login required.");return;}
+  try{
     await db.collection("properties").doc(id).update({
-      verificationStatus: newState ? "verified" : "unverified",
-      verified: newState,
-      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      verified:newState,
+      verificationStatus:newState?"verified":"unverified",
+      updatedAt:firebase.firestore.FieldValue.serverTimestamp()
     });
-  } catch(error) {
-    console.error("Verification Error:", error);
-    alert("Verification update failed: " + error.message);
-  }
+  }catch(err){alert("Verification update failed: "+err.message)}
 }
 
-async function deleteProperty(id) {
-  if (!confirm(`क्या आप सच में प्रॉपर्टी ${id} को हमेशा के लिए हटाना चाहते हैं?`)) return;
-  try {
+async function deleteProperty(id){
+  if(!(await requireAdmin())){alert("Admin login required.");return;}
+  if(!confirm("क्या आप इस property को permanently delete करना चाहते हैं?"))return;
+  try{
     await db.collection("properties").doc(id).delete();
-  } catch(error) {
-    console.error("Delete Error:", error);
-    alert("Delete failed: " + error.message);
-  }
+  }catch(err){alert("Delete failed: "+err.message)}
 }
 
-// AGENT PORTAL
-function verifyAgentPin() {
-  if (document.getElementById("agentPinInput").value === AGENT_PIN) {
-    switchView("view-agent-dashboard");
+/* =========================================================
+   AGENT
+   ========================================================= */
+function agentLogin(e){
+  e.preventDefault();
+  if($("agentPin").value===AGENT_PIN){
+    $("agentPin").value="";
+    showView("agentDashboard");
     renderAgentTable();
-  } else {
-    alert("गलत पिन!");
-  }
+  }else alert("गलत Agent PIN");
 }
 
-function renderAgentTable() {
-  const tbody = document.getElementById("agentTableBody");
-  if (!tbody) return;
-
-  const approved = getApprovedProperties();
-  if (!approved.length) {
-    tbody.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-slate-400">कोई approved listing नहीं है।</td></tr>';
-    return;
-  }
-
-  tbody.innerHTML = approved.map(p => `
-    <tr class="hover:bg-slate-50">
-      <td class="p-3.5 font-bold">${escapeHtml(p.propertyId)}<div class="text-[11px] text-slate-500 font-normal">${escapeHtml(p.title)}</div></td>
-      <td class="p-3.5"><span class="bg-amber-100 text-amber-900 px-2 py-0.5 rounded font-bold">ख: ${escapeHtml(p.khata||"-")}</span> / <span class="bg-emerald-100 text-emerald-900 px-2 py-0.5 rounded font-bold">प्लॉट: ${escapeHtml(p.plot||"-")}</span></td>
-      <td class="p-3.5">${escapeHtml(p.block)}, ${escapeHtml(p.district)}</td>
-      <td class="p-3.5 font-bold text-emerald-700">${escapeHtml(p.price)}<div class="text-[11px] text-slate-500">${escapeHtml(p.area)}</div></td>
-      <td class="p-3.5"><span class="text-[10px] font-bold px-2 py-0.5 rounded ${p.verified ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600'}">${p.verificationStatus}</span></td>
-      <td class="p-3.5">${escapeHtml(p.sellerName)}<br><a href="tel:${escapeHtml(p.sellerPhone)}" class="text-blue-600 font-bold">${escapeHtml(p.sellerPhone)}</a></td>
-    </tr>
-  `).join("");
+function renderAgentTable(){
+  const approved=getApproved();
+  $("agentTableBody").innerHTML=approved.length ? approved.map(p=>`
+    <tr class="border-b">
+      <td class="p-3 font-bold">${esc(p.propertyId)}</td>
+      <td class="p-3">${esc(p.title)}<div class="text-xs text-slate-500">${esc([p.village,p.block,p.district].filter(Boolean).join(", "))}</div></td>
+      <td class="p-3">${esc(p.khata||"—")} / ${esc(p.plot||"—")}</td>
+      <td class="p-3">${esc(p.area)} Decimal</td>
+      <td class="p-3 font-bold text-emerald-700">${money(p.price)}</td>
+      <td class="p-3">${esc(p.sellerName)}<br><a class="text-blue-600" href="tel:${esc(p.sellerPhone)}">${esc(p.sellerPhone)}</a></td>
+    </tr>`).join("") : '<tr><td colspan="6" class="p-10 text-center text-slate-500">कोई approved listing नहीं है।</td></tr>';
 }
 
-// CALCULATOR LOGIC
-function updateCalc(d) {
-  const sqft = d * 435.6;
-  document.getElementById("resKattha").innerText = (d / 3.75).toFixed(2);
-  document.getElementById("resBigha").innerText = (d / 75).toFixed(3);
-  document.getElementById("resAcre").innerText = (d / 100).toFixed(3);
-  document.getElementById("resSqYards").innerText = (sqft / 9).toFixed(1);
+/* =========================================================
+   CALCULATOR
+   ========================================================= */
+function updateCalc(decimal){
+  const d=Number(decimal||0);
+  const sqft=d*435.6;
+  $("rDecimal").textContent=d.toFixed(2);
+  $("rSqft").textContent=sqft.toFixed(2);
+  $("rDhur").textContent=(d*32).toFixed(2);
+  $("rKatha").textContent=(d/20).toFixed(2);
 }
-
-function calculateFromDecimal(val) {
-  const d = parseFloat(val) || 0;
-  document.getElementById("calcSqftInput").value = d ? (d * 435.6).toFixed(2) : "";
+function calcFromDecimal(){
+  const d=Number($("decimalInput").value||0);
+  $("sqftInput").value=d ? (d*435.6).toFixed(2) : "";
+  updateCalc(d);
+}
+function calcFromSqft(){
+  const sqft=Number($("sqftInput").value||0);
+  const d=sqft/435.6;
+  $("decimalInput").value=sqft ? d.toFixed(2) : "";
   updateCalc(d);
 }
 
-function calculateFromSqft(val) {
-  const sqft = parseFloat(val) || 0;
-  const d = sqft / 435.6;
-  document.getElementById("calcDecimalInput").value = sqft ? d.toFixed(2) : "";
-  updateCalc(d);
-}
-
-// STARTUP
-window.addEventListener("DOMContentLoaded", () => {
-  listenToProperties();
-
-  const search = document.getElementById("searchInput");
-  if (search) {
-    search.addEventListener("keydown", e => {
-      if (e.key === "Enter") handleSearch();
-    });
-  }
+/* =========================================================
+   START
+   ========================================================= */
+window.addEventListener("DOMContentLoaded",()=>{
+  listenProperties();
+  showView("home");
 });
 </script>
 </body>
