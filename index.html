@@ -1276,10 +1276,11 @@ renderGrids();
     }
 
     function renderAdminTable() {
+
       const tbody = document.getElementById('adminTableBody');
       if(!tbody) return;
 
-      document.getElementById('admTotalProps').innerText = properties.length;
+            document.getElementById('admTotalProps').innerText = properties.length;
       document.getElementById('admVerifiedProps').innerText = properties.filter(p => p.verified).length;
       document.getElementById('admCntProps').innerText = properties.filter(p => p.classType === 'CNT').length;
 
@@ -1303,11 +1304,13 @@ renderGrids();
     }
 
     function deleteProperty(id) {
-      if(confirm(`क्या आप वाकई प्रॉपर्टी ${id} को हटाना चाहते हैं?`)) {
+      if (confirm(`क्या आप वाकई प्रॉपर्टी ${id} को हटाना चाहते हैं?`)) {
         properties = properties.filter(p => p.id !== id);
+        localStorage.setItem('jlb_saved_properties', JSON.stringify(properties));
         renderGrids();
       }
     }
+
 
     // INITIAL RENDER
     window.addEventListener('DOMContentLoaded', () => {
