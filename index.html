@@ -13,6 +13,10 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
+  <!-- Firebase SDKs (Compat Version for Direct Browser Web Apps) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
   <script>
     tailwind.config = {
       theme: {
@@ -74,7 +78,7 @@
             <div class="font-extrabold text-base md:text-lg tracking-tight leading-tight flex items-center gap-1.5">
               <span>JAMINDAR</span><span class="text-amber-400">LAND BAZAAR</span>
             </div>
-            <p class="text-[9px] text-emerald-200 tracking-wider uppercase font-medium">Land Buying & Selling Platform</p>
+            <p class="text-[9px] text-emerald-200 tracking-wider uppercase font-medium">Cloud Connected Land Portal</p>
           </div>
         </a>
 
@@ -128,13 +132,13 @@
     <section class="relative bg-gradient-to-br from-brand-900 via-brand-800 to-emerald-950 text-white py-16 px-4">
       <div class="max-w-4xl mx-auto text-center space-y-4">
         <span class="bg-amber-500/20 text-amber-300 border border-amber-400/40 text-xs px-3 py-1 rounded-full uppercase tracking-wider font-semibold">
-          खाता व प्लॉट नंबर के साथ सत्यापित ज़मीन
+          ☁️ Google Firebase Live Cloud Sync
         </span>
         <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight">
           खरीदें या बेचें ज़मीन, <span class="text-amber-400">सीधे और सुरक्षित</span>
         </h1>
         <p class="text-emerald-100 text-sm sm:text-base max-w-2xl mx-auto">
-          पलामू, हुसैनाबाद (जपला), डालटनगंज, गढ़वा, राँची समेत पूरे झारखंड में प्लॉट और कृषि भूमि खोजें।
+          पलामू, हुसैनाबाद (जपला), डालटनगंज, गढ़वा, राँची समेत पूरे झारखंड में खाता और प्लॉट नंबर सहित ज़मीन खोजें।
         </p>
 
         <!-- Search Bar -->
@@ -176,7 +180,12 @@
         <button onclick="filterAndShowProperties('All')" class="text-xs text-brand-700 font-bold hover:underline">सभी देखें →</button>
       </div>
 
-      <div id="propertyGridHome" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+      <div id="propertyGridHome" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="col-span-full text-center py-8 text-gray-400">
+          <i class="fa-solid fa-spinner fa-spin text-2xl mb-2"></i>
+          <p class="text-xs">क्लाउड डेटाबेस से ज़मीन लोड हो रही है...</p>
+        </div>
+      </div>
     </section>
   </main>
 
@@ -202,7 +211,7 @@
       <div class="text-center mb-6">
         <span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-3 py-1 rounded-full uppercase">निःशुल्क विज्ञापन</span>
         <h2 class="text-2xl font-black text-gray-900 mt-2">अपनी ज़मीन पोस्ट करें</h2>
-        <p class="text-xs text-gray-500">खाता व प्लॉट नंबर के साथ सटीक जानकारी भरें</p>
+        <p class="text-xs text-gray-500">फॉर्म भरें, डेटा सीधे क्लाउड डेटाबेस में सुरक्षित होगा</p>
       </div>
 
       <form id="postPropertyForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
@@ -231,7 +240,6 @@
           </div>
         </div>
 
-        <!-- NEW: KHATA & PLOT NUMBER FIELDS -->
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-amber-50/60 p-3 rounded-xl border border-amber-200/60">
           <div>
             <label class="block text-xs font-bold text-amber-900 mb-1">खाता नंबर (Khata No.) *</label>
@@ -296,8 +304,8 @@
           <textarea id="pDesc" rows="3" placeholder="ज़मीन के बारे में अतिरिक्त जानकारी (जैसे बाउंड्री, चौहद्दी, पानी, बिजली)..." class="w-full text-sm px-3 py-2 rounded-lg border border-gray-300 focus:border-brand-600 focus:outline-none"></textarea>
         </div>
 
-        <button type="submit" class="w-full bg-brand-700 hover:bg-brand-600 text-white font-black py-3.5 rounded-xl shadow-lg transition text-base flex items-center justify-center gap-2">
-          <i class="fa-solid fa-paper-plane"></i> ज़मीन का विज्ञापन सबमिट करें
+        <button type="submit" id="submitBtn" class="w-full bg-brand-700 hover:bg-brand-600 text-white font-black py-3.5 rounded-xl shadow-lg transition text-base flex items-center justify-center gap-2">
+          <i class="fa-solid fa-cloud-arrow-up"></i> ज़मीन का विज्ञापन सबमिट करें
         </button>
       </form>
     </div>
@@ -359,7 +367,7 @@
     <div class="flex justify-between items-center mb-6">
       <div>
         <h2 class="text-2xl font-black text-gray-900">Agent & Partner Panel</h2>
-        <p class="text-xs text-gray-500">सभी खाता व प्लॉट नंबर की त्वरित सूची</p>
+        <p class="text-xs text-gray-500">क्लाउड डेटाबेस से सभी खाता व प्लॉट नंबर की सूची</p>
       </div>
       <button onclick="switchView('view-post')" class="bg-brand-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold">+ New Listing</button>
     </div>
@@ -488,7 +496,7 @@
       </div>
     </div>
     <div class="max-w-7xl mx-auto px-4 pt-6 border-t border-slate-900 text-center text-[10px] text-gray-500">
-      <p>© 2026 JAMINDAR LAND BAZAAR (jamindarlandbazaar.in) - All Rights Reserved. Not a government agency.</p>
+      <p>© 2026 JAMINDAR LAND BAZAAR (jamindarlandbazaar.in) - All Rights Reserved. Powered by Firebase Cloud.</p>
     </div>
   </footer>
 
@@ -518,12 +526,28 @@
     </button>
   </div>
 
-  <!-- ==================== JAVASCRIPT LOGIC ENGINE ==================== -->
+  <!-- ==================== JAVASCRIPT & FIREBASE ENGINE ==================== -->
   <script>
+    // 1. FIREBASE CONFIGURATION
+    const firebaseConfig = {
+      apiKey: "AIzaSyDlgpoDePEXHgJcvcAU0aBakVexwGTAqYA",
+      authDomain: "jamindar-land-bazaar.firebaseapp.com",
+      projectId: "jamindar-land-bazaar",
+      storageBucket: "jamindar-land-bazaar.firebasestorage.app",
+      messagingSenderId: "608702998809",
+      appId: "1:608702998809:web:6a25f6b8d177e31ba27d88",
+      measurementId: "G-4WSSGYP88Q"
+    };
+
+    // Initialize Firebase & Firestore
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
     const ADMIN_PIN = "1234";
     const AGENT_PIN = "9999";
+    let properties = [];
 
-    // 1. MOBILE MENU TOGGLE
+    // 2. MOBILE MENU TOGGLE
     function toggleMobileMenu() {
       const menu = document.getElementById('mobileMenu');
       if (menu) {
@@ -531,7 +555,7 @@
       }
     }
 
-    // 2. VIEW SWITCHER
+    // 3. VIEW SWITCHER
     function switchView(viewId) {
       const views = [
         'view-home', 
@@ -556,92 +580,55 @@
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
 
-      // Close mobile dropdown if open
       const menu = document.getElementById('mobileMenu');
       if (menu && !menu.classList.contains('hidden')) {
         menu.classList.add('hidden');
       }
     }
 
-    // 3. MASTER PROPERTY DATABASE
-    const defaultProps = [
-      {
-        id: "JLB-PAL-0001",
-        title: "Prime Residential Plot near Deori Road",
-        category: "Residential",
-        classType: "General",
-        khata: "42",
-        plot: "108",
-        area: "5.0 Decimal",
-        areaVal: 5,
-        price: "₹ 8,50,000",
-        priceVal: 850000,
-        district: "Palamu",
-        block: "Hussainabad (Japla)",
-        village: "Deori Road",
-        road: "25 Feet Paved Road",
-        facing: "East Facing",
-        verified: true,
-        sellerName: "Santosh Kumar",
-        sellerPhone: "9308424700",
-        description: "Excellent clear title General land suitable for immediate residential home construction.",
-        image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&auto=format&fit=crop&q=60"
-      },
-      {
-        id: "JLB-PAL-0002",
-        title: "Commercial Highway Land on Japla-Daltonganj Road",
-        category: "Commercial",
-        classType: "General",
-        khata: "115",
-        plot: "320",
-        area: "12.0 Decimal",
-        areaVal: 12,
-        price: "₹ 24,00,000",
-        priceVal: 2400000,
-        district: "Palamu",
-        block: "Hussainabad (Japla)",
-        village: "Main Highway Front",
-        road: "60 Feet State Highway",
-        facing: "North-East",
-        verified: true,
-        sellerName: "Authorized Associate",
-        sellerPhone: "9308424700",
-        description: "High footfall commercial frontage plot ideal for petrol pump, godown, warehouse or retail complex.",
-        image: "https://images.unsplash.com/photo-1628624747186-a941c476b7ef?w=800&auto=format&fit=crop&q=60"
-      },
-      {
-        id: "JLB-GAR-0003",
-        title: "Fertile Agricultural Land with Boring Facility",
-        category: "Agricultural",
-        classType: "General",
-        khata: "78",
-        plot: "512",
-        area: "50.0 Decimal",
-        areaVal: 50,
-        price: "₹ 15,00,000",
-        priceVal: 1500000,
-        district: "Garhwa",
-        block: "Majhiaon",
-        village: "Karanpura",
-        road: "16 Feet Rural Road",
-        facing: "North",
-        verified: true,
-        sellerName: "Ramswaroop Singh",
-        sellerPhone: "9308424700",
-        description: "Year-round fertile cultivation land with electricity and borewell setup.",
-        image: "https://images.unsplash.com/photo-1523741543316-beb7fc7023d8?w=800&auto=format&fit=crop&q=60"
-      }
-    ];
+    // 4. REALTIME LISTENER (FIREBASE SYNC)
+    function listenToProperties() {
+      db.collection("properties").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
+        properties = [];
+        snapshot.forEach((doc) => {
+          properties.push({ id: doc.id, ...doc.data() });
+        });
 
-    const savedProps = localStorage.getItem('jlb_saved_properties');
-    let properties = savedProps ? JSON.parse(savedProps) : defaultProps;
+        // Fallback demo data if database is empty initially
+        if (properties.length === 0) {
+          properties = [
+            {
+              id: "JLB-PAL-0001",
+              title: "Prime Residential Plot near Deori Road",
+              category: "Residential",
+              classType: "General",
+              khata: "42",
+              plot: "108",
+              area: "5.0 Decimal",
+              price: "₹ 8,50,000",
+              district: "Palamu",
+              block: "Hussainabad (Japla)",
+              sellerName: "Santosh Kumar",
+              sellerPhone: "9308424700",
+              description: "Excellent clear title General land suitable for immediate residential home construction.",
+              image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&auto=format&fit=crop&q=60",
+              verified: true
+            }
+          ];
+        }
 
-    // 4. CARD HTML BUILDER (Includes Khata & Plot Badge)
+        renderGrids(properties);
+      }, (error) => {
+        console.error("Firebase Error:", error);
+      });
+    }
+
+    // 5. CARD BUILDER
     function buildCard(p) {
       return `
         <div class="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition border border-gray-100 flex flex-col justify-between">
           <div class="relative h-48 bg-gray-200">
-            <img src="${p.image}" alt="${p.title}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&auto=format&fit=crop&q=60'"/>
+            <img src="${p.image || 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&auto=format&fit=crop&q=60'}" alt="${p.title}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&auto=format&fit=crop&q=60'"/>
             <div class="absolute top-3 left-3 bg-brand-900/90 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider backdrop-blur-sm">
               ${p.classType} Land
             </div>
@@ -654,7 +641,6 @@
               </div>
               <h3 class="font-bold text-gray-900 text-base leading-snug mb-2">${p.title}</h3>
               
-              <!-- KHATA & PLOT BADGE -->
               <div class="flex gap-2 my-2 text-[11px]">
                 <span class="bg-amber-100 text-amber-900 font-semibold px-2 py-0.5 rounded">खाता: <strong>${p.khata || 'N/A'}</strong></span>
                 <span class="bg-emerald-100 text-emerald-900 font-semibold px-2 py-0.5 rounded">प्लॉट: <strong>${p.plot || 'N/A'}</strong></span>
@@ -682,7 +668,7 @@
       `;
     }
 
-    // 5. RENDER GRIDS
+    // 6. RENDER GRIDS
     function renderGrids(items = properties) {
       const homeGrid = document.getElementById('propertyGridHome');
       const allGrid = document.getElementById('propertyGridAll');
@@ -690,7 +676,7 @@
       if (allGrid) allGrid.innerHTML = items.map(buildCard).join('');
     }
 
-    // 6. FILTERING AND SEARCH
+    // 7. FILTER & SEARCH
     function filterAndShowProperties(type) {
       switchView('view-listings');
       const titleEl = document.getElementById('listingPageTitle');
@@ -735,11 +721,15 @@
       renderGrids(filtered);
     }
 
-    // 7. HANDLE PROPERTY SUBMISSION (Captures Khata & Plot)
-    function handleFormSubmit(e) {
+    // 8. FIREBASE CLOUD POSTING
+    async function handleFormSubmit(e) {
       e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> क्लाउड पर अपलोड हो रहा है...';
+
+      const customId = "JLB-" + Math.floor(1000 + Math.random() * 9000);
       const newProp = {
-        id: "JLB-" + Math.floor(1000 + Math.random() * 9000),
         title: document.getElementById('pTitle').value,
         category: document.getElementById('pCategory').value,
         classType: document.getElementById('pClassType').value,
@@ -758,18 +748,25 @@
         sellerName: document.getElementById('pSellerName').value,
         sellerPhone: document.getElementById('pSellerPhone').value,
         description: document.getElementById('pDesc').value || "Direct seller listing in Jharkhand.",
-        image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&auto=format&fit=crop&q=60"
+        image: "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&auto=format&fit=crop&q=60",
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
       };
 
-      properties.unshift(newProp);
-      localStorage.setItem('jlb_saved_properties', JSON.stringify(properties));
-      renderGrids();
-      alert(`सफलतापूर्वक सबमिट हुआ!\nप्रॉपर्टी ID: ${newProp.id}\nखाता: ${newProp.khata}, प्लॉट: ${newProp.plot}`);
-      document.getElementById('postPropertyForm').reset();
-      switchView('view-listings');
+      try {
+        await db.collection("properties").doc(customId).set(newProp);
+        alert(`सफलतापूर्वक क्लाउड पर पोस्ट हो गया!\nप्रॉपर्टी ID: ${customId}\nखाता: ${newProp.khata}, प्लॉट: ${newProp.plot}`);
+        document.getElementById('postPropertyForm').reset();
+        switchView('view-listings');
+      } catch (err) {
+        console.error(err);
+        alert('त्रुटि! कृपया सुनिश्चित करें कि Firebase Firestore Database चालू (Enabled) है।');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up"></i> ज़मीन का विज्ञापन सबमिट करें';
+      }
     }
 
-    // 8. LAND CALCULATOR CONVERTERS
+    // 9. CALCULATOR
     function calculateFromDecimal(val) {
       const d = parseFloat(val) || 0;
       document.getElementById('calcSqftInput').value = d ? (d * 435.6).toFixed(2) : '';
@@ -789,7 +786,7 @@
       document.getElementById('resSqYards').innerText = (sq / 9).toFixed(1);
     }
 
-    // 9. AGENT PORTAL LOGIC
+    // 10. AGENT PORTAL
     function verifyAgentPin() {
       const pin = document.getElementById('agentPinInput').value;
       if (pin === AGENT_PIN) {
@@ -814,7 +811,7 @@
       `).join('');
     }
 
-    // 10. ADMIN LOGIC
+    // 11. ADMIN PORTAL
     function verifyAdminPin() {
       const pin = document.getElementById('adminPinInput').value;
       if (pin === ADMIN_PIN) {
@@ -843,19 +840,21 @@
       `).join('');
     }
 
-    function deleteProperty(id) {
-      if (confirm(`क्या आप सच में प्रॉपर्टी ${id} को हटाना चाहते हैं?`)) {
-        properties = properties.filter(p => p.id !== id);
-        localStorage.setItem('jlb_saved_properties', JSON.stringify(properties));
-        renderGrids();
-        renderAdminTable();
-        renderAgentTable();
+    async function deleteProperty(id) {
+      if (confirm(`क्या आप सच में प्रॉपर्टी ${id} को क्लाउड डेटाबेस से हटाना चाहते हैं?`)) {
+        try {
+          await db.collection("properties").doc(id).delete();
+          alert('प्रॉपर्टी क्लाउड से हटा दी गई!');
+          renderAdminTable();
+        } catch (e) {
+          alert('हटाने में त्रुटि: ' + e.message);
+        }
       }
     }
 
-    // 11. INITIAL LOAD
+    // 12. STARTUP
     window.addEventListener('DOMContentLoaded', () => {
-      renderGrids();
+      listenToProperties();
     });
   </script>
 </body>
