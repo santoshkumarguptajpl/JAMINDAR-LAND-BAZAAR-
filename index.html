@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="JAMINDAR LAND BAZAAR - झारखंड का विश्वसनीय डिजिटल भूमि बाजार। खाता, प्लॉट, रकबा और सत्यापित जमीन की जानकारी।" />
   <meta name="theme-color" content="#064e3b" />
+  <meta name="application-version" content="JLB 2.1 - Auth & Admin Security Upgrade" />
   <title>JAMINDAR LAND BAZAAR | झारखंड का विश्वसनीय डिजिटल भूमि बाजार</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -420,7 +421,10 @@
     <form onsubmit="agentLogin(event)" class="space-y-3">
       <input id="agentEmail" type="email" required autocomplete="username" placeholder="Agent Email" class="w-full px-4 py-3 border rounded-xl text-sm">
       <input id="agentPassword" type="password" required autocomplete="current-password" placeholder="Password" class="w-full px-4 py-3 border rounded-xl text-sm">
-      <div class="text-right">
+      <div class="flex flex-col sm:flex-row justify-between gap-2 text-right">
+        <button type="button" onclick="resendAgentVerification()" class="text-xs text-amber-700 hover:text-amber-900 font-bold underline">
+          ईमेल Verification फिर भेजें
+        </button>
         <button type="button" onclick="sendAgentPasswordReset()" class="text-xs text-emerald-700 hover:text-emerald-900 font-bold underline">
           पासवर्ड भूल गए? (Forgot Password)
         </button>
@@ -459,7 +463,10 @@
     <form onsubmit="adminLogin(event)" class="space-y-3">
       <input id="adminEmail" type="email" required autocomplete="username" placeholder="Admin Email" class="w-full px-4 py-3 border rounded-xl text-sm">
       <input id="adminPassword" type="password" required autocomplete="current-password" placeholder="Password" class="w-full px-4 py-3 border rounded-xl text-sm">
-      <div class="text-right">
+      <div class="flex flex-col sm:flex-row justify-between gap-2 text-right">
+        <button type="button" onclick="resendAdminVerification()" class="text-xs text-amber-700 hover:text-amber-900 font-bold underline">
+          ईमेल Verification फिर भेजें
+        </button>
         <button type="button" onclick="sendAdminPasswordReset()" class="text-xs text-emerald-700 hover:text-emerald-900 font-bold underline">
           पासवर्ड भूल गए? (Forgot Password)
         </button>
@@ -971,6 +978,34 @@ async function handleFormSubmit(e) {
 
 /* ---------- ADMIN AUTH ---------- */
 
+async function resendAdminVerification() {
+  const email = document.getElementById("adminEmail").value.trim();
+  const password = document.getElementById("adminPassword").value;
+  const msg = document.getElementById("adminLoginMessage");
+  if (!email || !password) {
+    msg.className = "text-xs text-rose-600 mt-3 font-semibold";
+    msg.innerText = "Verification Email भेजने के लिए Admin Email और Password भरें।";
+    return;
+  }
+  try {
+    const credential = await auth.signInWithEmailAndPassword(email, password);
+    const user = credential.user;
+    if (user.emailVerified) {
+      msg.className = "text-xs text-emerald-700 mt-3 font-semibold";
+      msg.innerText = "यह Email पहले से verified है। अब Admin Login करें।";
+    } else {
+      await user.sendEmailVerification();
+      msg.className = "text-xs text-emerald-700 mt-3 font-semibold";
+      msg.innerText = "Verification Email फिर भेज दिया गया है। Inbox/Spam Folder चेक करें।";
+    }
+    await auth.signOut();
+  } catch (error) {
+    console.error("Admin verification resend error:", error);
+    msg.className = "text-xs text-rose-600 mt-3 font-semibold";
+    msg.innerText = getAuthErrorMessage(error.code);
+  }
+}
+
 async function adminLogin(e) {
   e.preventDefault();
 
@@ -988,8 +1023,16 @@ async function adminLogin(e) {
     const user = credential.user;
 
     if (!user.emailVerified) {
+      try {
+        await user.sendEmailVerification();
+        msg.className = "text-xs text-amber-700 mt-3 font-semibold";
+        msg.innerText = "आपका Email verify नहीं है। Verification link आपके Email पर फिर भेज दिया गया है। Inbox/Spam देखें, फिर Login करें।";
+      } catch (verifyError) {
+        console.error("Verification email error:", verifyError);
+        msg.className = "text-xs text-rose-600 mt-3 font-semibold";
+        msg.innerText = "Verification Email भेजने में समस्या हुई। ऊपर दिए गए 'ईमेल Verification फिर भेजें' विकल्प से पुनः प्रयास करें।";
+      }
       await auth.signOut();
-      msg.innerText = "कृपया पहले Email verify करें।";
       return;
     }
 
@@ -1049,6 +1092,34 @@ async function adminLogout() {
 
 /* ---------- AGENT AUTH ---------- */
 
+async function resendAgentVerification() {
+  const email = document.getElementById("agentEmail").value.trim();
+  const password = document.getElementById("agentPassword").value;
+  const msg = document.getElementById("agentLoginMessage");
+  if (!email || !password) {
+    msg.className = "text-xs text-rose-600 mt-3 font-semibold";
+    msg.innerText = "Verification Email भेजने के लिए Agent Email और Password भरें।";
+    return;
+  }
+  try {
+    const credential = await auth.signInWithEmailAndPassword(email, password);
+    const user = credential.user;
+    if (user.emailVerified) {
+      msg.className = "text-xs text-emerald-700 mt-3 font-semibold";
+      msg.innerText = "यह Email पहले से verified है। अब Agent Login करें।";
+    } else {
+      await user.sendEmailVerification();
+      msg.className = "text-xs text-emerald-700 mt-3 font-semibold";
+      msg.innerText = "Verification Email फिर भेज दिया गया है। Inbox/Spam Folder चेक करें।";
+    }
+    await auth.signOut();
+  } catch (error) {
+    console.error("Agent verification resend error:", error);
+    msg.className = "text-xs text-rose-600 mt-3 font-semibold";
+    msg.innerText = getAuthErrorMessage(error.code);
+  }
+}
+
 async function agentLogin(e) {
   e.preventDefault();
 
@@ -1066,8 +1137,16 @@ async function agentLogin(e) {
     const user = credential.user;
 
     if (!user.emailVerified) {
+      try {
+        await user.sendEmailVerification();
+        msg.className = "text-xs text-amber-700 mt-3 font-semibold";
+        msg.innerText = "आपका Email verify नहीं है। Verification link आपके Email पर फिर भेज दिया गया है। Inbox/Spam देखें, फिर Login करें।";
+      } catch (verifyError) {
+        console.error("Verification email error:", verifyError);
+        msg.className = "text-xs text-rose-600 mt-3 font-semibold";
+        msg.innerText = "Verification Email भेजने में समस्या हुई। ऊपर दिए गए 'ईमेल Verification फिर भेजें' विकल्प से पुनः प्रयास करें।";
+      }
       await auth.signOut();
-      msg.innerText = "कृपया पहले Email verify करें।";
       return;
     }
 
@@ -1214,6 +1293,30 @@ function renderAdminTable() {
   }).join("");
 }
 
+/* ---------- ADMIN SECURITY GUARD ---------- */
+async function requireActiveAdmin() {
+  const user = auth.currentUser;
+  if (!user) {
+    alert("Admin login required.");
+    return false;
+  }
+  try {
+    const adminDoc = await db.collection("admins").doc(user.uid).get();
+    if (!adminDoc.exists || adminDoc.data().active !== true) {
+      alert("यह account सक्रिय Admin नहीं है।");
+      await auth.signOut();
+      sessionStorage.removeItem("jlb_role");
+      switchView("view-admin-auth");
+      return false;
+    }
+    return true;
+  } catch (error) {
+    console.error("Admin security check error:", error);
+    alert("Admin authorization check failed. कृपया पुनः Login करें।");
+    return false;
+  }
+}
+
 /* ---------- ADMIN ACTIONS ---------- */
 
 function viewPropertyModal(id) {
@@ -1249,7 +1352,7 @@ function closeAdminModal() {
 }
 
 async function updatePropertyStatus(id,newStatus) {
-  if (!auth.currentUser) return alert("Admin login required.");
+  if (!(await requireActiveAdmin())) return;
 
   try {
     await db.collection("properties").doc(id).update({
@@ -1263,7 +1366,7 @@ async function updatePropertyStatus(id,newStatus) {
 }
 
 async function toggleVerification(id,newState) {
-  if (!auth.currentUser) return alert("Admin login required.");
+  if (!(await requireActiveAdmin())) return;
 
   try {
     await db.collection("properties").doc(id).update({
@@ -1278,6 +1381,7 @@ async function toggleVerification(id,newState) {
 }
 
 async function deleteProperty(id) {
+  if (!(await requireActiveAdmin())) return;
   if (!confirm(`क्या आप ${id} को हमेशा के लिए हटाना चाहते हैं?`)) return;
 
   try {
