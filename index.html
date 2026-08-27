@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="JAMINDAR LAND BAZAAR - झारखंड का विश्वसनीय डिजिटल भूमि बाजार। खाता, प्लॉट, रकबा और सत्यापित जमीन की जानकारी।" />
   <meta name="theme-color" content="#064e3b" />
-  <meta name="application-version" content="JLB 2.1 - Auth & Admin Security Upgrade" />
   <title>JAMINDAR LAND BAZAAR | झारखंड का विश्वसनीय डिजिटल भूमि बाजार</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -27,6 +26,7 @@
     .card-shadow{box-shadow:0 10px 25px -5px rgba(0,0,0,.05),0 8px 10px -6px rgba(0,0,0,.05)}
     .gold-badge{background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%)}
     .hidden-view{display:none!important}
+    .demo-badge{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa}
   </style>
 </head>
 
@@ -74,6 +74,7 @@
         <button onclick="filterAndShowProperties('General')" class="hover:text-amber-300">General प्लॉट</button>
         <button onclick="filterAndShowProperties('CNT')" class="hover:text-amber-300">CNT प्लॉट</button>
         <button onclick="switchView('view-calculator')" class="hover:text-amber-300">भूमि कैलकुलेटर</button>
+        <button onclick="showRentalListings()" class="hover:text-amber-300">किराये की संपत्ति</button>
         <button onclick="switchView('view-contact')" class="hover:text-amber-300">संपर्क</button>
       </nav>
 
@@ -96,7 +97,10 @@
     <button onclick="filterAndShowProperties('CNT')" class="block w-full text-left py-2 text-emerald-100">📑 CNT प्लॉट</button>
     <button onclick="switchView('view-calculator')" class="block w-full text-left py-2 text-emerald-100">📐 भूमि कैलकुलेटर</button>
     <button onclick="switchView('view-post')" class="block w-full text-left py-2 text-amber-300">➕ जमीन पोस्ट करें</button>
-    <button onclick="switchView('view-agent-auth')" class="block w-full text-left py-2 text-emerald-100">👔 एजेंट पैनल</button>
+    <button onclick="showRentalListings()" class="block w-full text-left py-2 text-emerald-100">🏠 किराये की संपत्ति</button>
+    <button onclick="switchView('view-rental-post')" class="block w-full text-left py-2 text-amber-300">➕ किराये की संपत्ति पोस्ट करें</button>
+    <button onclick="switchView('view-owner-auth');showOwnerTab('login')" class="block w-full text-left py-2 text-emerald-100">🏠 Owner Login / Registration</button>
+    <button onclick="switchView('view-agent-auth');showAgentTab('login')" class="block w-full text-left py-2 text-emerald-100">👔 एजेंट लॉगिन / रजिस्ट्रेशन</button>
     <button onclick="switchView('view-contact')" class="block w-full text-left py-2 text-emerald-100">📞 संपर्क</button>
     <button onclick="switchView('view-terms')" class="block w-full text-left py-2 text-emerald-200">📜 नियम एवं शर्तें</button>
     <button onclick="switchView('view-privacy')" class="block w-full text-left py-2 text-emerald-200">🔒 गोपनीयता नीति</button>
@@ -152,11 +156,35 @@
     </div>
   </section>
 
+  <!-- MAIN BUSINESS SHORTCUTS: visible on front page -->
+  <section class="max-w-7xl mx-auto px-4 py-3">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+      <button onclick="filterAndShowProperties('All')" class="bg-white border rounded-2xl p-4 text-left hover:shadow-md">
+        <div class="text-2xl mb-2">🏡</div><div class="font-extrabold text-sm">जमीन खरीदें</div><div class="text-[10px] text-slate-500">Available plots</div>
+      </button>
+      <button onclick="switchView('view-post')" class="bg-white border rounded-2xl p-4 text-left hover:shadow-md">
+        <div class="text-2xl mb-2">📢</div><div class="font-extrabold text-sm">जमीन पोस्ट करें</div><div class="text-[10px] text-slate-500">Sell / List land</div>
+      </button>
+      <button onclick="showRentalListings('House')" class="bg-white border rounded-2xl p-4 text-left hover:shadow-md">
+        <div class="text-2xl mb-2">🏠</div><div class="font-extrabold text-sm">मकान किराये पर</div><div class="text-[10px] text-slate-500">House rentals</div>
+      </button>
+      <button onclick="showRentalListings('Shop')" class="bg-white border rounded-2xl p-4 text-left hover:shadow-md">
+        <div class="text-2xl mb-2">🏪</div><div class="font-extrabold text-sm">दुकान किराये पर</div><div class="text-[10px] text-slate-500">Shop rentals</div>
+      </button>
+      <button onclick="showRentalListings()" class="bg-white border rounded-2xl p-4 text-left hover:shadow-md">
+        <div class="text-2xl mb-2">🏢</div><div class="font-extrabold text-sm">Flat / Office</div><div class="text-[10px] text-slate-500">Commercial & residential</div>
+      </button>
+      <button onclick="switchView('view-rental-post')" class="gold-badge text-slate-950 rounded-2xl p-4 text-left hover:brightness-105">
+        <div class="text-2xl mb-2">➕</div><div class="font-extrabold text-sm">Rental Ad लगाएँ</div><div class="text-[10px]">Owner / Agent</div>
+      </button>
+    </div>
+  </section>
+
   <section class="max-w-7xl mx-auto px-4 py-4">
     <div class="flex justify-between items-end mb-6">
       <div>
         <h2 class="text-xl sm:text-2xl font-extrabold">उपलब्ध स्वीकृत ज़मीन</h2>
-        <p class="text-xs text-slate-500 mt-1">एडमिन द्वारा स्वीकृत लिस्टिंग</p>
+        <p class="text-xs text-slate-500 mt-1">एडमिन द्वारा स्वीकृत लिस्टिंग • Firebase data न होने पर उदाहरण listings</p>
       </div>
       <button onclick="filterAndShowProperties('All')" class="text-xs text-[#064e3b] font-bold">सभी देखें →</button>
     </div>
@@ -191,7 +219,7 @@
     <div class="text-center mb-6">
       <span class="gold-badge text-slate-950 text-[11px] font-extrabold px-3 py-1 rounded-full">निःशुल्क विज्ञापन</span>
       <h2 class="text-2xl font-black mt-2">अपनी ज़मीन पोस्ट करें</h2>
-      <p class="text-xs text-slate-500">एडमिन की मंजूरी के बाद लिस्टिंग दिखाई देगी</p>
+      <p class="text-xs text-slate-500">एडमिन की मंजूरी के बाद लिस्टिंग दिखाई देगी • पोस्ट करने के लिए Login आवश्यक</p>
     </div>
 
     <form id="postPropertyForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
@@ -410,28 +438,159 @@
   </div>
 </section>
 
-<!-- AGENT AUTH -->
-<section id="view-agent-auth" class="hidden max-w-md mx-auto px-4 py-16">
-  <div class="bg-white p-6 sm:p-8 rounded-3xl card-shadow border text-center">
-    <div class="w-12 h-12 bg-amber-100 text-amber-800 rounded-2xl flex items-center justify-center mx-auto mb-3 text-xl">
-      <i class="fa-solid fa-user-tie"></i>
+
+<!-- RENTAL LISTINGS -->
+<section id="view-rentals" class="hidden max-w-7xl mx-auto px-4 py-8">
+  <div class="flex flex-col md:flex-row justify-between gap-4 items-start md:items-center mb-6">
+    <div>
+      <span class="gold-badge text-slate-950 text-[10px] font-extrabold px-3 py-1 rounded-full">RENTAL MARKETPLACE</span>
+      <h2 class="text-2xl font-black mt-2">किराये की संपत्तियाँ</h2>
+      <p class="text-xs text-slate-500">मकान, Flat, दुकान, Office, Showroom, Godown आदि</p>
     </div>
-    <h2 class="text-xl font-bold">एजेंट / पार्टनर पोर्टल</h2>
-    <p class="text-xs text-slate-500 mb-4">Firebase Agent Account से लॉगिन करें</p>
-    <form onsubmit="agentLogin(event)" class="space-y-3">
-      <input id="agentEmail" type="email" required autocomplete="username" placeholder="Agent Email" class="w-full px-4 py-3 border rounded-xl text-sm">
-      <input id="agentPassword" type="password" required autocomplete="current-password" placeholder="Password" class="w-full px-4 py-3 border rounded-xl text-sm">
-      <div class="flex flex-col sm:flex-row justify-between gap-2 text-right">
-        <button type="button" onclick="resendAgentVerification()" class="text-xs text-amber-700 hover:text-amber-900 font-bold underline">
-          ईमेल Verification फिर भेजें
-        </button>
-        <button type="button" onclick="sendAgentPasswordReset()" class="text-xs text-emerald-700 hover:text-emerald-900 font-bold underline">
-          पासवर्ड भूल गए? (Forgot Password)
-        </button>
+    <div class="flex gap-2 flex-wrap">
+      <button onclick="showRentalListings()" class="px-3 py-2 rounded-xl bg-[#064e3b] text-white text-xs font-bold">सभी</button>
+      <button onclick="showRentalListings('House')" class="px-3 py-2 rounded-xl bg-slate-100 text-xs font-bold">मकान</button>
+      <button onclick="showRentalListings('Flat')" class="px-3 py-2 rounded-xl bg-slate-100 text-xs font-bold">Flat</button>
+      <button onclick="showRentalListings('Shop')" class="px-3 py-2 rounded-xl bg-slate-100 text-xs font-bold">दुकान</button>
+      <button onclick="showRentalListings('Office')" class="px-3 py-2 rounded-xl bg-slate-100 text-xs font-bold">Office</button>
+      <button onclick="switchView('view-rental-post')" class="gold-badge px-3 py-2 rounded-xl text-xs font-extrabold">➕ पोस्ट करें</button>
+    </div>
+  </div>
+  <div id="rentalGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+</section>
+
+<!-- OWNER AUTH -->
+<section id="view-owner-auth" class="hidden max-w-md mx-auto px-4 py-12">
+  <div class="bg-white p-6 sm:p-8 rounded-3xl card-shadow border">
+    <div class="text-center mb-5">
+      <div class="w-12 h-12 bg-emerald-100 text-[#064e3b] rounded-2xl flex items-center justify-center mx-auto mb-3 text-xl"><i class="fa-solid fa-house-user"></i></div>
+      <h2 class="text-xl font-bold">Property Owner Portal</h2>
+      <p class="text-xs text-slate-500">Owner account Agent account से अलग रहेगा।</p>
+    </div>
+    <div class="grid grid-cols-2 gap-2 mb-5 bg-slate-100 p-1 rounded-xl">
+      <button id="ownerLoginTabBtn" type="button" onclick="showOwnerTab('login')" class="py-2.5 rounded-lg text-xs font-extrabold bg-white shadow text-[#064e3b]">Owner Login</button>
+      <button id="ownerRegisterTabBtn" type="button" onclick="showOwnerTab('register')" class="py-2.5 rounded-lg text-xs font-extrabold text-slate-600">Owner Registration</button>
+    </div>
+    <div id="ownerLoginPanel">
+      <form onsubmit="ownerLogin(event)" class="space-y-3">
+        <input id="ownerEmail" type="email" required autocomplete="username" placeholder="Owner Email" class="w-full px-4 py-3 border rounded-xl text-sm">
+        <input id="ownerPassword" type="password" required autocomplete="current-password" placeholder="Password" class="w-full px-4 py-3 border rounded-xl text-sm">
+        <div class="flex justify-between gap-2 text-xs">
+          <button type="button" onclick="sendOwnerPasswordReset()" class="text-emerald-700 font-bold underline">पासवर्ड भूल गए?</button>
+          <button type="button" onclick="sendOwnerVerification()" class="text-amber-700 font-bold underline">Verification Email</button>
+        </div>
+        <button id="ownerLoginBtn" type="submit" class="w-full bg-[#064e3b] text-white font-bold py-3 rounded-xl text-sm">Owner Login</button>
+      </form>
+    </div>
+    <div id="ownerRegisterPanel" class="hidden">
+      <form onsubmit="ownerRegister(event)" class="space-y-3">
+        <input id="regOwnerName" type="text" required placeholder="पूरा नाम *" class="w-full px-4 py-3 border rounded-xl text-sm">
+        <input id="regOwnerPhone" type="tel" required inputmode="numeric" maxlength="10" placeholder="10 अंकों का मोबाइल नंबर *" class="w-full px-4 py-3 border rounded-xl text-sm">
+        <input id="regOwnerEmail" type="email" required autocomplete="email" placeholder="Email ID *" class="w-full px-4 py-3 border rounded-xl text-sm">
+        <input id="regOwnerPassword" type="password" required minlength="6" placeholder="Password (कम से कम 6 अक्षर) *" class="w-full px-4 py-3 border rounded-xl text-sm">
+        <input id="regOwnerPassword2" type="password" required minlength="6" placeholder="Password दोबारा *" class="w-full px-4 py-3 border rounded-xl text-sm">
+        <label class="flex items-start gap-2 text-xs text-slate-600"><input id="regOwnerTerms" type="checkbox" required class="mt-0.5"><span>मैं Owner Terms, Privacy Policy और सही property information की घोषणा स्वीकार करता/करती हूँ। *</span></label>
+        <button id="ownerRegisterBtn" type="submit" class="w-full bg-amber-500 text-slate-950 font-extrabold py-3 rounded-xl text-sm">Owner Registration करें</button>
+      </form>
+    </div>
+    <div id="ownerAuthMessage" class="text-xs mt-4 font-semibold"></div>
+  </div>
+</section>
+
+<!-- RENTAL POST -->
+<section id="view-rental-post" class="hidden max-w-3xl mx-auto px-4 py-8">
+  <div class="bg-white p-6 sm:p-8 rounded-3xl card-shadow border">
+    <div class="text-center mb-6">
+      <span class="gold-badge text-slate-950 text-[11px] font-extrabold px-3 py-1 rounded-full">RENTAL LISTING</span>
+      <h2 class="text-2xl font-black mt-2">किराये की संपत्ति पोस्ट करें</h2>
+      <p class="text-xs text-slate-500">Owner और Agent की पहचान अलग रखी जाएगी • Admin approval के बाद listing live होगी</p>
+    </div>
+    <div class="grid grid-cols-2 gap-2 mb-5 bg-slate-100 p-1 rounded-xl">
+      <button type="button" id="rentalOwnerModeBtn" onclick="setRentalPostRole('owner')" class="py-2.5 rounded-lg text-xs font-extrabold bg-white shadow text-[#064e3b]">🏠 मैं Owner हूँ</button>
+      <button type="button" id="rentalAgentModeBtn" onclick="setRentalPostRole('agent')" class="py-2.5 rounded-lg text-xs font-extrabold text-slate-600">🧑‍💼 मैं Authorized Agent हूँ</button>
+    </div>
+    <form id="rentalPostForm" onsubmit="handleRentalSubmit(event)" class="space-y-4">
+      <input type="hidden" id="rentalListedByRole" value="owner">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div><label class="block text-xs font-bold mb-1">Property Type *</label>
+          <select id="rType" required class="w-full text-sm px-3.5 py-2.5 rounded-xl border bg-white">
+            <option value="House">🏠 मकान</option><option value="Flat">🏢 Flat</option><option value="Shop">🏪 दुकान</option>
+            <option value="Office">🏢 Office</option><option value="Showroom">🏬 Showroom</option><option value="Godown">🏭 Godown / Warehouse</option><option value="Other">अन्य</option>
+          </select>
+        </div>
+        <div><label class="block text-xs font-bold mb-1">Property Title *</label><input id="rTitle" required placeholder="उदा. 2 BHK मकान, जपला" class="w-full text-sm px-3.5 py-2.5 rounded-xl border"></div>
       </div>
-      <button id="agentLoginBtn" type="submit" class="w-full bg-[#064e3b] text-white font-bold py-3 rounded-xl text-sm">Agent Login</button>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div><label class="block text-xs font-bold mb-1">ज़िला *</label><input id="rDistrict" required value="Palamu" class="w-full text-sm px-3.5 py-2.5 rounded-xl border"></div>
+        <div><label class="block text-xs font-bold mb-1">शहर/ब्लॉक *</label><input id="rLocation" required placeholder="Hussainabad / Japla" class="w-full text-sm px-3.5 py-2.5 rounded-xl border"></div>
+        <div><label class="block text-xs font-bold mb-1">मोहल्ला/गाँव</label><input id="rLocality" placeholder="मोहल्ला / गाँव" class="w-full text-sm px-3.5 py-2.5 rounded-xl border"></div>
+      </div>
+      <div><label class="block text-xs font-bold mb-1">पूरा पता *</label><input id="rAddress" required placeholder="पूरा पता / Landmark" class="w-full text-sm px-3.5 py-2.5 rounded-xl border"></div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div><label class="block text-xs font-bold mb-1">मासिक किराया (₹) *</label><input id="rRent" required type="number" min="0" class="w-full text-sm px-3.5 py-2.5 rounded-xl border"></div>
+        <div><label class="block text-xs font-bold mb-1">Security Deposit (₹)</label><input id="rDeposit" type="number" min="0" value="0" class="w-full text-sm px-3.5 py-2.5 rounded-xl border"></div>
+        <div><label class="block text-xs font-bold mb-1">Area</label><input id="rArea" placeholder="1200 Sq Ft / 2 BHK" class="w-full text-sm px-3.5 py-2.5 rounded-xl border"></div>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <div><label class="block text-xs font-bold mb-1">Furnishing</label><select id="rFurnishing" class="w-full text-sm px-3.5 py-2.5 rounded-xl border bg-white"><option>Unfurnished</option><option>Semi-Furnished</option><option>Furnished</option></select></div>
+        <div><label class="block text-xs font-bold mb-1">Parking</label><select id="rParking" class="w-full text-sm px-3.5 py-2.5 rounded-xl border bg-white"><option>Not Specified</option><option>Available</option><option>Not Available</option></select></div>
+        <div><label class="block text-xs font-bold mb-1">Available From</label><input id="rAvailableFrom" type="date" class="w-full text-sm px-3.5 py-2.5 rounded-xl border"></div>
+      </div>
+      <div><label class="block text-xs font-bold mb-1">विवरण / Facilities</label><textarea id="rDescription" rows="4" placeholder="कमरे, सड़क, पानी, बिजली, बाजार आदि की जानकारी" class="w-full text-sm px-3.5 py-2.5 rounded-xl border"></textarea></div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div><label class="block text-xs font-bold mb-1">Owner/Agent Name *</label><input id="rContactName" required class="w-full text-sm px-3.5 py-2.5 rounded-xl border"></div>
+        <div><label class="block text-xs font-bold mb-1">Mobile / WhatsApp *</label><input id="rContactPhone" required maxlength="10" inputmode="numeric" class="w-full text-sm px-3.5 py-2.5 rounded-xl border"></div>
+      </div>
+      <label class="flex items-start gap-2 text-xs text-slate-600"><input id="rDeclaration" type="checkbox" required class="mt-0.5"><span>मैं घोषणा करता/करती हूँ कि संपत्ति और किराये की जानकारी मेरी जानकारी के अनुसार सही है और Admin verification के लिए उपलब्ध है। *</span></label>
+      <button id="rentalSubmitBtn" type="submit" class="w-full bg-[#064e3b] text-white font-extrabold py-3 rounded-xl">किराये का विज्ञापन सबमिट करें</button>
+      <p id="rentalPostMessage" class="text-xs font-semibold"></p>
     </form>
-    <p id="agentLoginMessage" class="text-xs text-rose-600 mt-3"></p>
+  </div>
+</section>
+
+<!-- AGENT AUTH / REGISTRATION -->
+
+<section id="view-agent-auth" class="hidden max-w-md mx-auto px-4 py-12">
+  <div class="bg-white p-6 sm:p-8 rounded-3xl card-shadow border">
+    <div class="text-center mb-5">
+      <div class="w-12 h-12 bg-amber-100 text-amber-800 rounded-2xl flex items-center justify-center mx-auto mb-3 text-xl">
+        <i class="fa-solid fa-user-tie"></i>
+      </div>
+      <h2 class="text-xl font-bold">एजेंट / पार्टनर पोर्टल</h2>
+      <p class="text-xs text-slate-500">पहले Agent Registration करें, फिर Email Verify और Admin Approval के बाद Login करें।</p>
+    </div>
+
+    <div class="grid grid-cols-2 gap-2 mb-5 bg-slate-100 p-1 rounded-xl">
+      <button id="agentLoginTabBtn" type="button" onclick="showAgentTab('login')" class="py-2.5 rounded-lg text-xs font-extrabold bg-white shadow text-[#064e3b]">Agent Login</button>
+      <button id="agentRegisterTabBtn" type="button" onclick="showAgentTab('register')" class="py-2.5 rounded-lg text-xs font-extrabold text-slate-600">Agent Registration</button>
+    </div>
+
+    <div id="agentLoginPanel">
+      <form onsubmit="agentLogin(event)" class="space-y-3">
+        <input id="agentEmail" type="email" required autocomplete="username" placeholder="Agent Email" class="w-full px-4 py-3 border rounded-xl text-sm">
+        <input id="agentPassword" type="password" required autocomplete="current-password" placeholder="Password" class="w-full px-4 py-3 border rounded-xl text-sm">
+        <div class="flex justify-between gap-2 text-xs">
+          <button type="button" onclick="sendAgentVerification()" class="text-amber-700 hover:text-amber-900 font-bold underline">Verification Email फिर भेजें</button>
+          <button type="button" onclick="sendAgentPasswordReset()" class="text-emerald-700 hover:text-emerald-900 font-bold underline">पासवर्ड भूल गए?</button>
+        </div>
+        <button id="agentLoginBtn" type="submit" class="w-full bg-[#064e3b] text-white font-bold py-3 rounded-xl text-sm">Agent Login</button>
+      </form>
+    </div>
+
+    <div id="agentRegisterPanel" class="hidden">
+      <form onsubmit="agentRegister(event)" class="space-y-3">
+        <input id="regAgentName" type="text" required autocomplete="name" placeholder="पूरा नाम *" class="w-full px-4 py-3 border rounded-xl text-sm">
+        <input id="regAgentPhone" type="tel" required inputmode="numeric" maxlength="10" placeholder="10 अंकों का मोबाइल नंबर *" class="w-full px-4 py-3 border rounded-xl text-sm">
+        <input id="regAgentEmail" type="email" required autocomplete="email" placeholder="Email ID *" class="w-full px-4 py-3 border rounded-xl text-sm">
+        <input id="regAgentPassword" type="password" required minlength="6" autocomplete="new-password" placeholder="Password (कम से कम 6 अक्षर) *" class="w-full px-4 py-3 border rounded-xl text-sm">
+        <input id="regAgentPassword2" type="password" required minlength="6" autocomplete="new-password" placeholder="Password दोबारा दर्ज करें *" class="w-full px-4 py-3 border rounded-xl text-sm">
+        <label class="flex items-start gap-2 text-xs text-slate-600"><input id="regAgentTerms" type="checkbox" required class="mt-0.5"><span>मैं Agent/Partner Terms स्वीकार करता/करती हूँ और सही जानकारी देने की घोषणा करता/करती हूँ। *</span></label>
+        <button id="agentRegisterBtn" type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-slate-950 font-extrabold py-3 rounded-xl text-sm">Agent Registration करें</button>
+      </form>
+    </div>
+
+    <div id="agentAuthMessage" class="text-xs mt-4 font-semibold"></div>
+    <p id="agentLoginMessage" class="hidden"></p>
   </div>
 </section>
 
@@ -463,10 +622,7 @@
     <form onsubmit="adminLogin(event)" class="space-y-3">
       <input id="adminEmail" type="email" required autocomplete="username" placeholder="Admin Email" class="w-full px-4 py-3 border rounded-xl text-sm">
       <input id="adminPassword" type="password" required autocomplete="current-password" placeholder="Password" class="w-full px-4 py-3 border rounded-xl text-sm">
-      <div class="flex flex-col sm:flex-row justify-between gap-2 text-right">
-        <button type="button" onclick="resendAdminVerification()" class="text-xs text-amber-700 hover:text-amber-900 font-bold underline">
-          ईमेल Verification फिर भेजें
-        </button>
+      <div class="text-right">
         <button type="button" onclick="sendAdminPasswordReset()" class="text-xs text-emerald-700 hover:text-emerald-900 font-bold underline">
           पासवर्ड भूल गए? (Forgot Password)
         </button>
@@ -512,6 +668,36 @@
       <tbody id="adminTableBody" class="divide-y"></tbody>
     </table>
   </div>
+
+  <div class="mt-8 bg-white rounded-2xl card-shadow border overflow-hidden">
+    <div class="p-4 border-b flex flex-col sm:flex-row justify-between gap-3 items-start sm:items-center">
+      <div><h3 class="text-lg font-black">Rental Management</h3><p class="text-xs text-slate-500">Rental listing की approval और status control</p></div>
+      <button onclick="loadRentalsForAdmin()" class="px-3 py-2 rounded-xl bg-slate-100 text-xs font-bold">↻ Refresh Rentals</button>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs min-w-[1000px]">
+        <thead class="bg-slate-100 font-bold"><tr>
+          <th class="p-3.5">Rental ID</th><th class="p-3.5">Property</th><th class="p-3.5">Location</th><th class="p-3.5">Rent</th><th class="p-3.5">Listed By</th><th class="p-3.5">Status</th><th class="p-3.5 text-right">Actions</th>
+        </tr></thead>
+        <tbody id="adminRentalTableBody" class="divide-y"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="mt-8 bg-white rounded-2xl card-shadow border overflow-hidden">
+    <div class="p-4 border-b flex flex-col sm:flex-row justify-between gap-3 items-start sm:items-center">
+      <div><h3 class="text-lg font-black">Agent Management</h3><p class="text-xs text-slate-500">नए Agent Registration की जाँच और Approval</p></div>
+      <button onclick="loadAgentsForAdmin()" class="px-3 py-2 rounded-xl bg-slate-100 text-xs font-bold">↻ Refresh Agents</button>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs min-w-[850px]">
+        <thead class="bg-slate-100 font-bold"><tr>
+          <th class="p-3.5">Agent</th><th class="p-3.5">Email / Phone</th><th class="p-3.5">Registration Date</th><th class="p-3.5">Status</th><th class="p-3.5 text-right">Action</th>
+        </tr></thead>
+        <tbody id="adminAgentTableBody" class="divide-y"></tbody>
+      </table>
+    </div>
+  </div>
 </section>
 
 <!-- ADMIN DETAIL MODAL -->
@@ -556,6 +742,8 @@
       <button onclick="switchView('view-home')" class="block hover:text-amber-400">मुख्य पृष्ठ</button>
       <button onclick="filterAndShowProperties('All')" class="block hover:text-amber-400">सभी उपलब्ध ज़मीन</button>
       <button onclick="switchView('view-calculator')" class="block hover:text-amber-400">भूमि माप कैलकुलेटर</button>
+      <button onclick="showRentalListings()" class="block hover:text-amber-400">किराये की संपत्ति</button>
+      <button onclick="switchView('view-rental-post')" class="block hover:text-amber-400">Rental Ad पोस्ट करें</button>
     </div></div>
     <div><h4 class="text-white font-bold mb-3">वेबसाइट ओनर / संपर्क</h4>
       <p class="text-white font-bold">संतोष कुमार गुप्ता</p>
@@ -582,7 +770,7 @@
   <button onclick="switchView('view-home')" class="flex flex-col items-center text-slate-600"><i class="fa-solid fa-house"></i><span class="text-[10px] font-bold">Home</span></button>
   <button onclick="filterAndShowProperties('All')" class="flex flex-col items-center text-slate-600"><i class="fa-solid fa-magnifying-glass"></i><span class="text-[10px] font-bold">Browse</span></button>
   <button onclick="switchView('view-post')" class="flex flex-col items-center -mt-5"><div class="w-11 h-11 gold-badge rounded-full flex items-center justify-center border-2 border-white shadow-lg"><i class="fa-solid fa-plus"></i></div><span class="text-[10px] font-extrabold text-[#064e3b]">Post</span></button>
-  <button onclick="switchView('view-calculator')" class="flex flex-col items-center text-slate-600"><i class="fa-solid fa-calculator"></i><span class="text-[10px] font-bold">Calc</span></button>
+  <button onclick="showRentalListings()" class="flex flex-col items-center text-slate-600"><i class="fa-solid fa-house"></i><span class="text-[10px] font-bold">Rent</span></button>
   <button onclick="switchView('view-agent-auth')" class="flex flex-col items-center text-slate-600"><i class="fa-solid fa-user-tie"></i><span class="text-[10px] font-bold">Agent</span></button>
 </div>
 
@@ -610,6 +798,15 @@ let allPropertiesMaster = [];
 let currentAdminTab = "ALL";
 let unsubscribePublic = null;
 let unsubscribeAdmin = null;
+let adminAgents = [];
+
+/* ---------- DEMO / EXAMPLE LISTINGS ---------- */
+const DEMO_PROPERTIES = [
+  {id:"demo-1", propertyId:"DEMO-JLB-001", sellerId:"DEMO", sellerName:"Demo Seller 1", sellerPhone:"9308424700", title:"10 डिसमिल आवासीय प्लॉट, जपला", description:"उदाहरण के लिए Demo Listing — वास्तविक बिक्री के लिए नहीं।", district:"Palamu", block:"Hussainabad (Japla)", village:"Japla", khata:"101", plot:"202", category:"Residential", classType:"General", area:"10 Decimal", areaVal:10, areaUnit:"Decimal", price:"₹ 12,00,000", priceVal:1200000, road:"20 Feet Paved Road", facing:"East", image:"https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=900&auto=format&fit=crop&q=80", images:[], documents:[], status:"approved", verificationStatus:"verified", verified:true, demo:true, createdAt:new Date("2026-08-20T10:00:00"), updatedAt:new Date("2026-08-20T10:00:00")},
+  {id:"demo-2", propertyId:"DEMO-JLB-002", sellerId:"DEMO", sellerName:"Demo Seller 2", sellerPhone:"9308424700", title:"6 डिसमिल CNT प्लॉट, हुसैनाबाद", description:"उदाहरण के लिए Demo Listing — वास्तविक बिक्री के लिए नहीं।", district:"Palamu", block:"Hussainabad", village:"Hussainabad", khata:"305", plot:"418", category:"Residential", classType:"CNT", area:"6 Decimal", areaVal:6, areaUnit:"Decimal", price:"₹ 8,50,000", priceVal:850000, road:"25 Feet Road", facing:"North", image:"https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=900&auto=format&fit=crop&q=80", images:[], documents:[], status:"approved", verificationStatus:"unverified", verified:false, demo:true, createdAt:new Date("2026-08-19T10:00:00"), updatedAt:new Date("2026-08-19T10:00:00")},
+  {id:"demo-3", propertyId:"DEMO-JLB-003", sellerId:"DEMO", sellerName:"Demo Seller 3", sellerPhone:"9308424700", title:"15 डिसमिल कमर्शियल प्लॉट, गढ़वा", description:"उदाहरण के लिए Demo Listing — वास्तविक बिक्री के लिए नहीं।", district:"Garhwa", block:"Garhwa Sadar", village:"Garhwa", khata:"512", plot:"711", category:"Commercial", classType:"General", area:"15 Decimal", areaVal:15, areaUnit:"Decimal", price:"₹ 22,50,000", priceVal:2250000, road:"30 Feet Main Road", facing:"South", image:"https://images.unsplash.com/photo-1500534623283-312aade485b7?w=900&auto=format&fit=crop&q=80", images:[], documents:[], status:"approved", verificationStatus:"verified", verified:true, demo:true, createdAt:new Date("2026-08-18T10:00:00"), updatedAt:new Date("2026-08-18T10:00:00")}
+];
+
 
 /* ---------- HELPERS ---------- */
 
@@ -631,7 +828,10 @@ function getAuthErrorMessage(code) {
     "auth/user-disabled":"यह Account बंद कर दिया गया है।",
     "auth/too-many-requests":"बहुत अधिक प्रयास हुए हैं। कुछ समय बाद पुनः प्रयास करें।",
     "auth/network-request-failed":"Internet connection की समस्या है।",
-    "auth/invalid-email":"Email address सही नहीं है।"
+    "auth/invalid-email":"Email address सही नहीं है।",
+    "auth/email-already-in-use":"यह Email पहले से registered है।",
+    "auth/weak-password":"Password कम से कम 6 अक्षर का होना चाहिए।",
+    "auth/operation-not-allowed":"Firebase Email/Password Authentication enable नहीं है।"
   };
   return messages[code] || "Login में समस्या हुई। कृपया पुनः प्रयास करें।";
 }
@@ -645,7 +845,8 @@ function switchView(viewId) {
   const views = [
     "view-home","view-listings","view-post","view-calculator","view-contact",
     "view-terms","view-privacy","view-disclaimer","view-seller-declaration",
-    "view-agent-auth","view-agent-dashboard","view-admin-auth","view-admin-dashboard"
+    "view-agent-auth","view-agent-dashboard","view-admin-auth","view-admin-dashboard",
+    "view-rentals","view-rental-post","view-owner-auth"
   ];
 
   views.forEach(id => {
@@ -721,8 +922,14 @@ function listenToApprovedProperties() {
       renderAgentTable();
     }, error => {
       console.error("Public Firestore Error:", error);
+      renderPublicViews();
       const grid = document.getElementById("propertyGridHome");
-      if (grid) grid.innerHTML = '<p class="col-span-full text-center py-10 text-rose-500">डेटा लोड नहीं हो पाया। Firebase Rules/Internet जाँचें।</p>';
+      if (grid) {
+        const note = document.createElement("div");
+        note.className = "col-span-full text-center text-[11px] text-amber-700 mb-3";
+        note.innerText = "Firebase data अभी उपलब्ध नहीं है — नीचे उदाहरण listings दिखाई जा रही हैं।";
+        grid.prepend(note);
+      }
     });
 }
 
@@ -730,10 +937,20 @@ function getApprovedProperties() {
   return allPropertiesMaster.filter(p => p.status === "approved");
 }
 
+function getPublicProperties() {
+  const real = getApprovedProperties();
+  return real.length ? real : DEMO_PROPERTIES;
+}
+
 /* ---------- ADMIN REAL-TIME LISTENER ---------- */
 /* Runs only after authenticated admin access */
 
 function startAdminListener() {
+  // Admin dashboard needs the complete properties collection, not the public approved-only listener.
+  if (unsubscribePublic) {
+    unsubscribePublic();
+    unsubscribePublic = null;
+  }
   if (unsubscribeAdmin) unsubscribeAdmin();
 
   unsubscribeAdmin = db.collection("properties")
@@ -785,6 +1002,7 @@ function buildCard(p) {
         <img src="${image}" alt="${safeTitle}" class="w-full h-full object-cover" loading="lazy"
              onerror="this.src='https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&auto=format&fit=crop&q=60'">
         <div class="absolute top-3 left-3 bg-[#064e3b]/95 text-white text-[10px] font-black px-3 py-1 rounded-full">${safeClass} LAND</div>
+        ${p.demo ? '<div class="absolute bottom-3 left-3 demo-badge text-[9px] font-extrabold px-2 py-1 rounded-lg">DEMO / उदाहरण</div>' : ''}
         ${verifyBadge}
       </div>
 
@@ -832,12 +1050,12 @@ function renderGrids(items) {
 }
 
 function renderPublicViews() {
-  renderGrids(getApprovedProperties());
+  renderGrids(getPublicProperties());
 }
 
 function filterAndShowProperties(type) {
   switchView("view-listings");
-  const approved = getApprovedProperties();
+  const approved = getPublicProperties();
   const title = document.getElementById("listingPageTitle");
 
   if (type === "All") {
@@ -855,14 +1073,14 @@ function filterAndShowProperties(type) {
 function quickDistrictSearch(dist) {
   switchView("view-listings");
   document.getElementById("listingPageTitle").innerText = `${dist} ज़िले की लिस्टिंग`;
-  renderGrids(getApprovedProperties().filter(p => p.district.toLowerCase() === dist.toLowerCase()));
+  renderGrids(getPublicProperties().filter(p => p.district.toLowerCase() === dist.toLowerCase()));
 }
 
 function handleSearch() {
   const query = document.getElementById("searchInput").value.toLowerCase().trim();
   const type = document.getElementById("searchType").value;
 
-  const filtered = getApprovedProperties().filter(p => {
+  const filtered = getPublicProperties().filter(p => {
     const textMatch = !query ||
       p.title.toLowerCase().includes(query) ||
       p.district.toLowerCase().includes(query) ||
@@ -905,6 +1123,13 @@ async function handleFormSubmit(e) {
 
   const btn = document.getElementById("submitBtn");
   if (btn.disabled) return;
+
+  if (!auth.currentUser) {
+    alert("Property पोस्ट करने के लिए पहले Agent Registration/Login या किसी Firebase Account से Login करना आवश्यक है।");
+    switchView("view-agent-auth");
+    showAgentTab("register");
+    return;
+  }
 
   btn.disabled = true;
   btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> सबमिट हो रहा है...';
@@ -976,35 +1201,216 @@ async function handleFormSubmit(e) {
   }
 }
 
-/* ---------- ADMIN AUTH ---------- */
 
-async function resendAdminVerification() {
-  const email = document.getElementById("adminEmail").value.trim();
-  const password = document.getElementById("adminPassword").value;
-  const msg = document.getElementById("adminLoginMessage");
-  if (!email || !password) {
-    msg.className = "text-xs text-rose-600 mt-3 font-semibold";
-    msg.innerText = "Verification Email भेजने के लिए Admin Email और Password भरें।";
-    return;
-  }
+/* ---------- RENTAL MARKETPLACE ---------- */
+
+let rentalMaster = [];
+let demoRentals = [
+  {id:"demo-rent-1", rentalId:"DEMO-JLR-001", type:"House", title:"2 BHK मकान किराये पर, जपला", district:"Palamu", location:"Hussainabad / Japla", locality:"Main Road", address:"Japla, Palamu, Jharkhand", rent:8000, deposit:30000, area:"1200 Sq Ft / 2 BHK", furnishing:"Semi-Furnished", parking:"Available", availableFrom:"", description:"उदाहरण Rental Listing — वास्तविक rental deal के लिए नहीं।", listedByRole:"Owner", contactName:"Demo Owner", contactPhone:"9308424700", status:"approved", verified:true, demo:true, image:"https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=900&auto=format&fit=crop&q=80"},
+  {id:"demo-rent-2", rentalId:"DEMO-JLR-002", type:"Shop", title:"मुख्य सड़क पर दुकान किराये पर", district:"Palamu", location:"Hussainabad", locality:"Market Area", address:"Hussainabad Main Market, Palamu", rent:12000, deposit:50000, area:"450 Sq Ft", furnishing:"Unfurnished", parking:"Not Specified", availableFrom:"", description:"उदाहरण Rental Listing — वास्तविक rental deal के लिए नहीं।", listedByRole:"Agent", contactName:"Demo Agent", contactPhone:"9308424700", status:"approved", verified:true, demo:true, image:"https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=900&auto=format&fit=crop&q=80"},
+  {id:"demo-rent-3", rentalId:"DEMO-JLR-003", type:"Office", title:"Commercial Office Space, गढ़वा", district:"Garhwa", location:"Garhwa Sadar", locality:"Station Road", address:"Garhwa, Jharkhand", rent:18000, deposit:60000, area:"900 Sq Ft", furnishing:"Semi-Furnished", parking:"Available", availableFrom:"", description:"उदाहरण Rental Listing — वास्तविक rental deal के लिए नहीं।", listedByRole:"Owner", contactName:"Demo Owner", contactPhone:"9308424700", status:"approved", verified:true, demo:true, image:"https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=900&auto=format&fit=crop&q=80"}
+];
+
+function rentalImage(p){ return p.image || "https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=900&auto=format&fit=crop&q=80"; }
+
+function rentalCard(p){
+  const typeLabel = {House:"🏠 मकान",Flat:"🏢 Flat",Shop:"🏪 दुकान",Office:"🏢 Office",Showroom:"🏬 Showroom",Godown:"🏭 Godown",Other:"🏘️ Other"}[p.type] || p.type;
+  const status = p.status === "rented" ? "RENTED" : "AVAILABLE";
+  return `<div class="bg-white rounded-3xl overflow-hidden border card-shadow">
+    <div class="relative h-48 bg-slate-100">
+      <img src="${escapeHtml(rentalImage(p))}" alt="${escapeHtml(p.title)}" class="w-full h-full object-cover" loading="lazy">
+      <div class="absolute top-3 left-3 bg-white/95 px-2.5 py-1 rounded-lg text-[10px] font-extrabold">${typeLabel}</div>
+      <div class="absolute top-3 right-3 ${status==="AVAILABLE"?"bg-emerald-600":"bg-rose-600"} text-white px-2.5 py-1 rounded-lg text-[10px] font-extrabold">${status}</div>
+      ${p.demo ? '<div class="absolute bottom-3 left-3 demo-badge text-[9px] font-extrabold px-2 py-1 rounded-lg">DEMO / उदाहरण</div>' : ''}
+    </div>
+    <div class="p-5">
+      <h3 class="font-extrabold text-base">${escapeHtml(p.title)}</h3>
+      <p class="text-xs text-slate-500 mt-1">📍 ${escapeHtml(p.location||p.district)}${p.locality ? ", "+escapeHtml(p.locality):""}</p>
+      <div class="grid grid-cols-2 gap-2 mt-4 text-xs">
+        <div class="bg-emerald-50 rounded-xl p-3"><div class="text-slate-500">मासिक किराया</div><div class="font-black text-emerald-700">₹ ${Number(p.rent||0).toLocaleString("en-IN")}</div></div>
+        <div class="bg-slate-50 rounded-xl p-3"><div class="text-slate-500">Deposit</div><div class="font-bold">₹ ${Number(p.deposit||0).toLocaleString("en-IN")}</div></div>
+      </div>
+      <div class="flex flex-wrap gap-2 mt-3 text-[10px]">
+        <span class="bg-slate-100 px-2 py-1 rounded-lg">${escapeHtml(p.area||"Area not specified")}</span>
+        <span class="bg-slate-100 px-2 py-1 rounded-lg">${escapeHtml(p.furnishing||"")}</span>
+        <span class="bg-slate-100 px-2 py-1 rounded-lg">Listed By: ${escapeHtml(p.listedByRole||"Owner")}</span>
+      </div>
+      <p class="text-xs text-slate-500 mt-3 line-clamp-3">${escapeHtml(p.description||"")}</p>
+      <div class="mt-4 flex justify-between items-center">
+        <span class="text-[10px] font-bold ${p.verified?"text-emerald-700":"text-slate-500"}">${p.verified?"✓ Verified":"Verification pending"}</span>
+        <a href="tel:${escapeHtml(p.contactPhone||"")}" class="bg-[#064e3b] text-white px-3 py-2 rounded-xl text-xs font-bold">📞 संपर्क</a>
+      </div>
+    </div>
+  </div>`;
+}
+
+function showRentalListings(type){
+  switchView("view-rentals");
+  const grid = document.getElementById("rentalGrid");
+  if (!grid) return;
+  let data = rentalMaster.filter(p => p.status === "approved" || p.demo);
+  if (type) data = data.filter(p => p.type === type);
+  grid.innerHTML = data.length ? data.map(rentalCard).join("") :
+    '<div class="col-span-full text-center py-12 text-slate-400">अभी कोई approved rental listing उपलब्ध नहीं है।</div>';
+}
+
+function listenToRentals(){
+  rentalMaster = [...demoRentals];
   try {
-    const credential = await auth.signInWithEmailAndPassword(email, password);
-    const user = credential.user;
-    if (user.emailVerified) {
-      msg.className = "text-xs text-emerald-700 mt-3 font-semibold";
-      msg.innerText = "यह Email पहले से verified है। अब Admin Login करें।";
-    } else {
-      await user.sendEmailVerification();
-      msg.className = "text-xs text-emerald-700 mt-3 font-semibold";
-      msg.innerText = "Verification Email फिर भेज दिया गया है। Inbox/Spam Folder चेक करें।";
-    }
-    await auth.signOut();
-  } catch (error) {
-    console.error("Admin verification resend error:", error);
-    msg.className = "text-xs text-rose-600 mt-3 font-semibold";
-    msg.innerText = getAuthErrorMessage(error.code);
+    db.collection("rentals").where("status","==","approved").onSnapshot(snap => {
+      const real = snap.docs.map(d => ({id:d.id, ...d.data(), demo:false}));
+      rentalMaster = [...real, ...demoRentals];
+      if (!document.getElementById("view-rentals").classList.contains("hidden")) showRentalListings();
+    }, err => {
+      console.error("Rental listener:", err);
+      rentalMaster = [...demoRentals];
+    });
+  } catch(e){ console.error(e); }
+}
+
+function setRentalPostRole(role){
+  document.getElementById("rentalListedByRole").value = role;
+  const ob = document.getElementById("rentalOwnerModeBtn"), ab = document.getElementById("rentalAgentModeBtn");
+  if (role === "owner") {
+    ob.className = "py-2.5 rounded-lg text-xs font-extrabold bg-white shadow text-[#064e3b]";
+    ab.className = "py-2.5 rounded-lg text-xs font-extrabold text-slate-600";
+  } else {
+    ab.className = "py-2.5 rounded-lg text-xs font-extrabold bg-white shadow text-[#064e3b]";
+    ob.className = "py-2.5 rounded-lg text-xs font-extrabold text-slate-600";
   }
 }
+
+function setRentalMessage(msg, ok=false){
+  const el = document.getElementById("rentalPostMessage");
+  if (!el) return;
+  el.className = "text-xs font-semibold " + (ok ? "text-emerald-700" : "text-rose-600");
+  el.innerText = msg;
+}
+
+async function handleRentalSubmit(e){
+  e.preventDefault();
+  const btn = document.getElementById("rentalSubmitBtn");
+  const user = auth.currentUser;
+  if (!user) {
+    setRentalMessage("पहले Owner Registration/Login करें। यदि आप Agent हैं तो Agent Login करें।");
+    switchView(document.getElementById("rentalListedByRole").value === "agent" ? "view-agent-auth" : "view-owner-auth");
+    return;
+  }
+  await user.reload();
+  if (!user.emailVerified) { setRentalMessage("पहले अपना Email verify करें।"); return; }
+
+  const role = document.getElementById("rentalListedByRole").value;
+  if (role === "agent") {
+    const ad = await db.collection("agents").doc(user.uid).get();
+    if (!ad.exists || ad.data().active !== true || ad.data().status !== "approved") {
+      setRentalMessage("Agent posting के लिए verified और Admin-approved Agent account आवश्यक है।");
+      return;
+    }
+  } else {
+    const od = await db.collection("owners").doc(user.uid).get();
+    if (!od.exists || od.data().active !== true) {
+      setRentalMessage("Owner posting के लिए active Owner account आवश्यक है। पहले Owner Registration/Login करें।");
+      return;
+    }
+  }
+
+  btn.disabled = true; btn.innerText = "सबमिट हो रहा है...";
+  const id = "JLR-" + new Date().getFullYear() + "-" + Math.random().toString(36).substring(2,8).toUpperCase();
+  const data = {
+    rentalId:id, ownerId: role==="owner" ? user.uid : null, agentId: role==="agent" ? user.uid : null,
+    listedByRole: role, type:document.getElementById("rType").value, title:document.getElementById("rTitle").value.trim(),
+    district:document.getElementById("rDistrict").value.trim(), location:document.getElementById("rLocation").value.trim(),
+    locality:document.getElementById("rLocality").value.trim(), address:document.getElementById("rAddress").value.trim(),
+    rent:Number(document.getElementById("rRent").value||0), deposit:Number(document.getElementById("rDeposit").value||0),
+    area:document.getElementById("rArea").value.trim(), furnishing:document.getElementById("rFurnishing").value,
+    parking:document.getElementById("rParking").value, availableFrom:document.getElementById("rAvailableFrom").value,
+    description:document.getElementById("rDescription").value.trim(), contactName:document.getElementById("rContactName").value.trim(),
+    contactPhone:document.getElementById("rContactPhone").value.trim(), status:"pending", verificationStatus:"unverified", verified:false,
+    createdAt:firebase.firestore.FieldValue.serverTimestamp(), updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+  };
+  try {
+    await db.collection("rentals").doc(id).set(data);
+    document.getElementById("rentalPostForm").reset();
+    setRentalPostRole("owner");
+    setRentalMessage("Rental advertisement सफलतापूर्वक submit हो गया। Admin approval के बाद live होगा।", true);
+  } catch(error){
+    console.error(error);
+    setRentalMessage("Rental submission failed: " + error.message);
+  } finally { btn.disabled=false; btn.innerText="किराये का विज्ञापन सबमिट करें"; }
+}
+
+/* ---------- OWNER AUTH ---------- */
+function showOwnerTab(tab){
+  const lp=document.getElementById("ownerLoginPanel"), rp=document.getElementById("ownerRegisterPanel");
+  const lb=document.getElementById("ownerLoginTabBtn"), rb=document.getElementById("ownerRegisterTabBtn");
+  if(tab==="login"){lp.classList.remove("hidden");rp.classList.add("hidden");lb.className="py-2.5 rounded-lg text-xs font-extrabold bg-white shadow text-[#064e3b]";rb.className="py-2.5 rounded-lg text-xs font-extrabold text-slate-600";}
+  else{lp.classList.add("hidden");rp.classList.remove("hidden");rb.className="py-2.5 rounded-lg text-xs font-extrabold bg-white shadow text-[#064e3b]";lb.className="py-2.5 rounded-lg text-xs font-extrabold text-slate-600";}
+}
+function setOwnerMessage(msg,ok=false){const el=document.getElementById("ownerAuthMessage");if(el){el.className="text-xs mt-4 font-semibold "+(ok?"text-emerald-700":"text-rose-600");el.innerText=msg;}}
+async function ownerRegister(e){
+  e.preventDefault();
+  const name=document.getElementById("regOwnerName").value.trim(), phone=document.getElementById("regOwnerPhone").value.trim(), email=document.getElementById("regOwnerEmail").value.trim().toLowerCase(), pw=document.getElementById("regOwnerPassword").value, pw2=document.getElementById("regOwnerPassword2").value, btn=document.getElementById("ownerRegisterBtn");
+  if(pw!==pw2) return setOwnerMessage("दोनों Password समान नहीं हैं।");
+  btn.disabled=true; btn.innerText="Registration...";
+  try{
+    const cred=await auth.createUserWithEmailAndPassword(email,pw), user=cred.user;
+    await db.collection("owners").doc(user.uid).set({uid:user.uid,name,phone,email,role:"owner",active:true,emailVerified:false,createdAt:firebase.firestore.FieldValue.serverTimestamp(),updatedAt:firebase.firestore.FieldValue.serverTimestamp()});
+    await user.sendEmailVerification({url:"https://jamindarlandbazaar.in/",handleCodeInApp:false});
+    await auth.signOut(); showOwnerTab("login"); document.getElementById("ownerEmail").value=email;
+    setOwnerMessage("Registration सफल! Verification Email भेजा गया है। पहले verify करके Owner Login करें।",true);
+  }catch(error){console.error(error); setOwnerMessage(getAuthErrorMessage(error.code)||("Registration में समस्या: "+error.message));}
+  finally{btn.disabled=false;btn.innerText="Owner Registration करें";}
+}
+async function ownerLogin(e){
+  e.preventDefault();
+  const email=document.getElementById("ownerEmail").value.trim().toLowerCase(), pw=document.getElementById("ownerPassword").value, btn=document.getElementById("ownerLoginBtn");
+  btn.disabled=true;btn.innerText="Login...";
+  try{
+    const cred=await auth.signInWithEmailAndPassword(email,pw), user=cred.user; await user.reload();
+    if(!user.emailVerified){await auth.signOut();return setOwnerMessage("पहले Email verify करें।");}
+    const doc=await db.collection("owners").doc(user.uid).get();
+    if(!doc.exists||doc.data().active!==true){await auth.signOut();return setOwnerMessage("यह Owner account active नहीं है।");}
+    sessionStorage.setItem("jlb_role","owner"); sessionStorage.setItem("jlb_owner_uid",user.uid); switchView("view-rental-post");
+    setRentalPostRole("owner");
+  }catch(error){console.error(error);setOwnerMessage(getAuthErrorMessage(error.code));}
+  finally{btn.disabled=false;btn.innerText="Owner Login";}
+}
+async function sendOwnerVerification(){
+  const email=document.getElementById("ownerEmail").value.trim().toLowerCase(),pw=document.getElementById("ownerPassword").value;
+  if(!email||!pw)return setOwnerMessage("Email और Password भरें।");
+  try{const c=await auth.signInWithEmailAndPassword(email,pw);if(c.user.emailVerified){await auth.signOut();return setOwnerMessage("Email पहले से verified है।");}await c.user.sendEmailVerification({url:"https://jamindarlandbazaar.in/",handleCodeInApp:false});await auth.signOut();setOwnerMessage("Verification Email फिर भेजा गया है।",true);}catch(error){setOwnerMessage(getAuthErrorMessage(error.code));}
+}
+async function sendOwnerPasswordReset(){const email=document.getElementById("ownerEmail").value.trim().toLowerCase();if(!email)return setOwnerMessage("Owner Email दर्ज करें।");try{await auth.sendPasswordResetEmail(email,{url:"https://jamindarlandbazaar.in/",handleCodeInApp:false});setOwnerMessage("Password Reset Email भेज दिया गया है।",true);}catch(error){setOwnerMessage(getAuthErrorMessage(error.code));}}
+
+async function loadRentalsForAdmin(){
+  if(!(await requireActiveAdmin()))return;
+  const tbody=document.getElementById("adminRentalTableBody"); if(!tbody)return;
+  tbody.innerHTML='<tr><td colspan="7" class="p-6 text-center text-slate-400">Rentals लोड हो रहे हैं...</td></tr>';
+  try{
+    const snap=await db.collection("rentals").get();
+    const rows=snap.docs.map(d=>({id:d.id,...d.data()}));
+    if(!rows.length){tbody.innerHTML='<tr><td colspan="7" class="p-6 text-center text-slate-400">अभी कोई rental listing नहीं है।</td></tr>';return;}
+    tbody.innerHTML=rows.map(r=>`<tr>
+      <td class="p-3.5 font-bold">${escapeHtml(r.rentalId||r.id)}</td>
+      <td class="p-3.5">${escapeHtml(r.title||"-")}<div class="text-[10px] text-slate-400">${escapeHtml(r.type||"")}</div></td>
+      <td class="p-3.5">${escapeHtml(r.location||"-")}, ${escapeHtml(r.district||"")}</td>
+      <td class="p-3.5 font-bold text-emerald-700">₹ ${Number(r.rent||0).toLocaleString("en-IN")}</td>
+      <td class="p-3.5">${escapeHtml(r.listedByRole||"-")}<div class="text-[10px]">${escapeHtml(r.contactName||"")}</div></td>
+      <td class="p-3.5"><span class="px-2 py-1 rounded-full text-[10px] font-bold ${r.status==="approved"?"bg-emerald-100 text-emerald-800":r.status==="rejected"?"bg-rose-100 text-rose-800":"bg-amber-100 text-amber-800"}">${escapeHtml((r.status||"pending").toUpperCase())}</span></td>
+      <td class="p-3.5 text-right whitespace-nowrap">
+        <button onclick="setRentalStatus('${escapeHtml(r.id)}','approved')" class="bg-emerald-600 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold">Approve</button>
+        <button onclick="setRentalStatus('${escapeHtml(r.id)}','rejected')" class="bg-rose-600 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold ml-1">Reject</button>
+        <button onclick="setRentalStatus('${escapeHtml(r.id)}','rented')" class="bg-slate-700 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold ml-1">Rented</button>
+      </td>
+    </tr>`).join("");
+  }catch(error){console.error(error);tbody.innerHTML='<tr><td colspan="7" class="p-6 text-center text-rose-500">Rental data load नहीं हुआ। Firestore Rules जाँचें।</td></tr>';}
+}
+async function setRentalStatus(id,status){
+  if(!(await requireActiveAdmin()))return;
+  try{await db.collection("rentals").doc(id).update({status,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});await loadRentalsForAdmin();if(status==="approved")listenToRentals();}catch(error){alert("Rental status update failed: "+error.message);}
+}
+
+/* ---------- ADMIN AUTH ---------- */
 
 async function adminLogin(e) {
   e.preventDefault();
@@ -1023,16 +1429,8 @@ async function adminLogin(e) {
     const user = credential.user;
 
     if (!user.emailVerified) {
-      try {
-        await user.sendEmailVerification();
-        msg.className = "text-xs text-amber-700 mt-3 font-semibold";
-        msg.innerText = "आपका Email verify नहीं है। Verification link आपके Email पर फिर भेज दिया गया है। Inbox/Spam देखें, फिर Login करें।";
-      } catch (verifyError) {
-        console.error("Verification email error:", verifyError);
-        msg.className = "text-xs text-rose-600 mt-3 font-semibold";
-        msg.innerText = "Verification Email भेजने में समस्या हुई। ऊपर दिए गए 'ईमेल Verification फिर भेजें' विकल्प से पुनः प्रयास करें।";
-      }
       await auth.signOut();
+      msg.innerText = "कृपया पहले Email verify करें।";
       return;
     }
 
@@ -1047,6 +1445,8 @@ async function adminLogin(e) {
     sessionStorage.setItem("jlb_role","admin");
     startAdminListener();
     switchView("view-admin-dashboard");
+    loadRentalsForAdmin();
+    loadAgentsForAdmin();
   } catch(error) {
     console.error(error);
     msg.innerText = getAuthErrorMessage(error.code);
@@ -1087,120 +1487,254 @@ async function adminLogout() {
   stopAdminListener();
   sessionStorage.removeItem("jlb_role");
   try { await auth.signOut(); } catch(e) {}
+  listenToApprovedProperties();
   switchView("view-home");
 }
 
-/* ---------- AGENT AUTH ---------- */
+/* ---------- AGENT AUTH / REGISTRATION ---------- */
 
-async function resendAgentVerification() {
-  const email = document.getElementById("agentEmail").value.trim();
-  const password = document.getElementById("agentPassword").value;
-  const msg = document.getElementById("agentLoginMessage");
-  if (!email || !password) {
-    msg.className = "text-xs text-rose-600 mt-3 font-semibold";
-    msg.innerText = "Verification Email भेजने के लिए Agent Email और Password भरें।";
-    return;
-  }
+function showAgentTab(tab) {
+  const loginPanel = document.getElementById("agentLoginPanel");
+  const registerPanel = document.getElementById("agentRegisterPanel");
+  const loginBtn = document.getElementById("agentLoginTabBtn");
+  const registerBtn = document.getElementById("agentRegisterTabBtn");
+  if (!loginPanel || !registerPanel) return;
+  const login = tab === "login";
+  loginPanel.classList.toggle("hidden", !login);
+  registerPanel.classList.toggle("hidden", login);
+  loginBtn.className = login ? "py-2.5 rounded-lg text-xs font-extrabold bg-white shadow text-[#064e3b]" : "py-2.5 rounded-lg text-xs font-extrabold text-slate-600";
+  registerBtn.className = !login ? "py-2.5 rounded-lg text-xs font-extrabold bg-white shadow text-[#064e3b]" : "py-2.5 rounded-lg text-xs font-extrabold text-slate-600";
+  setAgentMessage("");
+}
+
+function setAgentMessage(text, ok=false) {
+  const el = document.getElementById("agentAuthMessage");
+  if (!el) return;
+  el.className = "text-xs mt-4 font-semibold " + (ok ? "text-emerald-700" : "text-rose-600");
+  el.innerText = text || "";
+}
+
+async function agentRegister(e) {
+  e.preventDefault();
+  const name = document.getElementById("regAgentName").value.trim();
+  const phone = document.getElementById("regAgentPhone").value.replace(/\D/g, "");
+  const email = document.getElementById("regAgentEmail").value.trim().toLowerCase();
+  const password = document.getElementById("regAgentPassword").value;
+  const password2 = document.getElementById("regAgentPassword2").value;
+  const btn = document.getElementById("agentRegisterBtn");
+
+  if (phone.length !== 10) return setAgentMessage("कृपया 10 अंकों का मोबाइल नंबर दर्ज करें।");
+  if (password !== password2) return setAgentMessage("दोनों Password एक जैसे नहीं हैं।");
+  if (password.length < 6) return setAgentMessage("Password कम से कम 6 अक्षर का होना चाहिए।");
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Registration हो रही है...';
+
   try {
-    const credential = await auth.signInWithEmailAndPassword(email, password);
+    const credential = await auth.createUserWithEmailAndPassword(email, password);
     const user = credential.user;
-    if (user.emailVerified) {
-      msg.className = "text-xs text-emerald-700 mt-3 font-semibold";
-      msg.innerText = "यह Email पहले से verified है। अब Agent Login करें।";
-    } else {
-      await user.sendEmailVerification();
-      msg.className = "text-xs text-emerald-700 mt-3 font-semibold";
-      msg.innerText = "Verification Email फिर भेज दिया गया है। Inbox/Spam Folder चेक करें।";
-    }
+
+    await db.collection("agents").doc(user.uid).set({
+      uid: user.uid,
+      name,
+      email,
+      phone,
+      role: "agent",
+      active: false,
+      status: "pending",
+      emailVerified: false,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    const actionSettings = { url: "https://jamindarlandbazaar.in/", handleCodeInApp: false };
+    await user.sendEmailVerification(actionSettings);
     await auth.signOut();
-  } catch (error) {
-    console.error("Agent verification resend error:", error);
-    msg.className = "text-xs text-rose-600 mt-3 font-semibold";
-    msg.innerText = getAuthErrorMessage(error.code);
+
+    document.getElementById("regAgentPassword").value = "";
+    document.getElementById("regAgentPassword2").value = "";
+    showAgentTab("login");
+    document.getElementById("agentEmail").value = email;
+    setAgentMessage("Registration सफल! Verification Email भेजा गया है। पहले Email verify करें, फिर Admin Approval के बाद Agent Login करें।", true);
+  } catch(error) {
+    console.error("Agent registration error:", error);
+    if (error.code === "auth/email-already-in-use") setAgentMessage("यह Email पहले से Firebase में registered है। Login करें या Forgot Password इस्तेमाल करें।");
+    else if (error.code === "auth/invalid-email") setAgentMessage("Email Address सही नहीं है।");
+    else if (error.code === "auth/weak-password") setAgentMessage("Password कमजोर है। कम से कम 6 अक्षर रखें।");
+    else if (error.code === "auth/operation-not-allowed") setAgentMessage("Firebase Authentication में Email/Password Sign-in enable करना आवश्यक है।");
+    else if (error.code === "permission-denied") setAgentMessage("Agent profile save नहीं हो पाया। Firestore Rules में agents create permission जाँचें।");
+    else setAgentMessage("Registration में समस्या हुई: " + (error.message || "Unknown error"));
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = "Agent Registration करें";
   }
 }
 
 async function agentLogin(e) {
   e.preventDefault();
-
-  const email = document.getElementById("agentEmail").value.trim();
+  const email = document.getElementById("agentEmail").value.trim().toLowerCase();
   const password = document.getElementById("agentPassword").value;
   const btn = document.getElementById("agentLoginBtn");
-  const msg = document.getElementById("agentLoginMessage");
 
-  msg.innerText = "";
+  setAgentMessage("");
   btn.disabled = true;
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Login...';
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> Login...';
 
   try {
     const credential = await auth.signInWithEmailAndPassword(email,password);
     const user = credential.user;
+    await user.reload();
 
     if (!user.emailVerified) {
-      try {
-        await user.sendEmailVerification();
-        msg.className = "text-xs text-amber-700 mt-3 font-semibold";
-        msg.innerText = "आपका Email verify नहीं है। Verification link आपके Email पर फिर भेज दिया गया है। Inbox/Spam देखें, फिर Login करें।";
-      } catch (verifyError) {
-        console.error("Verification email error:", verifyError);
-        msg.className = "text-xs text-rose-600 mt-3 font-semibold";
-        msg.innerText = "Verification Email भेजने में समस्या हुई। ऊपर दिए गए 'ईमेल Verification फिर भेजें' विकल्प से पुनः प्रयास करें।";
-      }
       await auth.signOut();
+      setAgentMessage("Email अभी verify नहीं है। Verification Email खोलकर verify करें, फिर Login करें।");
       return;
     }
 
     const agentDoc = await db.collection("agents").doc(user.uid).get();
-
-    if (!agentDoc.exists || agentDoc.data().active !== true) {
+    if (!agentDoc.exists) {
       await auth.signOut();
-      msg.innerText = "यह Account Agent के रूप में अधिकृत नहीं है।";
+      setAgentMessage("यह Firebase Account Agent Registration से बना हुआ नहीं है। पहले Agent Registration करें।");
+      return;
+    }
+
+    const agent = agentDoc.data();
+    if (agent.active !== true || agent.status !== "approved") {
+      await auth.signOut();
+      setAgentMessage("Email verified है, लेकिन आपका Agent Account अभी Admin Approval की प्रतीक्षा में है।");
       return;
     }
 
     sessionStorage.setItem("jlb_role","agent");
+    sessionStorage.setItem("jlb_agent_uid", user.uid);
     switchView("view-agent-dashboard");
     renderAgentTable();
   } catch(error) {
     console.error(error);
-    msg.innerText = getAuthErrorMessage(error.code);
+    setAgentMessage(getAuthErrorMessage(error.code));
   } finally {
     btn.disabled = false;
     btn.innerHTML = "Agent Login";
   }
 }
 
-async function sendAgentPasswordReset() {
-  const email = document.getElementById("agentEmail").value.trim();
-  const msg = document.getElementById("agentLoginMessage");
-
-  if (!email) {
-    msg.innerText = "कृपया पहले Agent Email दर्ज करें।";
-    return;
-  }
-
+async function sendAgentVerification() {
+  const email = document.getElementById("agentEmail").value.trim().toLowerCase();
+  const password = document.getElementById("agentPassword").value;
+  if (!email || !password) return setAgentMessage("Verification Email भेजने के लिए Email और Password भरें।");
   try {
-    await auth.sendPasswordResetEmail(email, {
-      url: "https://jamindarlandbazaar.in/",
-      handleCodeInApp: false
-    });
-    msg.className = "text-xs text-emerald-700 mt-3 font-semibold";
-    msg.innerText = "Password Reset Email भेज दिया गया है। Inbox/Spam Folder चेक करें।";
-  } catch (error) {
-    console.error("Agent password reset error:", error);
-    msg.className = "text-xs text-rose-600 mt-3 font-semibold";
-    if (error.code === "auth/user-not-found") msg.innerText = "इस Email से Firebase Account नहीं मिला।";
-    else if (error.code === "auth/invalid-email") msg.innerText = "Email Address सही नहीं है।";
-    else if (error.code === "auth/unauthorized-continue-uri") msg.innerText = "Firebase Authorized Domains में jamindarlandbazaar.in जोड़ना आवश्यक है।";
-    else if (error.code === "auth/too-many-requests") msg.innerText = "बहुत अधिक प्रयास हुए हैं। कुछ समय बाद पुनः प्रयास करें।";
-    else msg.innerText = "Password Reset Email भेजने में समस्या हुई।";
+    const credential = await auth.signInWithEmailAndPassword(email,password);
+    const user = credential.user;
+    if (user.emailVerified) {
+      await auth.signOut();
+      return setAgentMessage("यह Email पहले से verified है। अब Admin Approval के बाद Login करें।", true);
+    }
+    await user.sendEmailVerification({url:"https://jamindarlandbazaar.in/", handleCodeInApp:false});
+    await auth.signOut();
+    setAgentMessage("Verification Email फिर भेज दिया गया है। Inbox/Spam चेक करें।", true);
+  } catch(error) {
+    console.error(error);
+    setAgentMessage(getAuthErrorMessage(error.code));
+  }
+}
+
+async function sendAgentPasswordReset() {
+  const email = document.getElementById("agentEmail").value.trim().toLowerCase();
+  if (!email) return setAgentMessage("कृपया पहले Agent Email दर्ज करें।");
+  try {
+    await auth.sendPasswordResetEmail(email, {url:"https://jamindarlandbazaar.in/", handleCodeInApp:false});
+    setAgentMessage("Password Reset Email भेज दिया गया है। Inbox/Spam Folder चेक करें।", true);
+  } catch(error) {
+    console.error(error);
+    if (error.code === "auth/user-not-found") setAgentMessage("इस Email से Firebase Account नहीं मिला।");
+    else setAgentMessage(getAuthErrorMessage(error.code));
   }
 }
 
 async function agentLogout() {
   sessionStorage.removeItem("jlb_role");
+  sessionStorage.removeItem("jlb_agent_uid");
   try { await auth.signOut(); } catch(e) {}
   switchView("view-home");
+}
+
+/* ---------- ADMIN AGENT MANAGEMENT ---------- */
+
+async function loadAgentsForAdmin() {
+  if (!(await requireActiveAdmin())) return;
+  const tbody = document.getElementById("adminAgentTableBody");
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-slate-400">Agents लोड हो रहे हैं...</td></tr>';
+  try {
+    const snap = await db.collection("agents").orderBy("createdAt","desc").get();
+    adminAgents = snap.docs.map(d => ({id:d.id, ...d.data()}));
+    renderAdminAgentTable();
+  } catch(error) {
+    console.error("Agent admin load error:", error);
+    // Fallback without orderBy, useful when older documents lack createdAt.
+    try {
+      const snap = await db.collection("agents").get();
+      adminAgents = snap.docs.map(d => ({id:d.id, ...d.data()}));
+      adminAgents.sort((a,b) => ((b.createdAt?.toMillis?.()||0) - (a.createdAt?.toMillis?.()||0)));
+      renderAdminAgentTable();
+    } catch(error2) {
+      tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-rose-500">Agents data load नहीं हुआ। Firestore Rules जाँचें।</td></tr>';
+    }
+  }
+}
+
+function renderAdminAgentTable() {
+  const tbody = document.getElementById("adminAgentTableBody");
+  if (!tbody) return;
+  if (!adminAgents.length) {
+    tbody.innerHTML = '<tr><td colspan="5" class="p-6 text-center text-slate-400">अभी कोई Agent Registration नहीं है।</td></tr>';
+    return;
+  }
+  tbody.innerHTML = adminAgents.map(a => {
+    const active = a.active === true && a.status === "approved";
+    const status = active ? "APPROVED" : (a.status === "rejected" ? "REJECTED" : "PENDING");
+    const cls = active ? "bg-emerald-100 text-emerald-800" : status === "REJECTED" ? "bg-rose-100 text-rose-800" : "bg-amber-100 text-amber-800";
+    const date = a.createdAt?.toDate ? a.createdAt.toDate().toLocaleDateString("en-IN") : "-";
+    return `<tr class="hover:bg-slate-50">
+      <td class="p-3.5 font-bold">${escapeHtml(a.name||"-")}<div class="text-[10px] text-slate-400">UID: ${escapeHtml(a.id)}</div></td>
+      <td class="p-3.5">${escapeHtml(a.email||"-")}<br><span class="text-slate-500">${escapeHtml(a.phone||"-")}</span></td>
+      <td class="p-3.5">${date}</td>
+      <td class="p-3.5"><span class="px-2 py-1 rounded-full text-[10px] font-extrabold ${cls}">${status}</span></td>
+      <td class="p-3.5 text-right whitespace-nowrap">
+        ${!active ? `<button onclick="setAgentApproval('${escapeHtml(a.id)}','approved')" class="bg-emerald-600 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold">Approve</button>` : `<button onclick="setAgentApproval('${escapeHtml(a.id)}','rejected')" class="bg-amber-600 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold">Deactivate</button>`}
+        ${status !== "REJECTED" ? `<button onclick="setAgentApproval('${escapeHtml(a.id)}','rejected')" class="bg-rose-600 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold ml-1">Reject</button>` : `<button onclick="setAgentApproval('${escapeHtml(a.id)}','approved')" class="bg-emerald-600 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold">Re-Approve</button>`}
+      </td>
+    </tr>`;
+  }).join("");
+}
+
+async function setAgentApproval(uid,status) {
+  if (!(await requireActiveAdmin())) return;
+  try {
+    await db.collection("agents").doc(uid).update({
+      status,
+      active: status === "approved",
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    await loadAgentsForAdmin();
+  } catch(error) {
+    console.error(error);
+    alert("Agent status update failed: " + error.message);
+  }
+}
+
+async function requireActiveAdmin() {
+  const user = auth.currentUser;
+  if (!user) { alert("Admin login required."); return false; }
+  await user.reload();
+  if (!user.emailVerified) { alert("Admin Email verify करना आवश्यक है।"); return false; }
+  try {
+    const doc = await db.collection("admins").doc(user.uid).get();
+    if (!doc.exists || doc.data().active !== true) { alert("यह Account Admin के रूप में authorized नहीं है।"); return false; }
+    return true;
+  } catch(error) {
+    console.error(error); alert("Admin authorization check failed: " + error.message); return false;
+  }
 }
 
 /* ---------- ADMIN DASHBOARD ---------- */
@@ -1293,30 +1827,6 @@ function renderAdminTable() {
   }).join("");
 }
 
-/* ---------- ADMIN SECURITY GUARD ---------- */
-async function requireActiveAdmin() {
-  const user = auth.currentUser;
-  if (!user) {
-    alert("Admin login required.");
-    return false;
-  }
-  try {
-    const adminDoc = await db.collection("admins").doc(user.uid).get();
-    if (!adminDoc.exists || adminDoc.data().active !== true) {
-      alert("यह account सक्रिय Admin नहीं है।");
-      await auth.signOut();
-      sessionStorage.removeItem("jlb_role");
-      switchView("view-admin-auth");
-      return false;
-    }
-    return true;
-  } catch (error) {
-    console.error("Admin security check error:", error);
-    alert("Admin authorization check failed. कृपया पुनः Login करें।");
-    return false;
-  }
-}
-
 /* ---------- ADMIN ACTIONS ---------- */
 
 function viewPropertyModal(id) {
@@ -1398,8 +1908,7 @@ function renderAgentTable() {
   const tbody = document.getElementById("agentTableBody");
   if (!tbody) return;
 
-  const approved = getApprovedProperties();
-
+  const approved = getPublicProperties();
   if (!approved.length) {
     tbody.innerHTML = '<tr><td colspan="6" class="p-6 text-center text-slate-400">कोई approved listing नहीं है।</td></tr>';
     return;
@@ -1407,7 +1916,7 @@ function renderAgentTable() {
 
   tbody.innerHTML = approved.map(p => `
     <tr class="hover:bg-slate-50">
-      <td class="p-3.5 font-bold">${escapeHtml(p.propertyId)}<div class="text-[11px] text-slate-500 font-normal">${escapeHtml(p.title)}</div></td>
+      <td class="p-3.5 font-bold">${escapeHtml(p.propertyId)}${p.demo ? '<div class="text-[9px] text-amber-700">DEMO</div>' : ''}<div class="text-[11px] text-slate-500 font-normal">${escapeHtml(p.title)}</div></td>
       <td class="p-3.5">ख: ${escapeHtml(p.khata||"-")} / प्लॉट: ${escapeHtml(p.plot||"-")}</td>
       <td class="p-3.5">${escapeHtml(p.block)}, ${escapeHtml(p.district)}</td>
       <td class="p-3.5 font-bold text-emerald-700">${escapeHtml(p.price)}<div class="text-[11px] text-slate-500">${escapeHtml(p.area)}</div></td>
@@ -1453,6 +1962,8 @@ auth.onAuthStateChanged(async user => {
       if (adminDoc.exists && adminDoc.data().active === true) {
         startAdminListener();
         switchView("view-admin-dashboard");
+        loadAgentsForAdmin();
+        loadRentalsForAdmin();
       } else {
         sessionStorage.removeItem("jlb_role");
         await auth.signOut();
@@ -1465,7 +1976,7 @@ auth.onAuthStateChanged(async user => {
   if (role === "agent") {
     try {
       const agentDoc = await db.collection("agents").doc(user.uid).get();
-      if (agentDoc.exists && agentDoc.data().active === true) {
+      if (agentDoc.exists && agentDoc.data().active === true && agentDoc.data().status === "approved") {
         switchView("view-agent-dashboard");
         renderAgentTable();
       } else {
@@ -1482,6 +1993,7 @@ auth.onAuthStateChanged(async user => {
 
 window.addEventListener("DOMContentLoaded", () => {
   listenToApprovedProperties();
+  listenToRentals();
 
   const search = document.getElementById("searchInput");
   if (search) {
