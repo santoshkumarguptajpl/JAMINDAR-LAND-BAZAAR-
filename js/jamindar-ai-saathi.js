@@ -1,289 +1,451 @@
-/* =====================================================
-   JAMINDAR AI SAATHI
-   Buyer Assistant - Version 1
-   ===================================================== */
+async function handleAiMessage() {
 
-(function () {
-  "use strict";
+  const input = document.getElementById("jamindarAiInput");
 
-  console.log("JAMINDAR AI SAATHI loaded");
+  if (!input) return;
 
-  const button = document.createElement("button");
+  const message = input.value.trim();
 
-  button.id = "jamindarAiButton";
+  if (!message) return;
 
-  button.innerHTML = `
-    <span style="font-size:22px;">🤖</span>
-    <span>JAMINDAR AI SAATHI</span>
-  `;
+  addAiMessage(message, "user");
 
-  button.style.cssText = `
-    position:fixed;
-    right:18px;
-    bottom:82px;
-    z-index:9999;
-    display:flex;
-    align-items:center;
-    gap:8px;
-    background:#064e3b;
-    color:white;
-    border:2px solid #f59e0b;
-    border-radius:50px;
-    padding:12px 18px;
-    font-weight:800;
-    font-size:13px;
-    box-shadow:0 8px 25px rgba(0,0,0,.25);
-    cursor:pointer;
-  `;
+  input.value = "";
 
-  document.body.appendChild(button);
+  addAiMessage("🔎 आपकी जरूरत के अनुसार approved properties खोज रहा हूँ...", "ai");
 
-  button.addEventListener("click", function () {
-    openJamindarAi();
-  });
+  try {
 
+    const result = await jamindarAiSearchProperties(message);
 
-  function openJamindarAi() {
+    // Loading message हटाएँ
+    const container = document.getElementById("jamindarAiMessages");
 
-    if (document.getElementById("jamindarAiModal")) {
-      document
-        .getElementById("jamindarAiModal")
-        .classList.remove("hidden");
+    if (container && container.lastElementChild) {
+      container.lastElementChild.remove();
+    }
+
+    if (!result.length) {
+
+      addAiMessage(
+        "माफ़ कीजिए। आपकी जरूरत के अनुसार अभी कोई approved property नहीं मिली। आप स्थान, बजट या रकबा थोड़ा बदलकर फिर से खोज सकते हैं।",
+        "ai"
+      );
 
       return;
     }
 
-    const modal = document.createElement("div");
+    addAiMessage(
+      `✅ आपकी जरूरत के अनुसार ${result.length} approved property मिली हैं।`,
+      "ai"
+    );
 
-    modal.id = "jamindarAiModal";
+    showJamindarAiPropertyResults(result);
 
-    modal.style.cssText = `
-      position:fixed;
-      inset:0;
-      z-index:10000;
-      background:rgba(0,0,0,.55);
-      display:flex;
-      align-items:flex-end;
-      justify-content:center;
-      padding:15px;
-    `;
+  } catch (error) {
 
-    modal.innerHTML = `
-      <div style="
-        width:100%;
-        max-width:500px;
-        background:white;
-        border-radius:24px;
-        overflow:hidden;
-        box-shadow:0 20px 60px rgba(0,0,0,.35);
-      ">
+    console.error("AI Search Error:", error);
 
-        <div style="
-          background:#064e3b;
-          color:white;
-          padding:16px;
-          display:flex;
-          justify-content:space-between;
-          align-items:center;
-        ">
+    addAiMessage(
+      "अभी property search में समस्या आ रही है। कृपया थोड़ी देर बाद फिर प्रयास करें।",
+      "ai"
+    );
 
-          <div>
-            <div style="font-size:17px;font-weight:900;">
-              🤖 JAMINDAR AI SAATHI
-            </div>
-
-            <div style="
-              font-size:11px;
-              color:#a7f3d0;
-            ">
-              जमीन खोजने में आपकी सहायता
-            </div>
-          </div>
-
-          <button
-            id="closeJamindarAi"
-            style="
-              background:none;
-              border:0;
-              color:white;
-              font-size:22px;
-              cursor:pointer;
-            "
-          >×</button>
-
-        </div>
+  }
+}
 
 
-        <div
-          id="jamindarAiMessages"
-          style="
-            height:360px;
-            overflow-y:auto;
-            padding:15px;
-            background:#f8fafc;
-          "
-        >
+/* =====================================================
+   SMART PROPERTY SEARCH
+   ===================================================== */
 
-          <div style="
-            background:white;
-            border:1px solid #e2e8f0;
-            border-radius:15px;
-            padding:12px;
-            margin-bottom:10px;
-            font-size:13px;
-          ">
+async function jamindarAiSearchProperties(query) {
 
-            🙏 नमस्कार! मैं
-            <b>JAMINDAR AI SAATHI</b> हूँ।
+  if (typeof db === "undefined") {
+    throw new Error("Firebase Firestore database is not available.");
+  }
 
-            <br><br>
-
-            आपको किस स्थान पर जमीन चाहिए?
-
-            अपना बजट, जमीन का रकबा और स्थान लिखें।
-
-            <br><br>
-
-            <span style="color:#64748b;">
-              उदाहरण:
-              “जपला में 5 डिसमिल जमीन ₹12 लाख तक चाहिए।”
-            </span>
-
-          </div>
-
-        </div>
+  const q = query
+    .toLowerCase()
+    .replace(/₹/g, "")
+    .replace(/,/g, "")
+    .trim();
 
 
-        <div style="
-          padding:12px;
-          border-top:1px solid #e2e8f0;
-          background:white;
-        ">
+  // -----------------------------------------
+  // 1. BUDGET / PRICE
+  // -----------------------------------------
 
-          <div style="
-            display:flex;
-            gap:8px;
-          ">
+  let maxPrice = null;
 
-            <input
-              id="jamindarAiInput"
-              type="text"
-              placeholder="जैसे: जपला में 5 डिसमिल जमीन..."
-              style="
-                flex:1;
-                border:1px solid #cbd5e1;
-                border-radius:12px;
-                padding:11px;
-                font-size:13px;
-                outline:none;
-              "
-            >
+  const lakhMatch = q.match(
+    /(\d+(?:\.\d+)?)\s*(lakh|lac|लाख)/
+  );
 
-            <button
-              id="jamindarAiSend"
-              style="
-                background:#064e3b;
-                color:white;
-                border:0;
-                border-radius:12px;
-                padding:0 16px;
-                font-weight:800;
-                cursor:pointer;
-              "
-            >
-              भेजें
-            </button>
+  if (lakhMatch) {
 
-          </div>
+    maxPrice =
+      parseFloat(lakhMatch[1]) * 100000;
 
-        </div>
+  } else {
 
-      </div>
-    `;
+    const priceMatch = q.match(
+      /(?:rs|inr|₹)?\s*(\d{5,8})/
+    );
 
-    document.body.appendChild(modal);
-
-
-    document
-      .getElementById("closeJamindarAi")
-      .addEventListener("click", function () {
-        modal.remove();
-      });
-
-
-    document
-      .getElementById("jamindarAiSend")
-      .addEventListener("click", handleAiMessage);
-
-
-    document
-      .getElementById("jamindarAiInput")
-      .addEventListener("keydown", function (event) {
-
-        if (event.key === "Enter") {
-          handleAiMessage();
-        }
-
-      });
+    if (priceMatch) {
+      maxPrice = parseFloat(priceMatch[1]);
+    }
 
   }
 
 
-  function handleAiMessage() {
+  // -----------------------------------------
+  // 2. AREA / DECIMAL
+  // -----------------------------------------
 
-    const input =
-      document.getElementById("jamindarAiInput");
+  let minArea = null;
 
-    if (!input) return;
+  const areaMatch = q.match(
+    /(\d+(?:\.\d+)?)\s*(decimal|decimals|disimil|dismil|डिसमिल|डिसमल)/
+  );
 
-    const message = input.value.trim();
+  if (areaMatch) {
 
-    if (!message) return;
+    minArea = parseFloat(areaMatch[1]);
 
-    addAiMessage(message, "user");
+  }
 
-    input.value = "";
 
-    setTimeout(function () {
+  // -----------------------------------------
+  // 3. FIRESTORE
+  // ONLY APPROVED PROPERTIES
+  // -----------------------------------------
 
-      addAiMessage(
-        "मैं आपकी जरूरत समझ रहा हूँ। अगले चरण में मैं आपकी बात से स्थान, रकबा और बजट निकालकर JAMINDAR LAND BAZAAR की approved properties में खोज करूँगा।",
-        "ai"
+  const snapshot = await db
+    .collection("properties")
+    .where("status", "==", "approved")
+    .get();
+
+
+  const properties = snapshot.docs.map(doc => {
+
+    const data = doc.data();
+
+    return {
+      id: doc.id,
+      ...data
+    };
+
+  });
+
+
+  // -----------------------------------------
+  // 4. LOCATION / KEYWORD SEARCH
+  // -----------------------------------------
+
+  const stopWords = new Set([
+    "mein",
+    "me",
+    "में",
+    "ka",
+    "ki",
+    "ke",
+    "तक",
+    "chahiye",
+    "चाहिए",
+    "hai",
+    "है",
+    "jameen",
+    "zameen",
+    "जमीन",
+    "भूमि",
+    "land",
+    "property",
+    "plot",
+    "प्लॉट",
+    "please",
+    "mujhe",
+    "मुझे",
+    "the",
+    "and",
+    "or"
+  ]);
+
+
+  const words = q
+    .split(/\s+/)
+    .map(word => word.trim())
+    .filter(word => word.length >= 2)
+    .filter(word => !stopWords.has(word));
+
+
+  const results = properties.filter(property => {
+
+    const searchableText = [
+      property.title,
+      property.district,
+      property.block,
+      property.panchayat,
+      property.village,
+      property.category,
+      property.classType,
+      property.propertyId,
+      property.khata,
+      property.plot,
+      property.description
+    ]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase();
+
+
+    // Location / keyword matching
+    const keywordMatch =
+      words.length === 0 ||
+      words.some(word =>
+        searchableText.includes(word)
       );
 
-    }, 500);
 
-  }
+    // Price filter
+    const propertyPrice =
+      Number(property.priceVal || 0);
+
+    const priceMatch =
+      maxPrice === null ||
+      (
+        propertyPrice > 0 &&
+        propertyPrice <= maxPrice
+      );
 
 
-  function addAiMessage(message, type) {
+    // Area filter
+    const propertyArea =
+      Number(property.areaVal || 0);
 
-    const container =
-      document.getElementById("jamindarAiMessages");
+    const areaMatch =
+      minArea === null ||
+      (
+        propertyArea > 0 &&
+        propertyArea >= minArea
+      );
 
-    if (!container) return;
 
-    const div = document.createElement("div");
+    return (
+      keywordMatch &&
+      priceMatch &&
+      areaMatch
+    );
 
-    div.style.cssText = `
-      margin-bottom:10px;
-      padding:11px 13px;
-      border-radius:15px;
-      font-size:13px;
-      line-height:1.5;
-      ${
-        type === "user"
-          ? "background:#064e3b;color:white;margin-left:35px;"
-          : "background:white;border:1px solid #e2e8f0;margin-right:20px;"
-      }
+  });
+
+
+  // सबसे पहले verified properties
+  results.sort((a, b) => {
+
+    if (a.verified === true && b.verified !== true) {
+      return -1;
+    }
+
+    if (a.verified !== true && b.verified === true) {
+      return 1;
+    }
+
+    return 0;
+
+  });
+
+
+  return results.slice(0, 10);
+}
+
+
+/* =====================================================
+   PROPERTY RESULT CARDS
+   ===================================================== */
+
+function showJamindarAiPropertyResults(properties) {
+
+  const container =
+    document.getElementById("jamindarAiMessages");
+
+  if (!container) return;
+
+
+  properties.forEach(property => {
+
+    const card = document.createElement("div");
+
+    card.style.cssText = `
+      background:white;
+      border:1px solid #d1d5db;
+      border-radius:16px;
+      padding:13px;
+      margin:10px 0;
+      box-shadow:0 3px 10px rgba(0,0,0,.08);
     `;
 
-    div.textContent = message;
 
-    container.appendChild(div);
+    const propertyId =
+      property.propertyId || property.id || "-";
 
-    container.scrollTop = container.scrollHeight;
+    const title =
+      property.title || "भूमि उपलब्ध";
 
-  }
+    const location = [
+      property.village || "",
+      property.block || "",
+      property.district || ""
+    ]
+      .filter(Boolean)
+      .join(", ");
 
-})();
+
+    const area =
+      property.area ||
+      (
+        property.areaVal
+          ? property.areaVal + " Decimal"
+          : "-"
+      );
+
+
+    const price =
+      property.price ||
+      (
+        property.priceVal
+          ? "₹ " +
+            Number(property.priceVal)
+              .toLocaleString("en-IN")
+          : "-"
+      );
+
+
+    const verifiedBadge =
+      property.verified === true
+        ? `
+          <span style="
+            display:inline-block;
+            background:#dcfce7;
+            color:#166534;
+            padding:3px 7px;
+            border-radius:7px;
+            font-size:10px;
+            font-weight:800;
+          ">
+            ✓ Verified
+          </span>
+        `
+        : `
+          <span style="
+            display:inline-block;
+            background:#f1f5f9;
+            color:#475569;
+            padding:3px 7px;
+            border-radius:7px;
+            font-size:10px;
+            font-weight:700;
+          ">
+            Approved
+          </span>
+        `;
+
+
+    card.innerHTML = `
+
+      <div style="
+        font-size:15px;
+        font-weight:900;
+        color:#064e3b;
+        margin-bottom:5px;
+      ">
+        ${escapeHtml(title)}
+      </div>
+
+      <div style="
+        font-size:11px;
+        color:#64748b;
+        margin-bottom:8px;
+      ">
+        Property ID: ${escapeHtml(propertyId)}
+      </div>
+
+      <div style="
+        font-size:12px;
+        line-height:1.8;
+        color:#334155;
+      ">
+
+        📍 <b>स्थान:</b>
+        ${escapeHtml(location || "-")}
+
+        <br>
+
+        📐 <b>रकबा:</b>
+        ${escapeHtml(area)}
+
+        <br>
+
+        💰 <b>कीमत:</b>
+        <span style="
+          color:#047857;
+          font-weight:900;
+        ">
+          ${escapeHtml(price)}
+        </span>
+
+        <br>
+
+        🏷️ <b>क़िस्म:</b>
+        ${escapeHtml(property.classType || "-")}
+
+        <br>
+
+        ${verifiedBadge}
+
+      </div>
+
+      <button
+        type="button"
+        style="
+          width:100%;
+          margin-top:10px;
+          background:#064e3b;
+          color:white;
+          border:0;
+          border-radius:10px;
+          padding:9px;
+          font-weight:800;
+          cursor:pointer;
+        "
+        onclick="jamindarAiEnquiry('${escapeHtml(propertyId)}')"
+      >
+        📞 Enquiry करें
+      </button>
+
+    `;
+
+
+    container.appendChild(card);
+
+  });
+
+
+  container.scrollTop =
+    container.scrollHeight;
+}
+
+
+/* =====================================================
+   ENQUIRY
+   ===================================================== */
+
+function jamindarAiEnquiry(propertyId) {
+
+  addAiMessage(
+    `मैंने Property ID ${propertyId} को enquiry के लिए चुना है। अगले चरण में हम इसे JAMINDAR LAND BAZAAR के enquiry system से जोड़ेंगे।`,
+    "ai"
+  );
+
+}
