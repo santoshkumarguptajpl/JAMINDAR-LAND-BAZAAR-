@@ -448,4 +448,239 @@ function jamindarAiEnquiry(propertyId) {
     "ai"
   );
 
-}
+}/* =========================================
+   JAMINDAR AI SAATHI - CHAT UI
+   ========================================= */
+
+(function initJamindarAiSaathi() {
+  "use strict";
+
+  function addAiMessage(text, type = "ai") {
+    const container = document.getElementById("jamindarAiMessages");
+    if (!container) return;
+
+    const div = document.createElement("div");
+
+    div.style.cssText = `
+      margin:8px 0;
+      padding:10px 12px;
+      border-radius:14px;
+      max-width:90%;
+      line-height:1.5;
+      white-space:pre-wrap;
+      ${
+        type === "user"
+          ? "margin-left:auto;background:#075e4f;color:#fff;"
+          : "margin-right:auto;background:#f1f5f9;color:#111827;"
+      }
+    `;
+
+    div.textContent = text;
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+  }
+
+  window.addAiMessage = addAiMessage;
+
+  function createAiUi() {
+    if (document.getElementById("jamindarAiButton")) return;
+
+    const button = document.createElement("button");
+
+    button.id = "jamindarAiButton";
+    button.type = "button";
+    button.innerHTML = "🤖";
+    button.setAttribute("aria-label", "JAMINDAR AI SAATHI");
+
+    button.style.cssText = `
+      position:fixed;
+      right:18px;
+      bottom:110px;
+      z-index:9999;
+      width:60px;
+      height:60px;
+      border:0;
+      border-radius:50%;
+      background:#f59e0b;
+      color:#fff;
+      font-size:28px;
+      box-shadow:0 6px 18px rgba(0,0,0,.25);
+      cursor:pointer;
+    `;
+
+    const modal = document.createElement("div");
+
+    modal.id = "jamindarAiModal";
+
+    modal.style.cssText = `
+      display:none;
+      position:fixed;
+      inset:0;
+      z-index:10000;
+      background:rgba(0,0,0,.45);
+      align-items:flex-end;
+      justify-content:center;
+    `;
+
+    modal.innerHTML = `
+      <div style="
+        width:100%;
+        max-width:520px;
+        background:#fff;
+        border-radius:20px 20px 0 0;
+        overflow:hidden;
+        box-shadow:0 -8px 30px rgba(0,0,0,.2);
+      ">
+
+        <div style="
+          background:#075e4f;
+          color:#fff;
+          padding:14px 16px;
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+        ">
+
+          <div>
+            <div style="font-size:18px;font-weight:700;">
+              🤖 JAMINDAR AI SAATHI
+            </div>
+
+            <div style="font-size:12px;opacity:.9;">
+              जमीन खोजने में आपकी सहायता
+            </div>
+          </div>
+
+          <button
+            id="jamindarAiClose"
+            type="button"
+            style="
+              background:none;
+              border:0;
+              color:#fff;
+              font-size:28px;
+              cursor:pointer;
+            "
+          >×</button>
+
+        </div>
+
+        <div
+          id="jamindarAiMessages"
+          style="
+            height:55vh;
+            max-height:520px;
+            overflow-y:auto;
+            padding:14px;
+            background:#f8fafc;
+          "
+        >
+
+          <div style="
+            background:#fff;
+            padding:12px;
+            border-radius:14px;
+            color:#334155;
+          ">
+            नमस्ते! 👋<br><br>
+            मैं <b>JAMINDAR AI SAATHI</b> हूँ।<br>
+            आप अपनी जमीन की जरूरत बताइए।
+            <br><br>
+            उदाहरण:<br>
+            <b>जपला में 5 डिसमिल जमीन ₹12 लाख तक चाहिए</b>
+          </div>
+
+        </div>
+
+        <div style="
+          padding:10px;
+          border-top:1px solid #e5e7eb;
+          display:flex;
+          gap:8px;
+        ">
+
+          <input
+            id="jamindarAiInput"
+            type="text"
+            placeholder="जैसे: जपला में 5 डिसमिल जमीन 12 लाख तक"
+            style="
+              flex:1;
+              border:1px solid #cbd5e1;
+              border-radius:12px;
+              padding:12px;
+              outline:none;
+            "
+          >
+
+          <button
+            id="jamindarAiSend"
+            type="button"
+            style="
+              background:#075e4f;
+              color:#fff;
+              border:0;
+              border-radius:12px;
+              padding:0 16px;
+              font-weight:700;
+              cursor:pointer;
+            "
+          >
+            भेजें
+          </button>
+
+        </div>
+
+      </div>
+    `;
+
+    document.body.appendChild(button);
+    document.body.appendChild(modal);
+
+    button.addEventListener("click", () => {
+      modal.style.display = "flex";
+
+      setTimeout(() => {
+        document
+          .getElementById("jamindarAiInput")
+          ?.focus();
+      }, 50);
+    });
+
+    document
+      .getElementById("jamindarAiClose")
+      .addEventListener("click", () => {
+        modal.style.display = "none";
+      });
+
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+
+    document
+      .getElementById("jamindarAiSend")
+      .addEventListener("click", () => {
+        handleAiMessage();
+      });
+
+    document
+      .getElementById("jamindarAiInput")
+      .addEventListener("keydown", (event) => {
+        if (event.key === "Enter") {
+          event.preventDefault();
+          handleAiMessage();
+        }
+      });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener(
+      "DOMContentLoaded",
+      createAiUi
+    );
+  } else {
+    createAiUi();
+  }
+
+})();
