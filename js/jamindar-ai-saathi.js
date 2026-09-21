@@ -1973,9 +1973,9 @@ Location: ${location || "-"}
 
   }
 
-
+  }
   /* =======================================================
-     FINAL INITIALIZATION
+       FINAL INITIALIZATION
      ======================================================= */
 
   function initJamindarAiSaathi() {
