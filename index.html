@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="JAMINDAR LAND BAZAAR - झारखंड का विश्वसनीय डिजिटल भूमि बाजार। खाता, प्लॉट, रकबा और सत्यापित जमीन की जानकारी।" />
   <meta name="theme-color" content="#064e3b" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <meta name="robots" content="index,follow,max-image-preview:large" />
   <title>JAMINDAR LAND BAZAAR | झारखंड का विश्वसनीय डिजिटल भूमि बाजार</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
@@ -28,7 +31,15 @@
     .gold-badge{background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%)}
     .hidden-view{display:none!important}
     .demo-badge{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa}
-  </style>
+  
+/* ===== FINAL PREMIUM MARQUEE + MOBILE LANGUAGE ===== */
+.jlb-marquee-wrap{overflow:hidden;white-space:nowrap;background:linear-gradient(90deg,#022c22,#065f46,#022c22);border-top:1px solid rgba(251,191,36,.25);border-bottom:1px solid rgba(251,191,36,.25)}
+.jlb-marquee-track{display:inline-block;min-width:100%;padding-left:100%;animation:jlbMarquee 26s linear infinite;font-weight:800;color:#fde68a}
+@keyframes jlbMarquee{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+.jlb-lang-mobile{display:flex;gap:8px;align-items:center;border-top:1px solid rgba(16,185,129,.25);padding-top:10px;margin-top:8px}
+.jlb-lang-mobile button{padding:.35rem .7rem;border-radius:.65rem;font-size:.72rem;font-weight:900}
+@media (prefers-reduced-motion:reduce){.jlb-marquee-track{animation:none;padding-left:0;text-align:center;display:block}}
+</style>
 </head>
 
 <body class="bg-[#f8fafc] text-slate-800 antialiased pb-24 md:pb-0">
@@ -111,8 +122,35 @@
     <button onclick="switchView('view-disclaimer')" class="block w-full text-left py-2 text-emerald-200">⚠️ Disclaimer</button>
     <button onclick="switchView('view-seller-declaration')" class="block w-full text-left py-2 text-emerald-200">✍️ Seller Declaration</button>
     <button onclick="switchView('view-admin-auth')" class="block w-full text-left py-2 text-amber-400">🔒 एडमिन लॉगिन</button>
+<div class="jlb-lang-mobile">
+  <span class="text-emerald-300 text-xs font-bold">🌐 भाषा:</span>
+  <button id="mobileLangHi" onclick="setSiteLanguage('hi')" class="bg-amber-400 text-emerald-950">हिंदी</button>
+  <button id="mobileLangEn" onclick="setSiteLanguage('en')" class="border border-emerald-400 text-emerald-100">English</button>
+</div>
   </div>
 </header>
+
+<!-- PREMIUM MOVING MESSAGE -->
+<div class="jlb-marquee-wrap" aria-label="JAMINDAR LAND BAZAAR announcement">
+  <div class="jlb-marquee-track py-2 px-4 text-xs sm:text-sm">🏡 JAMINDAR LAND BAZAAR — अपनी जमीन बेचें या अपनी जरूरत की जमीन आसानी से खरीदें | खरीदें • बेचें • किराये पर दें • लीज पर लें | पूरे झारखंड में प्रॉपर्टी की जानकारी एक ही प्लेटफॉर्म पर 🏡</div>
+</div>
+
+<!-- FOUNDER MINI CARD UNDER MOVING BANNER -->
+<div class="bg-white border-b border-emerald-100 shadow-sm">
+  <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-center">
+    <div class="flex items-center gap-3 bg-emerald-50/70 border border-emerald-100 rounded-2xl px-3 py-2">
+      <img src="assets/founder-santosh-kumar-gupta.jpg"
+           alt="संतोष कुमार गुप्ता - Founder"
+           class="w-12 h-12 sm:w-14 sm:h-14 rounded-full object-cover border-2 border-amber-400 shadow-md"
+           loading="lazy">
+      <div class="leading-tight">
+        <div class="text-[10px] sm:text-xs font-bold text-emerald-700">FOUNDER / WEBSITE OWNER</div>
+        <div class="text-sm sm:text-base font-black text-emerald-950">संतोष कुमार गुप्ता</div>
+        <div class="text-[10px] sm:text-xs text-slate-500">JAMINDAR LAND BAZAAR</div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- HOME -->
 <main id="view-home">
@@ -127,6 +165,35 @@
       <p class="text-emerald-100 text-sm sm:text-base max-w-2xl mx-auto mt-3">
         पलामू, हुसैनाबाद (जपला), गढ़वा, राँची समेत पूरे झारखंड में खाता, प्लॉट और रकबा सहित जानकारी।
       </p>
+      <div class="flex flex-wrap justify-center gap-2.5 mt-6">
+        <button onclick="filterAndShowProperties('All')" class="px-5 py-2.5 rounded-xl bg-amber-400 text-emerald-950 font-black text-sm shadow-lg hover:scale-[1.02] transition">
+          🔎 जमीन खोजें
+        </button>
+        <button onclick="switchView('view-post')" class="px-5 py-2.5 rounded-xl bg-white/10 border border-white/30 text-white font-black text-sm hover:bg-white/15 transition">
+          ➕ जमीन बेचें
+        </button>
+        <button onclick="showRentalListings()" class="px-5 py-2.5 rounded-xl bg-emerald-800/70 border border-emerald-400/30 text-emerald-50 font-black text-sm hover:bg-emerald-800 transition">
+          🏠 किराये की संपत्ति
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-3xl mx-auto mt-7">
+        <div class="bg-white/10 border border-white/15 rounded-2xl px-4 py-3 backdrop-blur-sm">
+          <div class="text-amber-400 text-xl">✓</div>
+          <div class="text-sm font-black mt-1">सत्यापित जानकारी</div>
+          <div class="text-[10px] text-emerald-100 mt-1">Property details को व्यवस्थित रूप से दिखाएँ</div>
+        </div>
+        <div class="bg-white/10 border border-white/15 rounded-2xl px-4 py-3 backdrop-blur-sm">
+          <div class="text-amber-400 text-xl">⌂</div>
+          <div class="text-sm font-black mt-1">पूरे झारखंड में</div>
+          <div class="text-[10px] text-emerald-100 mt-1">जिला, प्लॉट और रकबा के साथ खोज</div>
+        </div>
+        <div class="bg-white/10 border border-white/15 rounded-2xl px-4 py-3 backdrop-blur-sm">
+          <div class="text-amber-400 text-xl">⚡</div>
+          <div class="text-sm font-black mt-1">आसान पोस्टिंग</div>
+          <div class="text-[10px] text-emerald-100 mt-1">Owner और Authorized Agent के लिए</div>
+        </div>
+      </div>
 
       <div class="bg-white p-2.5 sm:p-3 rounded-2xl shadow-2xl max-w-3xl mx-auto flex flex-col md:flex-row gap-2 mt-6 text-gray-800 text-left">
         <div class="flex-1 flex items-center bg-slate-50 rounded-xl px-3 border border-slate-200">
@@ -184,6 +251,38 @@
     </div>
   </section>
 
+  <!-- HOW IT WORKS / TRUST FLOW -->
+  <section class="max-w-7xl mx-auto px-4 py-5">
+    <div class="rounded-3xl bg-white border border-emerald-100 shadow-sm overflow-hidden">
+      <div class="px-5 pt-5 text-center">
+        <span class="text-[10px] font-black tracking-widest text-emerald-700 uppercase">Simple • Transparent • Local</span>
+        <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-1">JAMINDAR LAND BAZAAR पर कैसे काम करें?</h2>
+        <p class="text-xs text-slate-500 mt-1">खरीदार, विक्रेता और Authorized Agent के लिए आसान प्रक्रिया</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 p-5">
+        <div class="relative rounded-2xl bg-emerald-50 border border-emerald-100 p-5">
+          <div class="w-10 h-10 rounded-xl bg-emerald-700 text-white flex items-center justify-center font-black shadow">1</div>
+          <h3 class="font-extrabold mt-4 text-emerald-950">संपत्ति खोजें / पोस्ट करें</h3>
+          <p class="text-xs text-slate-600 mt-2 leading-5">जिला, प्लॉट, रकबा और संपत्ति की जानकारी देखकर उपलब्ध जमीन खोजें या अपनी संपत्ति की listing शुरू करें।</p>
+        </div>
+        <div class="relative rounded-2xl bg-amber-50 border border-amber-100 p-5">
+          <div class="w-10 h-10 rounded-xl bg-amber-400 text-emerald-950 flex items-center justify-center font-black shadow">2</div>
+          <h3 class="font-extrabold mt-4 text-emerald-950">विवरण जाँचें</h3>
+          <p class="text-xs text-slate-600 mt-2 leading-5">उपलब्ध property details, फोटो और listing status देखें। जरूरी दस्तावेज़ों की स्वतंत्र रूप से जाँच करें।</p>
+        </div>
+        <div class="relative rounded-2xl bg-slate-50 border border-slate-200 p-5">
+          <div class="w-10 h-10 rounded-xl bg-slate-900 text-white flex items-center justify-center font-black shadow">3</div>
+          <h3 class="font-extrabold mt-4 text-emerald-950">संपर्क व सौदा</h3>
+          <p class="text-xs text-slate-600 mt-2 leading-5">उपयुक्त property पर seller/agent से संपर्क करें और registry से पहले title, mutation, land-use व अन्य रिकॉर्ड की जाँच करें।</p>
+        </div>
+      </div>
+      <div class="mx-5 mb-5 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 flex gap-3 items-start">
+        <span class="text-lg">⚠️</span>
+        <p class="text-[11px] sm:text-xs text-amber-900 leading-5"><b>महत्वपूर्ण:</b> JAMINDAR LAND BAZAAR पर दिखाई गई listing को अंतिम सरकारी title verification न मानें। खरीद/बिक्री से पहले संबंधित सरकारी रिकॉर्ड, स्वामित्व, बंधक/विवाद, CNT/अन्य प्रतिबंध, नापी और registry eligibility की स्वतंत्र जाँच करें।</p>
+      </div>
+    </div>
+  </section>
+
   <section class="max-w-7xl mx-auto px-4 py-4">
     <div class="flex justify-between items-end mb-6">
       <div>
@@ -214,6 +313,37 @@
       <button onclick="filterAndShowProperties('CNT')" class="text-xs px-3.5 py-1.5 bg-slate-200 rounded-lg font-bold">CNT</button>
     </div>
   </div>
+  <!-- ADVANCED PROPERTY SEARCH -->
+  <div class="mb-6 bg-white rounded-3xl border border-emerald-100 shadow-sm p-4 sm:p-5">
+    <div class="flex items-center justify-between gap-3 mb-4">
+      <div>
+        <h3 class="text-base sm:text-lg font-black text-emerald-950">🔎 जमीन की विस्तृत खोज</h3>
+        <p class="text-[11px] text-slate-500 mt-1">जिला, ब्लॉक, मौजा, रकबा और कीमत के अनुसार खोजें</p>
+      </div>
+      <button type="button" onclick="resetAdvancedPropertyFilters()" class="text-[11px] px-3 py-2 rounded-xl bg-slate-100 font-black text-slate-700">रीसेट</button>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+      <select id="advDistrict" onchange="populateAdvancedBlocks(); applyAdvancedPropertyFilters()" class="w-full px-3 py-2.5 rounded-xl border text-sm bg-white"><option value="">सभी जिले</option></select>
+      <select id="advBlock" onchange="applyAdvancedPropertyFilters()" class="w-full px-3 py-2.5 rounded-xl border text-sm bg-white"><option value="">सभी ब्लॉक / इलाका</option></select>
+      <input id="advVillage" oninput="applyAdvancedPropertyFilters()" type="text" placeholder="मौजा / गाँव" class="w-full px-3 py-2.5 rounded-xl border text-sm">
+      <select id="advClass" onchange="applyAdvancedPropertyFilters()" class="w-full px-3 py-2.5 rounded-xl border text-sm bg-white"><option value="">General / CNT सभी</option><option value="General">General</option><option value="CNT">CNT</option></select>
+      <select id="advCategory" onchange="applyAdvancedPropertyFilters()" class="w-full px-3 py-2.5 rounded-xl border text-sm bg-white"><option value="">सभी प्रकार</option><option value="Residential">Residential</option><option value="Commercial">Commercial</option><option value="Agricultural">Agricultural</option><option value="Industrial">Industrial</option></select>
+      <input id="advMinArea" oninput="applyAdvancedPropertyFilters()" type="number" min="0" step="0.01" placeholder="न्यूनतम रकबा (डिसमिल)" class="w-full px-3 py-2.5 rounded-xl border text-sm">
+      <input id="advMaxArea" oninput="applyAdvancedPropertyFilters()" type="number" min="0" step="0.01" placeholder="अधिकतम रकबा (डिसमिल)" class="w-full px-3 py-2.5 rounded-xl border text-sm">
+      <input id="advMaxPrice" oninput="applyAdvancedPropertyFilters()" type="number" min="0" step="1000" placeholder="अधिकतम कीमत (₹)" class="w-full px-3 py-2.5 rounded-xl border text-sm">
+    </div>
+    <div class="flex flex-wrap items-center justify-between gap-3 mt-4 pt-3 border-t border-slate-100">
+      <div id="advancedFilterCount" class="text-xs font-black text-emerald-700">लिस्टिंग लोड हो रही है...</div>
+      <select id="advSort" onchange="applyAdvancedPropertyFilters()" class="px-3 py-2 rounded-xl border text-xs font-bold bg-white">
+        <option value="newest">नई लिस्टिंग पहले</option>
+        <option value="priceLow">कम कीमत पहले</option>
+        <option value="priceHigh">अधिक कीमत पहले</option>
+        <option value="areaLow">कम रकबा पहले</option>
+        <option value="areaHigh">अधिक रकबा पहले</option>
+      </select>
+    </div>
+  </div>
+
   <div id="propertyGridAll" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
 </section>
 
@@ -227,6 +357,7 @@
     </div>
 
     <form id="postPropertyForm" onsubmit="handleFormSubmit(event)" class="space-y-4">
+      <div class="bg-slate-50 border border-slate-200 rounded-2xl p-3 text-[10px] text-slate-600 leading-5">🔐 <b>Security:</b> कभी भी इस form में OTP, Password, UPI PIN, ATM PIN या banking credentials न डालें। केवल property information और listing contact details दें।</div>
       <div>
         <label class="block text-xs font-bold mb-1">प्रॉपर्टी का शीर्षक *</label>
         <input id="pTitle" required type="text" placeholder="उदा. 10 डिसमिल कमर्शियल प्लॉट, जपला मेन रोड" class="w-full text-sm px-3.5 py-2.5 rounded-xl border">
@@ -295,6 +426,21 @@
           <label class="block text-xs font-bold mb-1">रकबा (डिसमिल) *</label>
           <input id="pArea" required type="number" min="0" step="any" class="w-full text-sm px-3.5 py-2.5 rounded-xl border">
         </div>
+      </div>
+
+
+      <div class="bg-blue-50 p-4 rounded-2xl border border-blue-200">
+        <div class="text-sm font-extrabold text-blue-950 mb-2">🏛️ RERA विवरण (जहाँ लागू हो)</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <select id="pReraApplicable" class="w-full text-sm px-3.5 py-2.5 rounded-xl border bg-white">
+            <option value="not_applicable">लागू नहीं / सामान्य भूमि</option>
+            <option value="yes">हाँ — RERA Registered Project</option>
+            <option value="no">नहीं</option>
+            <option value="unknown">जानकारी उपलब्ध नहीं</option>
+          </select>
+          <input id="pReraNumber" type="text" placeholder="RERA Registration Number (यदि लागू हो)" class="w-full text-sm px-3.5 py-2.5 rounded-xl border">
+        </div>
+        <p class="text-[10px] text-slate-500 mt-2">RERA number दर्ज करने मात्र से platform verification नहीं माना जाएगा। जहाँ लागू हो, official authority records से स्वतंत्र जाँच करें।</p>
       </div>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -534,6 +680,16 @@
           </select>
         </div>
         <div><label class="block text-xs font-bold mb-1">Property Title *</label><input id="rTitle" required placeholder="उदा. 2 BHK मकान, जपला" class="w-full text-sm px-3.5 py-2.5 rounded-xl border"></div>
+      <div class="bg-emerald-50 p-4 rounded-2xl border border-emerald-200 sm:col-span-2">
+        <div class="flex items-center justify-between gap-3 mb-2">
+          <label for="rImages" class="block text-sm font-extrabold text-emerald-950"><i class="fa-solid fa-images mr-1"></i> प्रॉपर्टी की फोटो</label>
+          <span class="text-[10px] font-bold text-emerald-700">अधिकतम 5 फोटो • 5 MB/फोटो</span>
+        </div>
+        <input id="rImages" type="file" accept="image/jpeg,image/png,image/webp" multiple onchange="previewRentalImages(event)" class="block w-full text-xs text-slate-600 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:bg-emerald-700 file:text-white file:font-bold file:cursor-pointer">
+        <p class="text-[10px] text-slate-500 mt-2">JPG, PNG या WebP फोटो चुनें। पहली फोटो मुख्य Rental Image के रूप में दिखाई जाएगी।</p>
+        <div id="rentalImagePreview" class="grid grid-cols-2 sm:grid-cols-5 gap-2 mt-3"></div>
+        <p id="rentalImageStatus" class="hidden text-xs font-bold mt-2"></p>
+      </div>
       </div>
       <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div><label class="block text-xs font-bold mb-1">ज़िला *</label><input id="rDistrict" required value="Palamu" class="w-full text-sm px-3.5 py-2.5 rounded-xl border"></div>
@@ -715,6 +871,84 @@
   </div>
 </section>
 
+<!-- PUBLIC PROPERTY DETAIL MODAL -->
+<div id="publicPropertyDetailModal" class="hidden fixed inset-0 z-[60] overflow-y-auto bg-black/70 backdrop-blur-sm p-3 sm:p-6">
+  <div class="max-w-5xl mx-auto bg-white rounded-3xl overflow-hidden shadow-2xl my-4 sm:my-8">
+    <div class="sticky top-0 z-10 bg-white/95 backdrop-blur border-b px-4 sm:px-6 py-3 flex items-center justify-between">
+      <div><div class="text-[10px] font-black text-emerald-700">JAMINDAR LAND BAZAAR</div><h3 id="pubDetailTitle" class="font-black text-slate-900 text-base sm:text-lg">Property Details</h3></div>
+      <button onclick="closePublicPropertyDetail()" class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 text-xl font-bold">&times;</button>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2">
+      <div class="bg-slate-100 p-3 sm:p-5">
+        <div class="relative rounded-2xl overflow-hidden bg-slate-200 aspect-[4/3]"><img id="pubDetailMainImage" class="w-full h-full object-cover" alt="Property image"></div>
+        <div id="pubDetailThumbs" class="grid grid-cols-5 gap-2 mt-3"></div>
+      </div>
+      <div class="p-5 sm:p-7">
+        <div id="pubDetailBadges" class="flex flex-wrap gap-2 mb-3"></div>
+        <div id="pubDetailLocation" class="text-xs font-bold text-amber-700 mb-2"></div>
+        <h4 id="pubDetailHeading" class="text-xl sm:text-2xl font-black text-slate-900 leading-tight"></h4>
+        <div class="grid grid-cols-2 gap-3 mt-5">
+          <div class="bg-amber-50 border border-amber-100 rounded-2xl p-3"><div class="text-[10px] text-slate-500 font-bold">खाता</div><div id="pubDetailKhata" class="font-black"></div></div>
+          <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-3"><div class="text-[10px] text-slate-500 font-bold">प्लॉट / खसरा</div><div id="pubDetailPlot" class="font-black"></div></div>
+          <div class="bg-slate-50 border rounded-2xl p-3"><div class="text-[10px] text-slate-500 font-bold">रकबा</div><div id="pubDetailArea" class="font-black"></div></div>
+          <div class="bg-slate-50 border rounded-2xl p-3"><div class="text-[10px] text-slate-500 font-bold">कुल कीमत</div><div id="pubDetailPrice" class="font-black text-emerald-700"></div></div>
+        </div>
+        <div class="mt-5 grid grid-cols-2 gap-x-4 gap-y-3 text-xs">
+          <div><span class="text-slate-400">श्रेणी:</span> <b id="pubDetailCategory"></b></div><div><span class="text-slate-400">क़िस्म:</span> <b id="pubDetailClass"></b></div>
+          <div><span class="text-slate-400">रास्ता:</span> <b id="pubDetailRoad"></b></div><div><span class="text-slate-400">दिशा:</span> <b id="pubDetailFacing"></b></div>
+          <div><span class="text-slate-400">मौजा/गाँव:</span> <b id="pubDetailVillage"></b></div><div><span class="text-slate-400">Property ID:</span> <b id="pubDetailId"></b></div>
+        </div>
+        <div class="mt-5 bg-blue-50 border border-blue-100 rounded-2xl p-3 text-xs"><span class="text-slate-400">RERA:</span> <b id="pubDetailRera"></b></div>
+        <div class="mt-5 border-t pt-4"><div class="text-xs font-black mb-1">विस्तृत विवरण</div><p id="pubDetailDescription" class="text-xs text-slate-600 leading-6"></p></div>
+        <div class="mt-5 bg-amber-50 border border-amber-200 rounded-2xl p-3 text-[10px] text-amber-900 leading-5">⚠️ Listing/verification को सरकारी title certificate या ownership guarantee न मानें। Final transaction से पहले original land records और लागू कानूनी दस्तावेज़ों की स्वतंत्र जाँच करें।</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-5">
+          <a id="pubDetailWhatsapp" target="_blank" rel="noopener noreferrer" class="bg-[#064e3b] text-white rounded-xl py-3 text-xs font-black text-center"><i class="fa-brands fa-whatsapp text-emerald-300 mr-1"></i> WhatsApp Inquiry</a>
+          <a id="pubDetailCall" class="bg-amber-400 text-emerald-950 rounded-xl py-3 text-xs font-black text-center"><i class="fa-solid fa-phone mr-1"></i> विक्रेता को कॉल करें</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- PUBLIC RENTAL DETAIL MODAL -->
+<div id="publicRentalDetailModal" class="hidden fixed inset-0 z-[61] overflow-y-auto bg-black/70 backdrop-blur-sm p-3 sm:p-6">
+  <div class="max-w-5xl mx-auto bg-white rounded-3xl overflow-hidden shadow-2xl my-4 sm:my-8">
+    <div class="sticky top-0 z-10 bg-white/95 backdrop-blur border-b px-4 sm:px-6 py-3 flex items-center justify-between">
+      <div><div class="text-[10px] font-black text-emerald-700">JAMINDAR LAND BAZAAR • RENTAL</div><h3 id="pubRentalTitle" class="font-black text-slate-900 text-base sm:text-lg">Rental Details</h3></div>
+      <button onclick="closePublicRentalDetail()" class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 text-xl font-bold">&times;</button>
+    </div>
+    <div class="grid grid-cols-1 lg:grid-cols-2">
+      <div class="bg-slate-100 p-3 sm:p-5">
+        <div class="relative rounded-2xl overflow-hidden bg-slate-200 aspect-[4/3]"><img id="pubRentalMainImage" class="w-full h-full object-cover" alt="Rental property image"></div>
+        <div id="pubRentalThumbs" class="grid grid-cols-5 gap-2 mt-3"></div>
+      </div>
+      <div class="p-5 sm:p-7">
+        <div id="pubRentalBadges" class="flex flex-wrap gap-2 mb-3"></div>
+        <div id="pubRentalLocation" class="text-xs font-bold text-amber-700 mb-2"></div>
+        <h4 id="pubRentalHeading" class="text-xl sm:text-2xl font-black text-slate-900 leading-tight"></h4>
+        <div class="grid grid-cols-2 gap-3 mt-5">
+          <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-3"><div class="text-[10px] text-slate-500 font-bold">मासिक किराया</div><div id="pubRentalRent" class="font-black text-emerald-700"></div></div>
+          <div class="bg-amber-50 border border-amber-100 rounded-2xl p-3"><div class="text-[10px] text-slate-500 font-bold">Deposit</div><div id="pubRentalDeposit" class="font-black"></div></div>
+          <div class="bg-slate-50 border rounded-2xl p-3"><div class="text-[10px] text-slate-500 font-bold">Area</div><div id="pubRentalArea" class="font-black"></div></div>
+          <div class="bg-slate-50 border rounded-2xl p-3"><div class="text-[10px] text-slate-500 font-bold">Available From</div><div id="pubRentalAvailable" class="font-black"></div></div>
+        </div>
+        <div class="mt-5 grid grid-cols-2 gap-x-4 gap-y-3 text-xs">
+          <div><span class="text-slate-400">प्रकार:</span> <b id="pubRentalType"></b></div><div><span class="text-slate-400">Furnishing:</span> <b id="pubRentalFurnishing"></b></div>
+          <div><span class="text-slate-400">Parking:</span> <b id="pubRentalParking"></b></div><div><span class="text-slate-400">Listed By:</span> <b id="pubRentalListedBy"></b></div>
+          <div class="col-span-2"><span class="text-slate-400">Address:</span> <b id="pubRentalAddress"></b></div>
+        </div>
+        <div class="mt-5 border-t pt-4"><div class="text-xs font-black mb-1">विस्तृत विवरण</div><p id="pubRentalDescription" class="text-xs text-slate-600 leading-6"></p></div>
+        <div class="mt-5 bg-amber-50 border border-amber-200 rounded-2xl p-3 text-[10px] text-amber-900 leading-5">⚠️ Rental availability, rent, deposit और property condition को site पर दिखी जानकारी के आधार पर final न मानें। Visit/verification और agreement से पहले owner/authorized contact से पुष्टि करें।</div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-5">
+          <a id="pubRentalWhatsapp" target="_blank" rel="noopener noreferrer" class="bg-[#064e3b] text-white rounded-xl py-3 text-xs font-black text-center"><i class="fa-brands fa-whatsapp text-emerald-300 mr-1"></i> WhatsApp Inquiry</a>
+          <a id="pubRentalCall" class="bg-amber-400 text-emerald-950 rounded-xl py-3 text-xs font-black text-center"><i class="fa-solid fa-phone mr-1"></i> संपर्क करें</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ADMIN DETAIL MODAL -->
 <div id="adminDetailModal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm items-center justify-center p-4">
   <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 relative">
@@ -746,12 +980,30 @@
   </div>
 </div>
 
+
+<!-- FINAL TRUST & SAFETY STRIP -->
+<section class="max-w-7xl mx-auto px-4 py-8">
+  <div class="rounded-3xl border border-amber-200 bg-gradient-to-r from-amber-50 via-white to-emerald-50 p-5 sm:p-7">
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+      <div>
+        <div class="text-[10px] font-black tracking-widest text-emerald-700">JLB SAFETY CENTER</div>
+        <h3 class="text-lg sm:text-xl font-black text-slate-900 mt-1">हर Property को खरीदने से पहले स्वतंत्र दस्तावेज़ जाँच करें</h3>
+        <p class="text-xs text-slate-600 mt-2 max-w-3xl leading-5">Listing, Agent/Owner information या “Verified” status को सरकारी title certificate न मानें। खाता, खसरा/प्लॉट, खतियान, mutation, लगान, encumbrance, court status तथा लागू CNT/SPT/RERA नियमों की जाँच transaction से पहले करें।</p>
+      </div>
+      <div class="flex flex-wrap gap-2 shrink-0">
+        <button onclick="switchView('view-disclaimer')" class="px-4 py-2.5 rounded-xl bg-[#064e3b] text-white text-xs font-black">⚠️ Disclaimer</button>
+        <button onclick="switchView('view-terms')" class="px-4 py-2.5 rounded-xl bg-white border border-slate-200 text-slate-800 text-xs font-black">📜 Terms</button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer class="bg-[#022c22] text-slate-400 text-xs pt-12 pb-8 border-t border-emerald-950 mt-16">
   <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
     <div>
       <div class="flex items-center gap-2.5 mb-3"><div class="w-8 h-8 rounded-lg gold-badge flex items-center justify-center text-slate-950 font-black">J</div><span class="text-white font-extrabold">JAMINDAR LAND BAZAAR</span></div>
-      <p class="leading-relaxed">झारखंड का डिजिटल रियल एस्टेट प्लेटफॉर्म। पलामू, हुसैनाबाद (जपला) व आसपास के क्षेत्रों में भूमि क्रय-विक्रय हेतु।</p>
+      <p class="leading-relaxed">झारखंड का Digital Property Listing & Connecting Platform। Buyer, Seller और Rental users को organized property information उपलब्ध कराने हेतु।</p>
     </div>
     <div><h4 class="text-white font-bold mb-3">त्वरित नेविगेशन</h4><div class="space-y-2">
       <button onclick="switchView('view-home')" class="block hover:text-amber-400">मुख्य पृष्ठ</button>
@@ -760,11 +1012,22 @@
       <button onclick="showRentalListings()" class="block hover:text-amber-400">किराये की संपत्ति</button>
       <button onclick="switchView('view-rental-post')" class="block hover:text-amber-400">Rental Ad पोस्ट करें</button>
     </div></div>
-    <div><h4 class="text-white font-bold mb-3">वेबसाइट ओनर / संपर्क</h4>
+    <div>
+  <h4 class="text-white font-bold mb-3">Founder / वेबसाइट ओनर</h4>
+  <div class="flex items-center gap-3">
+    <img src="assets/founder-santosh-kumar-gupta.jpg"
+         alt="संतोष कुमार गुप्ता - Founder, JAMINDAR LAND BAZAAR"
+         class="w-16 h-16 rounded-full object-cover border-2 border-amber-400 shadow-lg"
+         loading="lazy">
+    <div>
       <p class="text-white font-bold">संतोष कुमार गुप्ता</p>
-      <p class="mt-1 break-all">✉️ santosh26011988@gmail.com</p>
-      <p class="mt-1">🌐 jamindarlandbazaar.in</p>
+      <p class="text-emerald-200 text-xs mt-1">Founder – JAMINDAR LAND BAZAAR</p>
+      <p class="text-emerald-300 text-xs mt-1">Verified Land • Trusted Deal • Smart Investment</p>
     </div>
+  </div>
+  <p class="mt-3 break-all">✉️ santosh26011988@gmail.com</p>
+  <p class="mt-1">🌐 jamindarlandbazaar.in</p>
+</div>
     <div><h4 class="text-white font-bold mb-3">हेल्पलाइन एवं कानूनी</h4>
       <p>हुसैनाबाद (जपला), पलामू, झारखंड - 822116</p>
       <div class="mt-3 space-y-1">
@@ -1040,6 +1303,7 @@ function buildCard(p) {
             <div><div class="text-[10px] text-slate-400 font-bold">रकबा</div><div class="text-sm font-black">${safeArea}</div></div>
             <div class="text-right"><div class="text-[10px] text-slate-400 font-bold">कुल क़ीमत</div><div class="text-sm font-black text-emerald-700">${safePrice}</div></div>
           </div>
+          <button onclick="openPublicPropertyDetail('${p.id}')" class="w-full mb-2 bg-white border border-emerald-200 text-emerald-800 font-extrabold py-2.5 rounded-xl text-xs hover:bg-emerald-50">👁️ पूरी Property Details देखें</button>
           ${
             phone
             ? `<a href="https://wa.me/${phone}?text=${whatsappText}" target="_blank" rel="noopener noreferrer"
@@ -1069,6 +1333,7 @@ function renderPublicViews() {
 
 function filterAndShowProperties(type) {
   switchView("view-listings");
+  populateAdvancedDistricts();
   const approved = getPublicProperties();
   const title = document.getElementById("listingPageTitle");
 
@@ -1082,6 +1347,74 @@ function filterAndShowProperties(type) {
     title.innerText = `${type} प्रकार की ज़मीन`;
     renderGrids(approved.filter(p => p.category === type));
   }
+}
+
+function getNumericArea(p){
+  const n = Number(p?.areaVal);
+  if (Number.isFinite(n)) return n;
+  const m = String(p?.area||"").replace(/,/g,"").match(/[0-9]+(?:\.[0-9]+)?/);
+  return m ? Number(m[0]) : 0;
+}
+
+function getNumericPrice(p){
+  const n = Number(p?.priceVal);
+  if (Number.isFinite(n)) return n;
+  const m = String(p?.price||"").replace(/[^0-9.]/g,"");
+  return m ? Number(m) : 0;
+}
+
+function populateAdvancedDistricts(){
+  const el=document.getElementById("advDistrict"); if(!el) return;
+  const current=el.value;
+  const districts=[...new Set(getPublicProperties().map(p=>String(p.district||"").trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+  el.innerHTML='<option value="">सभी जिले</option>'+districts.map(d=>`<option value="${escapeHtml(d)}">${escapeHtml(d)}</option>`).join("");
+  if(districts.includes(current)) el.value=current;
+  populateAdvancedBlocks();
+}
+
+function populateAdvancedBlocks(){
+  const district=document.getElementById("advDistrict")?.value||"";
+  const el=document.getElementById("advBlock"); if(!el) return;
+  const current=el.value;
+  const blocks=[...new Set(getPublicProperties().filter(p=>!district || String(p.district||"").toLowerCase()===district.toLowerCase()).map(p=>String(p.block||"").trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+  el.innerHTML='<option value="">सभी ब्लॉक / इलाका</option>'+blocks.map(b=>`<option value="${escapeHtml(b)}">${escapeHtml(b)}</option>`).join("");
+  if(blocks.includes(current)) el.value=current;
+}
+
+function applyAdvancedPropertyFilters(){
+  const all=getPublicProperties();
+  const district=document.getElementById("advDistrict")?.value||"";
+  const block=document.getElementById("advBlock")?.value||"";
+  const village=(document.getElementById("advVillage")?.value||"").trim().toLowerCase();
+  const cls=document.getElementById("advClass")?.value||"";
+  const cat=document.getElementById("advCategory")?.value||"";
+  const minA=Number(document.getElementById("advMinArea")?.value||0);
+  const maxA=Number(document.getElementById("advMaxArea")?.value||0);
+  const maxP=Number(document.getElementById("advMaxPrice")?.value||0);
+  const sort=document.getElementById("advSort")?.value||"newest";
+  let rows=all.filter(p=>{
+    const pd=String(p.district||""); const pb=String(p.block||""); const pv=String(p.village||"").toLowerCase();
+    const a=getNumericArea(p), price=getNumericPrice(p);
+    return (!district||pd.toLowerCase()===district.toLowerCase()) && (!block||pb.toLowerCase()===block.toLowerCase()) && (!village||pv.includes(village)) && (!cls||p.classType===cls) && (!cat||p.category===cat) && (!minA||a>=minA) && (!maxA||a<=maxA) && (!maxP||price<=maxP);
+  });
+  rows.sort((a,b)=>{
+    if(sort==='priceLow') return getNumericPrice(a)-getNumericPrice(b);
+    if(sort==='priceHigh') return getNumericPrice(b)-getNumericPrice(a);
+    if(sort==='areaLow') return getNumericArea(a)-getNumericArea(b);
+    if(sort==='areaHigh') return getNumericArea(b)-getNumericArea(a);
+    const ad=a.updatedAt?.toDate?a.updatedAt.toDate():new Date(a.updatedAt||0); const bd=b.updatedAt?.toDate?b.updatedAt.toDate():new Date(b.updatedAt||0);
+    return bd-ad;
+  });
+  const count=document.getElementById("advancedFilterCount"); if(count) count.textContent=`${rows.length} प्रॉपर्टी मिली`;
+  const title=document.getElementById("listingPageTitle"); if(title) title.innerText=`खोज परिणाम (${rows.length})`;
+  renderGrids(rows);
+}
+
+function resetAdvancedPropertyFilters(){
+  ["advDistrict","advBlock","advVillage","advClass","advCategory","advMinArea","advMaxArea","advMaxPrice"].forEach(id=>{const e=document.getElementById(id);if(e)e.value="";});
+  const sort=document.getElementById("advSort"); if(sort) sort.value="newest";
+  populateAdvancedDistricts();
+  applyAdvancedPropertyFilters();
 }
 
 function quickDistrictSearch(dist) {
@@ -1111,6 +1444,7 @@ function handleSearch() {
   });
 
   switchView("view-listings");
+  populateAdvancedDistricts();
   document.getElementById("listingPageTitle").innerText = `खोज परिणाम (${filtered.length})`;
   renderGrids(filtered);
 }
@@ -1215,6 +1549,8 @@ async function handleFormSubmit(e) {
     plot: document.getElementById("pPlot").value.trim(),
     category: document.getElementById("pCategory").value,
     classType: document.getElementById("pClassType").value,
+    reraApplicable: document.getElementById("pReraApplicable")?.value || "not_applicable",
+    reraNumber: document.getElementById("pReraNumber")?.value.trim() || "",
     area: rawArea + " Decimal",
     areaVal: rawArea,
     areaUnit: "Decimal",
@@ -1289,13 +1625,50 @@ function rentalCard(p){
         <span class="bg-slate-100 px-2 py-1 rounded-lg">Listed By: ${escapeHtml(p.listedByRole||"Owner")}</span>
       </div>
       <p class="text-xs text-slate-500 mt-3 line-clamp-3">${escapeHtml(p.description||"")}</p>
-      <div class="mt-4 flex justify-between items-center">
+      <div class="mt-4 flex justify-between items-center gap-2">
         <span class="text-[10px] font-bold ${p.verified?"text-emerald-700":"text-slate-500"}">${p.verified?"✓ Verified":"Verification pending"}</span>
-        <a href="tel:${escapeHtml(p.contactPhone||"")}" class="bg-[#064e3b] text-white px-3 py-2 rounded-xl text-xs font-bold">📞 संपर्क</a>
+        <button onclick="openPublicRentalDetail('${escapeHtml(p.id||p.rentalId||"")}')" class="bg-[#064e3b] text-white px-3 py-2 rounded-xl text-xs font-bold">👁️ पूरी जानकारी</button>
       </div>
     </div>
   </div>`;
 }
+
+
+function openPublicRentalDetail(id){
+  const p=rentalMaster.find(x=>x.id===id || x.rentalId===id);
+  if(!p) return;
+  const imgs=(Array.isArray(p.imageUrls)&&p.imageUrls.length?p.imageUrls:[]).concat(p.image?[p.image]:[]).filter(Boolean);
+  const unique=[...new Set(imgs)];
+  const fallback="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1000&auto=format&fit=crop&q=80";
+  const main=document.getElementById('pubRentalMainImage');
+  main.src=unique[0]||fallback; main.onerror=()=>{main.src=fallback};
+  const thumbs=document.getElementById('pubRentalThumbs');
+  thumbs.innerHTML=unique.slice(0,5).map((u,i)=>`<button onclick="setPublicRentalImage(${i})" class="aspect-square rounded-xl overflow-hidden border ${i===0?'border-emerald-500':'border-slate-200'}"><img src="${escapeHtml(u)}" class="w-full h-full object-cover" alt="Rental photo ${i+1}"></button>`).join('');
+  window.__jlbRentalDetailImages=unique;
+  document.getElementById('pubRentalTitle').innerText=p.title||'Rental Details';
+  document.getElementById('pubRentalHeading').innerText=p.title||'Rental Details';
+  document.getElementById('pubRentalLocation').innerText=`📍 ${p.locality||p.location||p.district||''}, ${p.district||''}`;
+  document.getElementById('pubRentalRent').innerText=`₹ ${Number(p.rent||0).toLocaleString('en-IN')} / month`;
+  document.getElementById('pubRentalDeposit').innerText=`₹ ${Number(p.deposit||0).toLocaleString('en-IN')}`;
+  document.getElementById('pubRentalArea').innerText=p.area||'Not specified';
+  document.getElementById('pubRentalAvailable').innerText=p.availableFrom||'Immediately / confirm';
+  document.getElementById('pubRentalType').innerText=p.type||'N/A';
+  document.getElementById('pubRentalFurnishing').innerText=p.furnishing||'N/A';
+  document.getElementById('pubRentalParking').innerText=p.parking||'N/A';
+  document.getElementById('pubRentalListedBy').innerText=p.listedByRole||'Owner';
+  document.getElementById('pubRentalAddress').innerText=p.address||p.location||'N/A';
+  document.getElementById('pubRentalDescription').innerText=p.description||'अतिरिक्त विवरण उपलब्ध नहीं है।';
+  document.getElementById('pubRentalBadges').innerHTML=`<span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black">${escapeHtml(p.type||'Rental')}</span>${p.verified?'<span class="px-2.5 py-1 rounded-full bg-emerald-600 text-white text-[10px] font-black">✓ VERIFIED</span>':'<span class="px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 text-[10px] font-black">VERIFICATION PENDING</span>'}`;
+  const phone=normalizePhone(p.contactPhone);
+  const wa=document.getElementById('pubRentalWhatsapp'), call=document.getElementById('pubRentalCall');
+  if(phone){
+    const msg=encodeURIComponent(`नमस्ते, मुझे JAMINDAR LAND BAZAAR की Rental Property — ${p.title||''} में रुचि है। कृपया किराया/उपलब्धता की जानकारी दें।`);
+    wa.href=`https://wa.me/${phone}?text=${msg}`; call.href=`tel:${phone}`; wa.classList.remove('opacity-50','pointer-events-none'); call.classList.remove('opacity-50','pointer-events-none');
+  }else{wa.href='#';call.href='#';wa.classList.add('opacity-50','pointer-events-none');call.classList.add('opacity-50','pointer-events-none');}
+  document.getElementById('publicRentalDetailModal').classList.remove('hidden'); document.body.classList.add('overflow-hidden');
+}
+function setPublicRentalImage(i){const a=window.__jlbRentalDetailImages||[]; if(a[i]) document.getElementById('pubRentalMainImage').src=a[i];}
+function closePublicRentalDetail(){document.getElementById('publicRentalDetailModal').classList.add('hidden');document.body.classList.remove('overflow-hidden');}
 
 function showRentalListings(type){
   switchView("view-rentals");
@@ -1340,6 +1713,20 @@ function setRentalMessage(msg, ok=false){
   el.innerText = msg;
 }
 
+function previewRentalImages(event){
+  const files=Array.from(event.target.files||[]), preview=document.getElementById("rentalImagePreview"), status=document.getElementById("rentalImageStatus");
+  preview.innerHTML=""; status.classList.add("hidden");
+  if(files.length>5){event.target.value="";status.textContent="अधिकतम 5 फोटो ही चुनी जा सकती हैं।";status.className="text-xs font-bold mt-2 text-rose-600";return;}
+  const invalid=files.find(f=>!["image/jpeg","image/png","image/webp"].includes(f.type)||f.size>5*1024*1024);
+  if(invalid){event.target.value="";status.textContent="हर फोटो JPG/PNG/WebP और अधिकतम 5 MB की होनी चाहिए।";status.className="text-xs font-bold mt-2 text-rose-600";return;}
+  files.forEach((file,i)=>{const url=URL.createObjectURL(file);const item=document.createElement("div");item.className="relative aspect-square rounded-xl overflow-hidden border border-emerald-200 bg-white";item.innerHTML=`<img src="${url}" alt="Rental photo ${i+1}" class="w-full h-full object-cover">${i===0?'<span class="absolute bottom-1 left-1 bg-emerald-700 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">मुख्य फोटो</span>':""}`;preview.appendChild(item);});
+}
+async function uploadRentalImages(rentalId){
+  const files=Array.from(document.getElementById("rImages")?.files||[]), urls=[];
+  for(let i=0;i<files.length;i++){const file=files[i],safe=file.name.replace(/[^a-zA-Z0-9._-]/g,"_"),ref=storage.ref(`rentals/${rentalId}/${Date.now()}_${i}_${safe}`),snap=await ref.put(file,{contentType:file.type});urls.push(await snap.ref.getDownloadURL());}
+  return urls;
+}
+
 async function handleRentalSubmit(e){
   e.preventDefault();
   const btn = document.getElementById("rentalSubmitBtn");
@@ -1369,8 +1756,15 @@ async function handleRentalSubmit(e){
 
   btn.disabled = true; btn.innerText = "सबमिट हो रहा है...";
   const id = "JLR-" + new Date().getFullYear() + "-" + Math.random().toString(36).substring(2,8).toUpperCase();
+  const imageFiles=Array.from(document.getElementById("rImages")?.files||[]);
+  if(imageFiles.length>5){setRentalMessage("अधिकतम 5 फोटो चुनें।");btn.disabled=false;btn.innerText="किराये का विज्ञापन सबमिट करें";return;}
+  const invalidRentalImage=imageFiles.find(f=>!["image/jpeg","image/png","image/webp"].includes(f.type)||f.size>5*1024*1024);
+  if(invalidRentalImage){setRentalMessage("हर फोटो JPG/PNG/WebP और अधिकतम 5 MB की होनी चाहिए।");btn.disabled=false;btn.innerText="किराये का विज्ञापन सबमिट करें";return;}
+  let uploadedRentalImages=[];
+  try{if(imageFiles.length){btn.innerText="फोटो अपलोड हो रही हैं...";uploadedRentalImages=await uploadRentalImages(id);}}
+  catch(imageError){console.error("Rental image upload failed:",imageError);setRentalMessage("प्रॉपर्टी फोटो अपलोड नहीं हो सकी। Firebase Storage Rules और Storage setup जाँचें: "+imageError.message);btn.disabled=false;btn.innerText="किराये का विज्ञापन सबमिट करें";return;}
   const data = {
-    rentalId:id, ownerId: role==="owner" ? user.uid : null, agentId: role==="agent" ? user.uid : null,
+    rentalId:id, image:uploadedRentalImages[0]||"", imageUrls:uploadedRentalImages, ownerId: role==="owner" ? user.uid : null, agentId: role==="agent" ? user.uid : null,
     listedByRole: role, type:document.getElementById("rType").value, title:document.getElementById("rTitle").value.trim(),
     district:document.getElementById("rDistrict").value.trim(), location:document.getElementById("rLocation").value.trim(),
     locality:document.getElementById("rLocality").value.trim(), address:document.getElementById("rAddress").value.trim(),
@@ -1384,6 +1778,8 @@ async function handleRentalSubmit(e){
   try {
     await db.collection("rentals").doc(id).set(data);
     document.getElementById("rentalPostForm").reset();
+    document.getElementById("rentalImagePreview").innerHTML="";
+    document.getElementById("rentalImageStatus").classList.add("hidden");
     setRentalPostRole("owner");
     setRentalMessage("Rental advertisement सफलतापूर्वक submit हो गया। Admin approval के बाद live होगा।", true);
   } catch(error){
@@ -1880,6 +2276,48 @@ function renderAdminTable() {
   }).join("");
 }
 
+/* ---------- PUBLIC PROPERTY DETAIL ---------- */
+function openPublicPropertyDetail(id){
+  const p=allPropertiesMaster.find(x=>x.id===id) || DEMO_PROPERTIES.find(x=>x.id===id);
+  if(!p) return;
+  const imgs=(Array.isArray(p.images)&&p.images.length?p.images:[]).concat(p.image?[p.image]:[]).filter(Boolean);
+  const unique=[...new Set(imgs)];
+  const main=document.getElementById("pubDetailMainImage");
+  const thumbs=document.getElementById("pubDetailThumbs");
+  const setMain=(url)=>{main.src=url;};
+  window.__jlbPropertyDetailImages=unique;
+  setMain(unique[0]||"https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1000&auto=format&fit=crop&q=80");
+  main.onerror=()=>{main.src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1000&auto=format&fit=crop&q=80"};
+  thumbs.innerHTML=unique.slice(0,5).map((u,i)=>`<button onclick="setPublicPropertyImage(${i})" class="aspect-square rounded-xl overflow-hidden border ${i===0?'border-emerald-500':'border-slate-200'}"><img src="${escapeHtml(u)}" class="w-full h-full object-cover"></button>`).join("");
+  document.getElementById("pubDetailTitle").innerText=p.title||"Property Details";
+  document.getElementById("pubDetailHeading").innerText=p.title||"Property Details";
+  document.getElementById("pubDetailLocation").innerText=`📍 ${p.village||p.block||""}, ${p.block||""}, ${p.district||""}`;
+  document.getElementById("pubDetailKhata").innerText=p.khata||"N/A";
+  document.getElementById("pubDetailPlot").innerText=p.plot||"N/A";
+  document.getElementById("pubDetailArea").innerText=p.area||"N/A";
+  document.getElementById("pubDetailPrice").innerText=p.price||"N/A";
+  document.getElementById("pubDetailCategory").innerText=p.category||"N/A";
+  document.getElementById("pubDetailClass").innerText=p.classType||"N/A";
+  document.getElementById("pubDetailRoad").innerText=p.road||p.roadDetails||"N/A";
+  document.getElementById("pubDetailFacing").innerText=p.facing||"N/A";
+  document.getElementById("pubDetailVillage").innerText=p.village||p.block||"N/A";
+  document.getElementById("pubDetailId").innerText=p.propertyId||"N/A";
+  document.getElementById("pubDetailDescription").innerText=p.description||"अतिरिक्त विवरण उपलब्ध नहीं है।";
+  const reraEl=document.getElementById('pubDetailRera'); if(reraEl) reraEl.innerText=(p.reraApplicable==='yes' ? (p.reraNumber||'Number not provided') : (p.reraApplicable==='unknown' ? 'Information unavailable' : 'Not applicable / not specified'));
+  document.getElementById("pubDetailBadges").innerHTML=`<span class="px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800 text-[10px] font-black">${escapeHtml(p.classType||"Property")}</span>${p.verified?'<span class="px-2.5 py-1 rounded-full bg-emerald-600 text-white text-[10px] font-black">✓ VERIFIED</span>':''}${p.demo?'<span class="px-2.5 py-1 rounded-full demo-badge text-[10px] font-black">DEMO</span>':''}`;
+  const phone=normalizePhone(p.sellerPhone);
+  const wa=document.getElementById("pubDetailWhatsapp"), call=document.getElementById("pubDetailCall");
+  if(phone){
+    const msg=encodeURIComponent(`नमस्ते, मुझे JAMINDAR LAND BAZAAR की Property ${p.propertyId||""} — ${p.title||""} में रुचि है। कृपया जानकारी दें।`);
+    wa.href=`https://wa.me/${phone}?text=${msg}`; wa.classList.remove("opacity-50","pointer-events-none");
+    call.href=`tel:${phone}`; call.classList.remove("opacity-50","pointer-events-none");
+  }else{wa.href="#";call.href="#";wa.classList.add("opacity-50","pointer-events-none");call.classList.add("opacity-50","pointer-events-none");}
+  const modal=document.getElementById("publicPropertyDetailModal"); modal.classList.remove("hidden"); document.body.classList.add("overflow-hidden");
+}
+function setPublicPropertyImage(i){const a=window.__jlbPropertyDetailImages||[]; if(a[i]) document.getElementById('pubDetailMainImage').src=a[i];}
+function closePublicPropertyDetail(){const modal=document.getElementById("publicPropertyDetailModal");modal.classList.add("hidden");document.body.classList.remove("overflow-hidden");}
+document.addEventListener("keydown",e=>{if(e.key==="Escape"){closePublicPropertyDetail();closePublicRentalDetail();}});
+
 /* ---------- ADMIN ACTIONS ---------- */
 
 function viewPropertyModal(id) {
@@ -2095,6 +2533,11 @@ function setSiteLanguage(lang){
     el.childNodes.forEach(n=>jlbTranslateNode(n,lang));
   });
   const hi=document.getElementById('langHi'), en=document.getElementById('langEn');
+  const mhi=document.getElementById('mobileLangHi'), men=document.getElementById('mobileLangEn');
+  if(mhi&&men){
+    mhi.className=lang==='hi'?"bg-amber-400 text-emerald-950":"border border-emerald-400 text-emerald-100";
+    men.className=lang==='en'?"bg-amber-400 text-emerald-950":"border border-emerald-400 text-emerald-100";
+  }
   if(hi&&en){
     hi.className=lang==='hi'?'px-2.5 py-1 rounded-lg bg-amber-400 text-emerald-950 text-xs font-black':'px-2.5 py-1 rounded-lg border border-emerald-400 text-emerald-100 text-xs font-black';
     en.className=lang==='en'?'px-2.5 py-1 rounded-lg bg-amber-400 text-emerald-950 text-xs font-black':'px-2.5 py-1 rounded-lg border border-emerald-400 text-emerald-100 text-xs font-black';
@@ -2103,6 +2546,5 @@ function setSiteLanguage(lang){
 }
 document.addEventListener('DOMContentLoaded',()=>setSiteLanguage(localStorage.getItem('jlb_language')||'hi'));
 </script>
-<script src="js/jamindar-ai-saathi.js"></script>
 </body>
 </html>
