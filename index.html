@@ -928,6 +928,19 @@
 
   <div class="mt-8 bg-white rounded-2xl card-shadow border overflow-hidden">
     <div class="p-4 border-b flex flex-col sm:flex-row justify-between gap-3 items-start sm:items-center">
+      <div><h3 class="text-lg font-black">Customer Enquiries / खरीदार पूछताछ</h3><p class="text-xs text-slate-500">प्रॉपर्टी में रुचि दिखाने वाले ग्राहकों का रिकॉर्ड और फॉलो-अप स्थिति</p></div>
+      <button onclick="loadPropertyEnquiriesForAdmin()" class="px-3 py-2 rounded-xl bg-slate-100 text-xs font-bold">↻ पूछताछ रीफ्रेश करें</button>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-xs min-w-[1050px]">
+        <thead class="bg-slate-100 font-bold"><tr><th class="p-3">दिनांक</th><th class="p-3">ग्राहक</th><th class="p-3">संपर्क</th><th class="p-3">प्रॉपर्टी</th><th class="p-3">संदेश</th><th class="p-3">स्थिति</th></tr></thead>
+        <tbody id="adminEnquiryTableBody" class="divide-y"><tr><td colspan="6" class="p-5 text-center text-slate-400">पूछताछ लोड हो रही है...</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="mt-8 bg-white rounded-2xl card-shadow border overflow-hidden">
+    <div class="p-4 border-b flex flex-col sm:flex-row justify-between gap-3 items-start sm:items-center">
       <div><h3 class="text-lg font-black">Rental Management</h3><p class="text-xs text-slate-500">Rental listing की approval और status control</p></div>
       <button onclick="loadRentalsForAdmin()" class="px-3 py-2 rounded-xl bg-slate-100 text-xs font-bold">↻ Refresh Rentals</button>
     </div>
@@ -995,6 +1008,16 @@
           <a id="pubDetailWhatsapp" target="_blank" rel="noopener noreferrer" class="bg-[#064e3b] text-white rounded-xl py-3 text-xs font-black text-center"><i class="fa-brands fa-whatsapp text-emerald-300 mr-1"></i> WhatsApp Inquiry</a>
           <a id="pubDetailCall" class="bg-amber-400 text-emerald-950 rounded-xl py-3 text-xs font-black text-center"><i class="fa-solid fa-phone mr-1"></i> विक्रेता को कॉल करें</a>
         </div>
+        <form id="propertyEnquiryForm" onsubmit="submitPropertyEnquiry(event)" class="mt-5 border border-emerald-100 bg-emerald-50/60 rounded-2xl p-4 space-y-3">
+          <div><h4 class="font-black text-sm text-emerald-950">खरीदार पूछताछ दर्ज करें</h4><p class="text-[10px] text-slate-500 mt-1">अपना विवरण भेजें। JLB टीम आपकी पूछताछ का रिकॉर्ड रखेगी।</p></div>
+          <input id="enquiryName" required maxlength="70" autocomplete="name" placeholder="आपका नाम *" class="w-full rounded-xl border bg-white px-3 py-2.5 text-xs">
+          <input id="enquiryPhone" required inputmode="numeric" pattern="[0-9]{10}" maxlength="10" autocomplete="tel" placeholder="10 अंकों का मोबाइल नंबर *" class="w-full rounded-xl border bg-white px-3 py-2.5 text-xs">
+          <input id="enquiryEmail" type="email" maxlength="120" autocomplete="email" placeholder="ईमेल (वैकल्पिक)" class="w-full rounded-xl border bg-white px-3 py-2.5 text-xs">
+          <textarea id="enquiryMessage" rows="2" maxlength="700" placeholder="आपका संदेश / बजट / मिलने का समय (वैकल्पिक)" class="w-full rounded-xl border bg-white px-3 py-2.5 text-xs"></textarea>
+          <label class="flex items-start gap-2 text-[10px] text-slate-600"><input id="enquiryConsent" type="checkbox" required class="mt-0.5"><span>मैं सहमत हूँ कि JLB इस पूछताछ के संबंध में मुझसे संपर्क कर सकता है।</span></label>
+          <button id="enquirySubmitBtn" type="submit" class="w-full rounded-xl bg-emerald-800 text-white py-3 text-xs font-black">पूछताछ भेजें</button>
+          <p id="enquirySubmitMessage" class="text-xs font-semibold" aria-live="polite"></p>
+        </form>
       </div>
     </div>
   </div>
@@ -1111,6 +1134,7 @@ let currentAdminTab = "ALL";
 let unsubscribePublic = null;
 let unsubscribeAdmin = null;
 let adminAgents = [];
+let currentEnquiryProperty = null;
 
 /* ---------- DEMO / EXAMPLE LISTINGS ---------- */
 const DEMO_PROPERTIES = [
@@ -1951,6 +1975,7 @@ async function adminLogin(e) {
     loadRentalsForAdmin();
     loadAgentsForAdmin();
     loadReviewsForAdmin();
+    loadPropertyEnquiriesForAdmin();
   } catch(error) {
     console.error(error);
     msg.innerText = getAuthErrorMessage(error.code);
@@ -2381,10 +2406,87 @@ async function moderateReview(id,status){
   catch(err){console.error(err);alert('Review status update failed. Firebase Security Rules जाँचें।');}
 }
 
+/* ---------- CUSTOMER PROPERTY ENQUIRIES ---------- */
+function setEnquiryMessage(message, ok=false){
+  const el=document.getElementById("enquirySubmitMessage");
+  if(el){el.textContent=message;el.className="text-xs font-semibold "+(ok?"text-emerald-700":"text-rose-600");}
+}
+async function submitPropertyEnquiry(e){
+  e.preventDefault();
+  const p=currentEnquiryProperty;
+  if(!p || p.demo){setEnquiryMessage("यह उदाहरण लिस्टिंग है। वास्तविक प्रॉपर्टी चुनकर पूछताछ भेजें।");return;}
+  const name=(document.getElementById("enquiryName")?.value||"").trim().slice(0,70);
+  const phone=(document.getElementById("enquiryPhone")?.value||"").replace(/\\D/g,"");
+  const email=(document.getElementById("enquiryEmail")?.value||"").trim().slice(0,120);
+  const message=(document.getElementById("enquiryMessage")?.value||"").trim().slice(0,700);
+  const consent=!!document.getElementById("enquiryConsent")?.checked;
+  const btn=document.getElementById("enquirySubmitBtn");
+  if(name.length<2 || phone.length!==10 || !consent){setEnquiryMessage("कृपया नाम, सही 10 अंकों का मोबाइल और सहमति भरें।");return;}
+  if(btn.disabled)return;
+  btn.disabled=true;btn.textContent="भेजा जा रहा है...";
+  try{
+    await db.collection("propertyEnquiries").add({
+      customerName:name,customerPhone:phone,customerEmail:email,message,
+      propertyDocId:p.id,propertyId:p.propertyId||p.id,propertyTitle:p.title||"",
+      propertyLocation:[p.village,p.block,p.district].filter(Boolean).join(", "),
+      propertyKhata:p.khata||"",propertyPlot:p.plot||"",
+      sellerId:p.sellerId||"",sellerName:p.sellerName||"",sellerPhone:p.sellerPhone||"",
+      status:"new",source:"property_detail",consent:true,
+      createdAt:firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+    });
+    document.getElementById("propertyEnquiryForm").reset();
+    setEnquiryMessage("आपकी पूछताछ सफलतापूर्वक दर्ज हो गई है। धन्यवाद!",true);
+  }catch(err){
+    console.error("Property enquiry submit failed:",err);
+    setEnquiryMessage("पूछताछ दर्ज नहीं हुई। Firebase Firestore Rules में propertyEnquiries की अनुमति जाँचें।");
+  }finally{btn.disabled=false;btn.textContent="पूछताछ भेजें";}
+}
+async function loadPropertyEnquiriesForAdmin(){
+  if(!(await requireActiveAdmin()))return;
+  const tbody=document.getElementById("adminEnquiryTableBody");if(!tbody)return;
+  tbody.innerHTML='<tr><td colspan="6" class="p-5 text-center text-slate-400">पूछताछ लोड हो रही है...</td></tr>';
+  try{
+    let snap;
+    try{snap=await db.collection("propertyEnquiries").orderBy("createdAt","desc").limit(150).get();}
+    catch(orderErr){snap=await db.collection("propertyEnquiries").limit(150).get();}
+    const rows=snap.docs.map(d=>({id:d.id,...d.data()}));
+    rows.sort((a,b)=>(b.createdAt?.toMillis?.()||0)-(a.createdAt?.toMillis?.()||0));
+    if(!rows.length){tbody.innerHTML='<tr><td colspan="6" class="p-5 text-center text-slate-400">अभी कोई खरीदार पूछताछ नहीं है।</td></tr>';return;}
+    tbody.innerHTML=rows.map(q=>{
+      const date=q.createdAt?.toDate?q.createdAt.toDate().toLocaleString("en-IN"):"अभी-अभी";
+      const status=q.status||"new";
+      const options=[["new","नई"],["contacted","संपर्क किया"],["deal_done","सौदा पूरा"],["closed","रद्द / बंद"]];
+      return '<tr class="hover:bg-slate-50 align-top">'+
+        '<td class="p-3 whitespace-nowrap">'+escapeHtml(date)+'</td>'+
+        '<td class="p-3 font-bold">'+escapeHtml(q.customerName||"-")+'</td>'+
+        '<td class="p-3 whitespace-nowrap"><a class="text-blue-700 font-bold" href="tel:'+escapeHtml(q.customerPhone||"")+'">'+escapeHtml(q.customerPhone||"-")+'</a>'+(q.customerEmail?'<div class="text-slate-500 mt-1">'+escapeHtml(q.customerEmail)+'</div>':"")+'</td>'+
+        '<td class="p-3"><b>'+escapeHtml(q.propertyTitle||"-")+'</b><div class="text-slate-500 mt-1">'+escapeHtml(q.propertyId||"")+'</div><div class="text-slate-500">'+escapeHtml(q.propertyLocation||"")+'</div><div class="text-slate-500">खाता: '+escapeHtml(q.propertyKhata||"-")+' | प्लॉट: '+escapeHtml(q.propertyPlot||"-")+'</div></td>'+
+        '<td class="p-3 whitespace-pre-wrap max-w-xs">'+escapeHtml(q.message||"-")+'</td>'+
+        '<td class="p-3"><select aria-label="पूछताछ की स्थिति" onchange="updatePropertyEnquiryStatus(\''+escapeHtml(q.id)+'\',this.value)" class="border rounded-lg px-2 py-2 bg-white text-xs">'+options.map(o=>'<option value="'+o[0]+'" '+(status===o[0]?'selected':'')+'>'+o[1]+'</option>').join("")+'</select></td>'+
+      '</tr>';
+    }).join("");
+    setSiteLanguage(document.body.dataset.language||"hi");
+  }catch(err){
+    console.error("Admin enquiries load failed:",err);
+    tbody.innerHTML='<tr><td colspan="6" class="p-5 text-center text-rose-600">पूछताछ लोड नहीं हुई। Firebase Firestore Rules जाँचें।</td></tr>';
+  }
+}
+async function updatePropertyEnquiryStatus(id,status){
+  if(!["new","contacted","deal_done","closed"].includes(status)||!(await requireActiveAdmin()))return;
+  try{
+    await db.collection("propertyEnquiries").doc(id).update({status,updatedAt:firebase.firestore.FieldValue.serverTimestamp(),updatedBy:auth.currentUser.uid});
+    await loadPropertyEnquiriesForAdmin();
+  }catch(err){console.error(err);alert("पूछताछ की स्थिति अपडेट नहीं हुई। Firestore Rules जाँचें।");}
+}
+
 /* ---------- PUBLIC PROPERTY DETAIL ---------- */
 function openPublicPropertyDetail(id){
   const p=allPropertiesMaster.find(x=>x.id===id) || DEMO_PROPERTIES.find(x=>x.id===id);
   if(!p) return;
+  currentEnquiryProperty=p;
+  const enquiryForm=document.getElementById("propertyEnquiryForm");
+  if(enquiryForm){enquiryForm.reset();enquiryForm.classList.toggle("hidden",!!p.demo);setEnquiryMessage("");}
   const imgs=(Array.isArray(p.images)&&p.images.length?p.images:[]).concat(p.image?[p.image]:[]).filter(Boolean);
   const unique=[...new Set(imgs)];
   const main=document.getElementById("pubDetailMainImage");
