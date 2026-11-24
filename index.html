@@ -413,6 +413,8 @@
       <select id="advDistrict" onchange="populateAdvancedBlocks(); applyAdvancedPropertyFilters()" class="w-full px-3 py-2.5 rounded-xl border text-sm bg-white"><option value="">सभी जिले</option></select>
       <select id="advBlock" onchange="applyAdvancedPropertyFilters()" class="w-full px-3 py-2.5 rounded-xl border text-sm bg-white"><option value="">सभी ब्लॉक / इलाका</option></select>
       <input id="advVillage" oninput="applyAdvancedPropertyFilters()" type="text" placeholder="मौजा / गाँव" class="w-full px-3 py-2.5 rounded-xl border text-sm">
+      <input id="advKhata" oninput="applyAdvancedPropertyFilters()" type="text" placeholder="खाता संख्या" class="w-full px-3 py-2.5 rounded-xl border text-sm">
+      <input id="advPlot" oninput="applyAdvancedPropertyFilters()" type="text" placeholder="खेसरा / प्लॉट संख्या" class="w-full px-3 py-2.5 rounded-xl border text-sm">
       <select id="advClass" onchange="applyAdvancedPropertyFilters()" class="w-full px-3 py-2.5 rounded-xl border text-sm bg-white"><option value="">General / CNT सभी</option><option value="General">General</option><option value="CNT">CNT</option></select>
       <select id="advCategory" onchange="applyAdvancedPropertyFilters()" class="w-full px-3 py-2.5 rounded-xl border text-sm bg-white"><option value="">सभी प्रकार</option><option value="Residential">Residential</option><option value="Commercial">Commercial</option><option value="Agricultural">Agricultural</option><option value="Industrial">Industrial</option></select>
       <input id="advMinArea" oninput="applyAdvancedPropertyFilters()" type="number" min="0" step="0.01" placeholder="न्यूनतम रकबा (डिसमिल)" class="w-full px-3 py-2.5 rounded-xl border text-sm">
@@ -1419,6 +1421,8 @@ function applyAdvancedPropertyFilters(){
   const district=document.getElementById("advDistrict")?.value||"";
   const block=document.getElementById("advBlock")?.value||"";
   const village=(document.getElementById("advVillage")?.value||"").trim().toLowerCase();
+  const khata=(document.getElementById("advKhata")?.value||"").trim().toLowerCase();
+  const plot=(document.getElementById("advPlot")?.value||"").trim().toLowerCase();
   const cls=document.getElementById("advClass")?.value||"";
   const cat=document.getElementById("advCategory")?.value||"";
   const minA=Number(document.getElementById("advMinArea")?.value||0);
@@ -1427,8 +1431,9 @@ function applyAdvancedPropertyFilters(){
   const sort=document.getElementById("advSort")?.value||"newest";
   let rows=all.filter(p=>{
     const pd=String(p.district||""); const pb=String(p.block||""); const pv=String(p.village||"").toLowerCase();
+    const pk=String(p.khata??"").toLowerCase(); const pp=String(p.plot??p.khesra??"").toLowerCase();
     const a=getNumericArea(p), price=getNumericPrice(p);
-    return (!district||pd.toLowerCase()===district.toLowerCase()) && (!block||pb.toLowerCase()===block.toLowerCase()) && (!village||pv.includes(village)) && (!cls||p.classType===cls) && (!cat||p.category===cat) && (!minA||a>=minA) && (!maxA||a<=maxA) && (!maxP||price<=maxP);
+    return (!district||pd.toLowerCase()===district.toLowerCase()) && (!block||pb.toLowerCase()===block.toLowerCase()) && (!village||pv.includes(village)) && (!khata||pk.includes(khata)) && (!plot||pp.includes(plot)) && (!cls||p.classType===cls) && (!cat||p.category===cat) && (!minA||a>=minA) && (!maxA||a<=maxA) && (!maxP||price<=maxP);
   });
   rows.sort((a,b)=>{
     if(sort==='priceLow') return getNumericPrice(a)-getNumericPrice(b);
@@ -1444,7 +1449,7 @@ function applyAdvancedPropertyFilters(){
 }
 
 function resetAdvancedPropertyFilters(){
-  ["advDistrict","advBlock","advVillage","advClass","advCategory","advMinArea","advMaxArea","advMaxPrice"].forEach(id=>{const e=document.getElementById(id);if(e)e.value="";});
+  ["advDistrict","advBlock","advVillage","advKhata","advPlot","advClass","advCategory","advMinArea","advMaxArea","advMaxPrice"].forEach(id=>{const e=document.getElementById(id);if(e)e.value="";});
   const sort=document.getElementById("advSort"); if(sort) sort.value="newest";
   populateAdvancedDistricts();
   applyAdvancedPropertyFilters();
