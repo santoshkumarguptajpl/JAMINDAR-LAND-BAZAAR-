@@ -35,6 +35,33 @@
     .card-shadow{box-shadow:0 10px 25px -5px rgba(0,0,0,.05),0 8px 10px -6px rgba(0,0,0,.05)}
     .gold-badge{background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%)}
     .hidden-view{display:none!important}
+    /* JLB premium green-gold responsive homepage */
+    .jlb-hero{background-color:#064e3b;background-image:url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2200&q=85');background-position:center;background-size:cover}
+    .jlb-gold-button{display:inline-flex;align-items:center;justify-content:center;border-radius:14px;background:linear-gradient(135deg,#fde68a,#d6a62d);color:#173b2b;padding:13px 20px;font-size:14px;font-weight:900;box-shadow:0 8px 22px #0003;transition:.2s}
+    .jlb-gold-button:hover{filter:brightness(1.06);transform:translateY(-1px)}
+    .jlb-outline-button{display:inline-flex;align-items:center;justify-content:center;border:1px solid #ffffff80;background:#064e3b99;color:white;border-radius:14px;padding:12px 18px;font-size:14px;font-weight:800;transition:.2s}
+    .jlb-outline-button:hover{background:#022c22}
+    .jlb-search-panel{background:linear-gradient(145deg,#fff,#f7f4e9);border:1px solid #e9d9a8;color:#0f172a}
+    .jlb-search-tab{border:1px solid #d9e5dd;border-radius:999px;padding:9px 13px;color:#14532d;font-size:12px;font-weight:900;background:white}
+    .jlb-search-tab.active{background:#065f46;color:white;border-color:#065f46}
+    .jlb-chip{border:1px solid #d6e5db;background:#f0fdf4;border-radius:999px;padding:5px 10px;font-weight:800;color:#166534}
+    .jlb-action-card{min-width:0;display:flex;align-items:center;gap:12px;text-align:left;padding:16px 14px;border:1px solid #e7dfc8;border-radius:18px;background:linear-gradient(135deg,#fff,#fbf7e9);color:#123c2b;box-shadow:0 5px 16px #0f51320d;transition:.2s}
+    .jlb-action-card:hover{transform:translateY(-2px);box-shadow:0 10px 24px #0f51321c;border-color:#d6b65d}
+    .jlb-action-card b{display:block;font-size:14px;font-weight:900}
+    .jlb-action-card small{display:block;margin-top:3px;font-size:10px;color:#64748b;line-height:1.4}
+    .jlb-action-card>i{font-size:12px;color:#b18413}
+    .jlb-action-primary{background:linear-gradient(135deg,#064e3b,#08734f);color:white;border-color:#0b7955}
+    .jlb-action-primary small,.jlb-action-primary>i{color:#fef3c7}
+    .jlb-action-icon{width:42px;height:42px;flex:0 0 42px;display:grid;place-items:center;border-radius:13px;background:#f5e7b7;color:#9a6b08;font-size:19px}
+    .jlb-action-primary .jlb-action-icon{background:#f7d66e;color:#064e3b}
+    .jlb-trust-strip{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:16px;border:1px solid #d9e8df;border-radius:18px;background:linear-gradient(90deg,#eaf8ef,#fffdf5)}
+    .jlb-trust-strip>div{display:flex;align-items:center;justify-content:center;gap:10px;min-width:0}
+    .jlb-trust-strip i{font-size:22px;color:#b18413}
+    .jlb-trust-strip b,.jlb-trust-strip small{display:block}
+    .jlb-trust-strip b{font-size:12px;color:#064e3b}
+    .jlb-trust-strip small{font-size:10px;color:#64748b;margin-top:2px}
+    @media(max-width:640px){.jlb-hero{padding-top:34px;padding-bottom:34px;background-position:58% center}.jlb-gold-button,.jlb-outline-button{font-size:12px;padding:11px 13px}.jlb-search-panel{padding:14px;border-radius:20px}.jlb-search-tab{font-size:10px;padding:8px 10px}.jlb-action-card{padding:12px 10px;gap:8px;border-radius:15px}.jlb-action-icon{width:34px;height:34px;flex-basis:34px;font-size:15px}.jlb-action-card b{font-size:12px}.jlb-action-card small{font-size:9px}.jlb-trust-strip{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 6px;padding:13px}.jlb-trust-strip>div{justify-content:flex-start}.jlb-trust-strip i{font-size:18px}.jlb-trust-strip b{font-size:11px}.jlb-trust-strip small{font-size:9px}}
+    @media(min-width:641px) and (max-width:900px){.jlb-trust-strip{grid-template-columns:repeat(2,minmax(0,1fr))}}
     .demo-badge{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa}
   
 /* ===== FINAL PREMIUM MARQUEE + MOBILE LANGUAGE ===== */
@@ -159,64 +186,53 @@
 
 <!-- HOME -->
 <main id="view-home">
-  <section class="hero-gradient text-white py-14 px-4">
-    <div class="max-w-4xl mx-auto text-center">
-      <span class="bg-emerald-900/70 border border-emerald-400/30 text-emerald-200 text-xs px-3.5 py-1 rounded-full font-bold inline-flex items-center gap-1.5">
-        <i class="fa-solid fa-circle-check text-amber-400"></i> विश्वसनीय भूमि पोर्टल
-      </span>
-      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight mt-3">
-        खरीदें या बेचें ज़मीन, <span class="text-amber-400">सीधे और सुरक्षित</span>
-      </h1>
-      <p class="text-emerald-100 text-sm sm:text-base max-w-2xl mx-auto mt-3">
-        पलामू, हुसैनाबाद (जपला), गढ़वा, राँची समेत पूरे झारखंड में खाता, प्लॉट और रकबा सहित जानकारी।
-      </p>
-      <div class="flex flex-wrap justify-center gap-2.5 mt-6">
-        <button onclick="filterAndShowProperties('All')" class="px-5 py-2.5 rounded-xl bg-amber-400 text-emerald-950 font-black text-sm shadow-lg hover:scale-[1.02] transition">
-          🔎 जमीन खोजें
-        </button>
-        <button onclick="switchView('view-post')" class="px-5 py-2.5 rounded-xl bg-white/10 border border-white/30 text-white font-black text-sm hover:bg-white/15 transition">
-          ➕ जमीन बेचें
-        </button>
-        <button onclick="showRentalListings()" class="px-5 py-2.5 rounded-xl bg-emerald-800/70 border border-emerald-400/30 text-emerald-50 font-black text-sm hover:bg-emerald-800 transition">
-          🏠 किराये की संपत्ति
-        </button>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 max-w-3xl mx-auto mt-7">
-        <div class="bg-white/10 border border-white/15 rounded-2xl px-4 py-3 backdrop-blur-sm">
-          <div class="text-amber-400 text-xl">✓</div>
-          <div class="text-sm font-black mt-1">सत्यापित जानकारी</div>
-          <div class="text-[10px] text-emerald-100 mt-1">Property details को व्यवस्थित रूप से दिखाएँ</div>
+  <section class="jlb-hero relative text-white px-4 py-12 sm:py-16 lg:py-20 overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-[#022c22]/95 via-[#064e3b]/80 to-[#064e3b]/20"></div>
+    <div class="relative max-w-7xl mx-auto grid lg:grid-cols-[1.05fr_.95fr] gap-8 items-center">
+      <div class="max-w-2xl">
+        <span class="inline-flex items-center gap-2 rounded-full border border-amber-300/50 bg-emerald-950/60 px-4 py-2 text-xs sm:text-sm font-extrabold text-amber-200 shadow-lg">
+          <i class="fa-solid fa-shield-halved"></i> झारखंड का भरोसेमंद प्रॉपर्टी प्लेटफॉर्म
+        </span>
+        <h1 class="mt-5 text-3xl sm:text-5xl lg:text-6xl leading-tight font-black tracking-tight">
+          झारखंड में जमीन, प्लॉट और मकान <span class="text-amber-300">खरीदें, बेचें या किराये पर दें</span>
+        </h1>
+        <p class="mt-4 max-w-xl text-sm sm:text-lg leading-7 text-emerald-50">अपनी जरूरत की संपत्ति खोजें और अपनी प्रॉपर्टी की जानकारी पूरे झारखंड के खरीदारों तक पहुँचाएँ।</p>
+        <div class="mt-6 flex flex-wrap gap-3">
+          <button onclick="filterAndShowProperties('All')" class="jlb-gold-button"><i class="fa-solid fa-magnifying-glass mr-2"></i>प्रॉपर्टी खोजें</button>
+          <button onclick="switchView('view-post')" class="jlb-outline-button"><i class="fa-solid fa-plus mr-2"></i>अपनी जमीन बेचें</button>
+          <button onclick="showRentalListings()" class="jlb-outline-button"><i class="fa-solid fa-key mr-2"></i>किराये की संपत्ति</button>
         </div>
-        <div class="bg-white/10 border border-white/15 rounded-2xl px-4 py-3 backdrop-blur-sm">
-          <div class="text-amber-400 text-xl">⌂</div>
-          <div class="text-sm font-black mt-1">पूरे झारखंड में</div>
-          <div class="text-[10px] text-emerald-100 mt-1">जिला, प्लॉट और रकबा के साथ खोज</div>
-        </div>
-        <div class="bg-white/10 border border-white/15 rounded-2xl px-4 py-3 backdrop-blur-sm">
-          <div class="text-amber-400 text-xl">⚡</div>
-          <div class="text-sm font-black mt-1">आसान पोस्टिंग</div>
-          <div class="text-[10px] text-emerald-100 mt-1">Owner और Authorized Agent के लिए</div>
+        <div class="mt-7 flex flex-wrap gap-x-6 gap-y-2 text-xs sm:text-sm font-bold text-emerald-50">
+          <span><i class="fa-solid fa-circle-check text-amber-300 mr-1"></i> सत्यापित लिस्टिंग</span>
+          <span><i class="fa-solid fa-user-tie text-amber-300 mr-1"></i> अधिकृत एजेंट नेटवर्क</span>
+          <span><i class="fa-solid fa-map-location-dot text-amber-300 mr-1"></i> झारखंड के 24 जिले</span>
         </div>
       </div>
-
-      <div class="bg-white p-2.5 sm:p-3 rounded-2xl shadow-2xl max-w-3xl mx-auto flex flex-col md:flex-row gap-2 mt-6 text-gray-800 text-left">
-        <div class="flex-1 flex items-center bg-slate-50 rounded-xl px-3 border border-slate-200">
-          <i class="fa-solid fa-magnifying-glass text-slate-400 mr-2"></i>
-          <input id="searchInput" type="text" placeholder="स्थान, खाता नं., प्लॉट नं., ID या ज़िला खोजें..." class="w-full py-2.5 text-sm bg-transparent focus:outline-none">
+      <div class="jlb-search-panel rounded-3xl p-4 sm:p-6 shadow-2xl">
+        <div class="flex flex-wrap gap-2 mb-4">
+          <button onclick="filterAndShowProperties('All')" class="jlb-search-tab active"><i class="fa-solid fa-map-location-dot mr-2"></i>जमीन / प्लॉट</button>
+          <button onclick="showRentalListings('House')" class="jlb-search-tab"><i class="fa-solid fa-house mr-2"></i>मकान</button>
+          <button onclick="showRentalListings('Shop')" class="jlb-search-tab"><i class="fa-solid fa-store mr-2"></i>दुकान / किराया</button>
         </div>
-        <select id="searchType" class="px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-slate-50 font-semibold">
-          <option value="All">सभी प्रकार</option>
-          <option value="General">General Plot</option>
-          <option value="CNT">CNT Plot</option>
-          <option value="Commercial">Commercial</option>
-          <option value="Residential">Residential</option>
-          <option value="Agricultural">Agricultural</option>
-          <option value="Industrial">Industrial</option>
-        </select>
-        <button onclick="handleSearch()" class="bg-[#064e3b] hover:bg-[#043327] text-white font-bold px-6 py-2.5 rounded-xl text-sm">
-          खोजें
-        </button>
+        <h2 class="text-xl sm:text-2xl font-black text-emerald-950">अपनी पसंद की प्रॉपर्टी खोजें</h2>
+        <p class="mt-1 text-xs sm:text-sm text-slate-500">स्थान, प्लॉट नंबर, खाता नंबर या प्रॉपर्टी के प्रकार से खोजें</p>
+        <div class="mt-4 grid grid-cols-1 sm:grid-cols-[1fr_auto] gap-2">
+          <div class="flex items-center rounded-xl border border-slate-200 bg-white px-3">
+            <i class="fa-solid fa-magnifying-glass text-emerald-700 mr-2"></i>
+            <input id="searchInput" type="text" placeholder="जिला, गाँव, खाता नं., प्लॉट नं. या ID..." class="w-full py-3 text-sm text-slate-800 bg-transparent focus:outline-none">
+          </div>
+          <select id="searchType" class="rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm font-semibold text-slate-800">
+            <option value="All">सभी प्रकार</option><option value="General">General Plot</option><option value="CNT">CNT Plot</option><option value="Commercial">Commercial</option><option value="Residential">Residential</option><option value="Agricultural">Agricultural</option><option value="Industrial">Industrial</option>
+          </select>
+        </div>
+        <button onclick="handleSearch()" class="mt-3 w-full rounded-xl bg-emerald-800 hover:bg-emerald-900 px-5 py-3.5 text-sm font-black text-white shadow-lg transition"><i class="fa-solid fa-search mr-2 text-amber-300"></i>संपत्ति खोजें</button>
+        <div class="mt-4 flex flex-wrap gap-2 text-[11px] text-slate-600">
+          <span class="font-bold text-emerald-900">लोकप्रिय:</span>
+          <button onclick="quickDistrictSearch('Palamu')" class="jlb-chip">पलामू</button>
+          <button onclick="quickDistrictSearch('Garhwa')" class="jlb-chip">गढ़वा</button>
+          <button onclick="quickDistrictSearch('Ranchi')" class="jlb-chip">राँची</button>
+          <button onclick="filterAndShowProperties('CNT')" class="jlb-chip">CNT प्लॉट</button>
+        </div>
       </div>
     </div>
   </section>
@@ -232,30 +248,21 @@
     </div>
   </section>
 
-  <!-- MAIN BUSINESS SHORTCUTS: visible on front page -->
-  <section class="max-w-7xl mx-auto px-4 py-3">
-    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-      <button onclick="filterAndShowProperties('All')" class="bg-white border rounded-2xl p-4 text-left hover:shadow-md">
-        <div class="text-2xl mb-2">🏡</div><div class="font-extrabold text-sm">जमीन खरीदें</div><div class="text-[10px] text-slate-500">Available plots</div>
-      </button>
-      <button onclick="switchView('view-post')" class="bg-white border rounded-2xl p-4 text-left hover:shadow-md">
-        <div class="text-2xl mb-2">📢</div><div class="font-extrabold text-sm">जमीन पोस्ट करें</div><div class="text-[10px] text-slate-500">Sell / List land</div>
-      </button>
-      <button onclick="showRentalListings('House')" class="bg-white border rounded-2xl p-4 text-left hover:shadow-md">
-        <div class="text-2xl mb-2">🏠</div><div class="font-extrabold text-sm">मकान किराये पर</div><div class="text-[10px] text-slate-500">House rentals</div>
-      </button>
-      <button onclick="showRentalListings('Shop')" class="bg-white border rounded-2xl p-4 text-left hover:shadow-md">
-        <div class="text-2xl mb-2">🏪</div><div class="font-extrabold text-sm">दुकान किराये पर</div><div class="text-[10px] text-slate-500">Shop rentals</div>
-      </button>
-      <button onclick="showRentalListings()" class="bg-white border rounded-2xl p-4 text-left hover:shadow-md">
-        <div class="text-2xl mb-2">🏢</div><div class="font-extrabold text-sm">Flat / Office</div><div class="text-[10px] text-slate-500">Commercial & residential</div>
-      </button>
-      <button onclick="switchView('view-rental-post')" class="gold-badge text-slate-950 rounded-2xl p-4 text-left hover:brightness-105">
-        <div class="text-2xl mb-2">➕</div><div class="font-extrabold text-sm">Rental Ad लगाएँ</div><div class="text-[10px]">Owner / Agent</div>
-      </button>
+  <!-- PREMIUM QUICK ACTIONS -->
+  <section class="max-w-7xl mx-auto px-4 py-7">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <button onclick="filterAndShowProperties('All')" class="jlb-action-card jlb-action-primary"><span class="jlb-action-icon"><i class="fa-solid fa-house-chimney"></i></span><span><b>जमीन खरीदें</b><small>उपलब्ध प्लॉट और भूमि देखें</small></span><i class="fa-solid fa-arrow-right ml-auto"></i></button>
+      <button onclick="switchView('view-post')" class="jlb-action-card"><span class="jlb-action-icon"><i class="fa-solid fa-hand-holding-dollar"></i></span><span><b>जमीन बेचें</b><small>अपनी प्रॉपर्टी की लिस्टिंग करें</small></span><i class="fa-solid fa-arrow-right ml-auto"></i></button>
+      <button onclick="showRentalListings()" class="jlb-action-card"><span class="jlb-action-icon"><i class="fa-solid fa-key"></i></span><span><b>किराये पर लें</b><small>मकान, दुकान और ऑफिस खोजें</small></span><i class="fa-solid fa-arrow-right ml-auto"></i></button>
+      <button onclick="switchView('view-calculator')" class="jlb-action-card"><span class="jlb-action-icon"><i class="fa-solid fa-calculator"></i></span><span><b>भूमि कैलकुलेटर</b><small>रकबा और माप की गणना करें</small></span><i class="fa-solid fa-arrow-right ml-auto"></i></button>
+    </div>
+    <div class="jlb-trust-strip mt-5">
+      <div><i class="fa-solid fa-shield-halved"></i><span><b>सत्यापित लिस्टिंग</b><small>जाँच की गई जानकारी</small></span></div>
+      <div><i class="fa-solid fa-people-group"></i><span><b>अधिकृत एजेंट</b><small>स्थानीय सहायता नेटवर्क</small></span></div>
+      <div><i class="fa-solid fa-lock"></i><span><b>पारदर्शी प्रक्रिया</b><small>स्पष्ट जानकारी और संपर्क</small></span></div>
+      <div><i class="fa-solid fa-map-location-dot"></i><span><b>पूरे झारखंड में</b><small>24 जिलों तक पहुँच</small></span></div>
     </div>
   </section>
-
   <!-- HOW IT WORKS / TRUST FLOW -->
   <section class="max-w-7xl mx-auto px-4 py-5">
     <div class="rounded-3xl bg-white border border-emerald-100 shadow-sm overflow-hidden">
