@@ -35,6 +35,32 @@
     .card-shadow{box-shadow:0 10px 25px -5px rgba(0,0,0,.05),0 8px 10px -6px rgba(0,0,0,.05)}
     .gold-badge{background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%)}
     .hidden-view{display:none!important}
+    /* Premium identity, navigation, listing and footer polish */
+    .jlb-brand-mark{position:relative;width:48px;height:48px;flex:0 0 48px;border:1px solid #f8df8b;border-radius:15px;background:linear-gradient(145deg,#f8e6a5,#c99b2e 58%,#8c6512);display:flex;align-items:center;justify-content:center;color:#073b2c;box-shadow:0 5px 18px #0004,inset 0 1px 0 #fff9}
+    .jlb-brand-mark span{font-size:16px;font-weight:1000;letter-spacing:-1px}
+    .jlb-brand-mark i{position:absolute;top:-5px;right:-5px;font-size:12px;color:#ffedb0;background:#064e3b;border:1px solid #d9b64e;border-radius:50%;padding:4px}
+    .jlb-brand-name{letter-spacing:.035em}
+    header.sticky{box-shadow:0 8px 24px #022c2226}
+    header nav button{position:relative;padding:9px 0;transition:color .2s}
+    header nav button:hover{color:#f7d66e}
+    header nav button:after{content:'';position:absolute;left:0;right:100%;bottom:2px;height:2px;background:#f7d66e;transition:right .2s}
+    header nav button:hover:after{right:0}
+    #propertyGridHome>div:not(.col-span-full){overflow:hidden;border:1px solid #e5e7eb;border-radius:22px;background:#fff;box-shadow:0 8px 25px #0f51320b;transition:transform .22s,box-shadow .22s,border-color .22s}
+    #propertyGridHome>div:not(.col-span-full):hover{transform:translateY(-4px);box-shadow:0 16px 34px #064e3b1a;border-color:#d8bd68}
+    #propertyGridHome img{transition:transform .35s}
+    #propertyGridHome>div:hover img{transform:scale(1.025)}
+    .jlb-footer-mark{width:42px;height:42px;display:grid;place-items:center;border-radius:13px;background:linear-gradient(145deg,#f8e6a5,#c99b2e);border:1px solid #f8df8b;color:#064e3b;font-size:14px;font-weight:1000;letter-spacing:-1px;box-shadow:0 5px 15px #0003}
+    footer{background-image:radial-gradient(ellipse at 10% 0%,#0b684b66,transparent 45%),linear-gradient(145deg,#022c22,#031e19)}
+    footer h4{color:#f8e6a5;letter-spacing:.02em}
+    footer button{transition:color .18s,transform .18s}
+    footer button:hover{transform:translateX(3px)}
+    .jlb-mobile-dock{background:#fffffff2;border-top:1px solid #d7e7dc;box-shadow:0 -8px 28px #022c221a;backdrop-filter:blur(14px);padding-bottom:calc(9px + env(safe-area-inset-bottom))}
+    .jlb-mobile-dock button{min-width:54px;gap:3px;transition:color .2s}
+    .jlb-mobile-dock button:active{transform:scale(.96)}
+    .jlb-mobile-dock button>i{font-size:17px}
+    .jlb-mobile-dock button:nth-child(3)>div{width:48px;height:48px;background:linear-gradient(145deg,#f8e6a5,#c99b2e);color:#064e3b;border:3px solid white;box-shadow:0 5px 16px #064e3b35}
+    @media(min-width:768px){.jlb-brand-mark{width:52px;height:52px;flex-basis:52px}.jlb-brand-name{font-size:20px}}
+    @media(max-width:640px){.jlb-brand-mark{width:42px;height:42px;flex-basis:42px;border-radius:13px}.jlb-brand-mark span{font-size:14px}.jlb-brand-name{font-size:13px}.jlb-hero h1{letter-spacing:-.025em}#propertyGridHome>div:not(.col-span-full){border-radius:18px}}
     /* JLB premium green-gold responsive homepage */
     .jlb-hero{background-color:#064e3b;background-image:url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=2200&q=85');background-position:center;background-size:cover}
     .jlb-gold-button{display:inline-flex;align-items:center;justify-content:center;border-radius:14px;background:linear-gradient(135deg,#fde68a,#d6a62d);color:#173b2b;padding:13px 20px;font-size:14px;font-weight:900;box-shadow:0 8px 22px #0003;transition:.2s}
@@ -106,12 +132,12 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16">
       <button onclick="switchView('view-home')" class="flex items-center gap-3 text-left">
-        <div class="w-10 h-10 rounded-xl gold-badge flex items-center justify-center text-slate-950 font-black text-xl shadow-lg">J</div>
+        <div class="jlb-brand-mark"><span>JLB</span><i class="fa-solid fa-house-chimney"></i></div>
         <div>
-          <div class="font-extrabold text-base md:text-xl tracking-tight leading-tight">
+          <div class="font-extrabold text-base md:text-xl tracking-tight leading-tight jlb-brand-name">
             JAMINDAR <span class="text-amber-400">LAND BAZAAR</span>
           </div>
-          <p class="text-[10px] text-emerald-300 tracking-wider font-semibold">झारखंड का विश्वसनीय डिजिटल भूमि बाज़ार</p>
+          <p class="text-[10px] text-emerald-200 tracking-wider font-semibold">TRUSTED PLATFORM FOR VERIFIED LAND DEALS</p>
         </div>
       </button>
 
@@ -973,9 +999,9 @@
 
 <!-- FOOTER -->
 <footer class="bg-[#022c22] text-slate-400 text-xs pt-12 pb-8 border-t border-emerald-950 mt-16">
-  <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+  <div class="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
     <div>
-      <div class="flex items-center gap-2.5 mb-3"><div class="w-8 h-8 rounded-lg gold-badge flex items-center justify-center text-slate-950 font-black">J</div><span class="text-white font-extrabold">JAMINDAR LAND BAZAAR</span></div>
+      <div class="flex items-center gap-2.5 mb-3"><div class="jlb-footer-mark">JLB</div><span class="text-white font-extrabold tracking-wide">JAMINDAR LAND BAZAAR</span></div>
       <p class="leading-relaxed">झारखंड का डिजिटल रियल एस्टेट प्लेटफॉर्म। पलामू, हुसैनाबाद (जपला) व आसपास के क्षेत्रों में भूमि क्रय-विक्रय हेतु।</p>
     </div>
     <div><h4 class="text-white font-bold mb-3">त्वरित नेविगेशन</h4><div class="space-y-2">
@@ -1015,12 +1041,12 @@
 </footer>
 
 <!-- MOBILE BAR -->
-<div class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t flex justify-around py-2.5 shadow-2xl">
-  <button onclick="switchView('view-home')" class="flex flex-col items-center text-slate-600"><i class="fa-solid fa-house"></i><span class="text-[10px] font-bold">Home</span></button>
-  <button onclick="filterAndShowProperties('All')" class="flex flex-col items-center text-slate-600"><i class="fa-solid fa-magnifying-glass"></i><span class="text-[10px] font-bold">Browse</span></button>
-  <button onclick="switchView('view-post')" class="flex flex-col items-center -mt-5"><div class="w-11 h-11 gold-badge rounded-full flex items-center justify-center border-2 border-white shadow-lg"><i class="fa-solid fa-plus"></i></div><span class="text-[10px] font-extrabold text-[#064e3b]">Post</span></button>
-  <button onclick="showRentalListings()" class="flex flex-col items-center text-slate-600"><i class="fa-solid fa-house"></i><span class="text-[10px] font-bold">Rent</span></button>
-  <button onclick="switchView('view-agent-auth')" class="flex flex-col items-center text-slate-600"><i class="fa-solid fa-user-tie"></i><span class="text-[10px] font-bold">Agent</span></button>
+<div class="jlb-mobile-dock md:hidden fixed bottom-0 left-0 right-0 z-40 flex justify-around py-2.5">
+  <button onclick="switchView('view-home')" class="flex flex-col items-center text-slate-600"><i class="fa-solid fa-house"></i><span class="text-[10px] font-bold">होम</span></button>
+  <button onclick="filterAndShowProperties('All')" class="flex flex-col items-center text-slate-600"><i class="fa-solid fa-magnifying-glass"></i><span class="text-[10px] font-bold">खोजें</span></button>
+  <button onclick="switchView('view-post')" class="flex flex-col items-center -mt-5"><div class="w-11 h-11 gold-badge rounded-full flex items-center justify-center border-2 border-white shadow-lg"><i class="fa-solid fa-plus"></i></div><span class="text-[10px] font-extrabold text-[#064e3b]">पोस्ट करें</span></button>
+  <button onclick="showRentalListings()" class="flex flex-col items-center text-slate-600"><i class="fa-solid fa-house"></i><span class="text-[10px] font-bold">किराया</span></button>
+  <button onclick="switchView('view-agent-auth')" class="flex flex-col items-center text-slate-600"><i class="fa-solid fa-user-tie"></i><span class="text-[10px] font-bold">एजेंट</span></button>
 </div>
 
 <script>
