@@ -26,7 +26,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
 
   <style>
     body{font-family:'Plus Jakarta Sans',sans-serif}
@@ -1036,7 +1035,6 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const auth = firebase.auth();
-const storage = firebase.storage();
 
 let allPropertiesMaster = [];
 let currentAdminTab = "ALL";
@@ -1436,16 +1434,33 @@ function previewPropertyImages(event) {
   files.forEach((file, index) => { const url = URL.createObjectURL(file); const item = document.createElement("div"); item.className = "relative aspect-square rounded-xl overflow-hidden border border-emerald-200 bg-white"; item.innerHTML = `<img src="${url}" alt="Property photo ${index + 1}" class="w-full h-full object-cover">${index === 0 ? '<span class="absolute bottom-1 left-1 bg-emerald-700 text-white text-[9px] font-bold px-1.5 py-0.5 rounded">मुख्य फोटो</span>' : ''}`; preview.appendChild(item); });
 }
 
+const CLOUDINARY_CLOUD_NAME = "bmnhjjsl";
+const CLOUDINARY_UPLOAD_PRESET = "sanvi_store_upload";
+
+async function uploadImageToCloudinary(file, folder) {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+  formData.append("folder", folder);
+  const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+    method: "POST",
+    body: formData
+  });
+  const result = await response.json().catch(() => ({}));
+  if (!response.ok || !result.secure_url) {
+    throw new Error(result?.error?.message || "Cloudinary image upload failed. Please try again.");
+  }
+  return result.secure_url;
+}
+
 async function uploadPropertyImages(propertyId) {
   const files = Array.from(document.getElementById("pImages")?.files || []);
   if (!files.length) return [];
   const uploadedUrls = [];
   for (let i = 0; i < files.length; i++) {
     const file = files[i];
-    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-    const ref = storage.ref(`properties/${propertyId}/${Date.now()}_${i}_${safeName}`);
-    const snapshot = await ref.put(file, { contentType: file.type });
-    uploadedUrls.push(await snapshot.ref.getDownloadURL());
+    const url = await uploadImageToCloudinary(file, `jamindar_land_bazaar/properties/${propertyId}`);
+    uploadedUrls.push(url);
   }
   return uploadedUrls;
 }
@@ -1508,7 +1523,7 @@ async function handleFormSubmit(e) {
     if (imageFiles.length) { btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-1"></i> फोटो अपलोड हो रही हैं...'; uploadedImages = await uploadPropertyImages(customId); }
   } catch (imageError) {
     console.error("Property image upload failed:", imageError);
-    alert("प्रॉपर्टी फोटो अपलोड नहीं हो सकी। Firebase Storage Rules और Storage setup जाँचें.\n\n" + imageError.message);
+    alert("प्रॉपर्टी फोटो अपलोड नहीं हो सकी। Cloudinary upload preset और internet connection जाँचें.\n\n" + imageError.message);
     btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-cloud-arrow-up mr-1"></i> विज्ञापन सबमिट करें'; return;
   }
 
@@ -1666,7 +1681,10 @@ function previewRentalImages(event){
 }
 async function uploadRentalImages(rentalId){
   const files=Array.from(document.getElementById("rImages")?.files||[]), urls=[];
-  for(let i=0;i<files.length;i++){const file=files[i],safe=file.name.replace(/[^a-zA-Z0-9._-]/g,"_"),ref=storage.ref(`rentals/${rentalId}/${Date.now()}_${i}_${safe}`),snap=await ref.put(file,{contentType:file.type});urls.push(await snap.ref.getDownloadURL());}
+  for(let i=0;i<files.length;i++){
+    const url=await uploadImageToCloudinary(files[i], `jamindar_land_bazaar/rentals/${rentalId}`);
+    urls.push(url);
+  }
   return urls;
 }
 
@@ -1707,7 +1725,7 @@ async function handleRentalSubmit(e){
   if(invalidRentalImage){setRentalMessage("हर फोटो JPG/PNG/WebP और अधिकतम 5 MB की होनी चाहिए।");btn.disabled=false;btn.innerText="किराये का विज्ञापन सबमिट करें";return;}
   let uploadedRentalImages=[];
   try{if(imageFiles.length){btn.innerText="फोटो अपलोड हो रही हैं...";uploadedRentalImages=await uploadRentalImages(id);}}
-  catch(imageError){console.error("Rental image upload failed:",imageError);setRentalMessage("प्रॉपर्टी फोटो अपलोड नहीं हो सकी। Firebase Storage Rules और Storage setup जाँचें: "+imageError.message);btn.disabled=false;btn.innerText="किराये का विज्ञापन सबमिट करें";return;}
+  catch(imageError){console.error("Rental image upload failed:",imageError);setRentalMessage("प्रॉपर्टी फोटो अपलोड नहीं हो सकी। Cloudinary upload preset और internet connection जाँचें: "+imageError.message);btn.disabled=false;btn.innerText="किराये का विज्ञापन सबमिट करें";return;}
   const data = {
     rentalId:id, image:uploadedRentalImages[0]||"", imageUrls:uploadedRentalImages, ownerId: role==="owner" ? user.uid : null, agentId: role==="agent" ? user.uid : null, adminId: role==="admin" ? user.uid : null,
     listedByRole: role, type:document.getElementById("rType").value, title:document.getElementById("rTitle").value.trim(),
