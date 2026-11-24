@@ -2416,7 +2416,7 @@ async function submitPropertyEnquiry(e){
   const p=currentEnquiryProperty;
   if(!p || p.demo){setEnquiryMessage("यह उदाहरण लिस्टिंग है। वास्तविक प्रॉपर्टी चुनकर पूछताछ भेजें।");return;}
   const name=(document.getElementById("enquiryName")?.value||"").trim().slice(0,70);
-  const phone=(document.getElementById("enquiryPhone")?.value||"").replace(/\\D/g,"");
+  const phone=(document.getElementById("enquiryPhone")?.value||"").replace(/\D/g,"");
   const email=(document.getElementById("enquiryEmail")?.value||"").trim().slice(0,120);
   const message=(document.getElementById("enquiryMessage")?.value||"").trim().slice(0,700);
   const consent=!!document.getElementById("enquiryConsent")?.checked;
