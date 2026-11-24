@@ -180,7 +180,9 @@
     <button onclick="switchView('view-owner-auth');showOwnerTab('login')" class="block w-full text-left py-2 text-emerald-100">🏠 Owner Login / Registration</button>
     <button onclick="switchView('view-agent-auth');showAgentTab('login')" class="block w-full text-left py-2 text-emerald-100">👔 एजेंट लॉगिन / रजिस्ट्रेशन</button>
     <button onclick="switchView('view-contact')" class="block w-full text-left py-2 text-emerald-100">📞 संपर्क</button>
-    <a href="https://jharbhoomi.jharkhand.gov.in/" target="_blank" rel="noopener noreferrer" class="block w-full text-left py-2 text-amber-300">🏛️ झारभूमि सरकारी पोर्टल</a>
+    <a href="https://jharbhoomi.jharkhand.gov.in/" target="_blank" rel="noopener noreferrer" class="block w-full text-left py-2 text-amber-300">🏛️ झारभूमि भूमि रिकॉर्ड</a>
+    <a href="https://jharbhunaksha.jharkhand.gov.in/" target="_blank" rel="noopener noreferrer" class="block w-full text-left py-2 text-amber-300">🗺️ भू-नक्शा</a>
+    <a href="https://jharbhulagan.jharkhand.gov.in/" target="_blank" rel="noopener noreferrer" class="block w-full text-left py-2 text-amber-300">🧾 ऑनलाइन लगान</a>
     <button onclick="switchView('view-terms')" class="block w-full text-left py-2 text-emerald-200">📜 नियम एवं शर्तें</button>
     <button onclick="switchView('view-privacy')" class="block w-full text-left py-2 text-emerald-200">🔒 गोपनीयता नीति</button>
     <button onclick="switchView('view-disclaimer')" class="block w-full text-left py-2 text-emerald-200">⚠️ Disclaimer</button>
@@ -295,18 +297,28 @@
       <div><i class="fa-solid fa-map-location-dot"></i><span><b>पूरे झारखंड में</b><small>24 जिलों तक पहुँच</small></span></div>
     </div>
   </section>
-  <!-- OFFICIAL JHARKHAND LAND RECORDS QUICK LINK -->
-  <section class="max-w-7xl mx-auto px-4 py-4">
-    <div class="jlb-gov-card rounded-3xl p-5 sm:p-6 flex flex-col md:flex-row md:items-center gap-4">
-      <div class="jlb-gov-icon"><i class="fa-solid fa-landmark"></i></div>
-      <div class="flex-1">
-        <span class="text-[10px] font-black tracking-widest text-emerald-700">OFFICIAL GOVERNMENT RESOURCE</span>
-        <h2 class="text-lg sm:text-xl font-black text-emerald-950 mt-1">झारखंड सरकारी भूमि रिकॉर्ड – झारभूमि</h2>
-        <p class="text-xs sm:text-sm text-slate-600 mt-1">खाता, रजिस्टर-II और अन्य भूमि अभिलेख देखने के लिए झारखंड सरकार के आधिकारिक पोर्टल पर जाएँ।</p>
-        <p class="text-[10px] text-amber-800 mt-2"><i class="fa-solid fa-circle-info mr-1"></i> सरकारी रिकॉर्ड की जाँच स्वयं आधिकारिक पोर्टल पर करें। JLB सरकारी पोर्टल नहीं है।</p>
-      </div>
-      <a href="https://jharbhoomi.jharkhand.gov.in/" target="_blank" rel="noopener noreferrer" class="jlb-gov-button"><i class="fa-solid fa-arrow-up-right-from-square mr-2"></i>झारभूमि पोर्टल खोलें</a>
+  <!-- OFFICIAL JHARKHAND GOVERNMENT LAND SERVICES -->
+  <section class="max-w-7xl mx-auto px-4 py-5" aria-label="झारखंड सरकारी भूमि सेवाएँ">
+    <div class="text-center mb-4">
+      <span class="text-[10px] font-black tracking-widest text-emerald-700">OFFICIAL GOVERNMENT RESOURCES</span>
+      <h2 class="text-xl sm:text-2xl font-black text-emerald-950 mt-1">झारखंड सरकारी भूमि सेवाएँ</h2>
+      <p class="text-xs text-slate-600 mt-1">भूमि रिकॉर्ड, प्लॉट का नक्शा और लगान भुगतान के लिए आधिकारिक सरकारी पोर्टल</p>
     </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+      <article class="jlb-gov-card rounded-2xl p-4 flex flex-col gap-3">
+        <div class="flex items-center gap-3"><div class="jlb-gov-icon"><i class="fa-solid fa-landmark"></i></div><div><h3 class="font-black text-emerald-950">झारभूमि – भूमि रिकॉर्ड</h3><p class="text-[11px] text-slate-600">खाता, खेसरा और रजिस्टर-II</p></div></div>
+        <a href="https://jharbhoomi.jharkhand.gov.in/" target="_blank" rel="noopener noreferrer" class="jlb-gov-button mt-auto"><i class="fa-solid fa-arrow-up-right-from-square mr-2"></i>झारभूमि खोलें</a>
+      </article>
+      <article class="jlb-gov-card rounded-2xl p-4 flex flex-col gap-3">
+        <div class="flex items-center gap-3"><div class="jlb-gov-icon"><i class="fa-solid fa-map"></i></div><div><h3 class="font-black text-emerald-950">भू-नक्शा</h3><p class="text-[11px] text-slate-600">मौजा और प्लॉट का नक्शा</p></div></div>
+        <a href="https://jharbhunaksha.jharkhand.gov.in/" target="_blank" rel="noopener noreferrer" class="jlb-gov-button mt-auto"><i class="fa-solid fa-arrow-up-right-from-square mr-2"></i>भू-नक्शा खोलें</a>
+      </article>
+      <article class="jlb-gov-card rounded-2xl p-4 flex flex-col gap-3">
+        <div class="flex items-center gap-3"><div class="jlb-gov-icon"><i class="fa-solid fa-receipt"></i></div><div><h3 class="font-black text-emerald-950">ऑनलाइन लगान</h3><p class="text-[11px] text-slate-600">बकाया देखें और लगान भुगतान</p></div></div>
+        <a href="https://jharbhulagan.jharkhand.gov.in/" target="_blank" rel="noopener noreferrer" class="jlb-gov-button mt-auto"><i class="fa-solid fa-arrow-up-right-from-square mr-2"></i>लगान पोर्टल खोलें</a>
+      </article>
+    </div>
+    <p class="text-[10px] text-amber-800 text-center mt-3"><i class="fa-solid fa-circle-info mr-1"></i> ये बाहरी सरकारी पोर्टल हैं। रिकॉर्ड/भुगतान की पुष्टि स्वयं संबंधित विभाग से करें। JLB सरकारी पोर्टल नहीं है और सरकारी रिकॉर्ड प्रमाणित नहीं करता।</p>
   </section>
 
   <!-- HOW IT WORKS / TRUST FLOW -->
@@ -1029,7 +1041,9 @@
       <button onclick="filterAndShowProperties('All')" class="block hover:text-amber-400">सभी उपलब्ध ज़मीन</button>
       <button onclick="switchView('view-calculator')" class="block hover:text-amber-400">भूमि माप कैलकुलेटर</button>
       <button onclick="showRentalListings()" class="block hover:text-amber-400">किराये की संपत्ति</button>
-      <a href="https://jharbhoomi.jharkhand.gov.in/" target="_blank" rel="noopener noreferrer" class="block hover:text-amber-400">झारभूमि सरकारी भूमि रिकॉर्ड ↗</a>
+      <a href="https://jharbhoomi.jharkhand.gov.in/" target="_blank" rel="noopener noreferrer" class="block hover:text-amber-400">झारभूमि भूमि रिकॉर्ड ↗</a>
+      <a href="https://jharbhunaksha.jharkhand.gov.in/" target="_blank" rel="noopener noreferrer" class="block hover:text-amber-400">भू-नक्शा ↗</a>
+      <a href="https://jharbhulagan.jharkhand.gov.in/" target="_blank" rel="noopener noreferrer" class="block hover:text-amber-400">ऑनलाइन लगान ↗</a>
       <button onclick="switchView('view-rental-post')" class="block hover:text-amber-400">Rental Ad पोस्ट करें</button>
     </div></div>
     <div>
