@@ -1987,6 +1987,7 @@ async function loadRentalsForAdmin(){
       <td class="p-3.5"><span class="px-2 py-1 rounded-full text-[10px] font-bold ${r.status==="approved"?"bg-emerald-100 text-emerald-800":r.status==="rejected"?"bg-rose-100 text-rose-800":"bg-amber-100 text-amber-800"}">${escapeHtml((r.status||"pending").toUpperCase())}</span></td>
       <td class="p-3.5 text-right whitespace-nowrap">
         <button onclick="openAdminEditRental('${escapeHtml(r.id)}')" class="bg-blue-700 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold">Edit</button>
+        <button onclick="toggleRentalVerification('${escapeHtml(r.id)}',${!r.verified})" class="${r.verified?'bg-emerald-600 text-white':'bg-slate-200 text-slate-700'} px-2.5 py-1.5 rounded-lg text-[10px] font-bold">${r.verified?'✓ Verified':'Unverified'}</button>
         <button onclick="setRentalStatus('${escapeHtml(r.id)}','approved')" class="bg-emerald-600 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold">Approve</button>
         <button onclick="setRentalStatus('${escapeHtml(r.id)}','rejected')" class="bg-rose-600 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold ml-1">Reject</button>
         <button onclick="setRentalStatus('${escapeHtml(r.id)}','rented')" class="bg-slate-700 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold ml-1">Rented</button>
@@ -1997,6 +1998,23 @@ async function loadRentalsForAdmin(){
 async function setRentalStatus(id,status){
   if(!(await requireActiveAdmin()))return;
   try{await db.collection("rentals").doc(id).update({status,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});await loadRentalsForAdmin();if(status==="approved")listenToRentals();}catch(error){alert("Rental status update failed: "+error.message);}
+}
+async function toggleRentalVerification(id,newState){
+  if(!(await requireActiveAdmin()))return;
+  try{
+    await db.collection("rentals").doc(id).update({
+      verificationStatus:newState?"verified":"unverified",
+      verified:newState,
+      verifiedAt:newState?firebase.firestore.FieldValue.serverTimestamp():null,
+      updatedAt:firebase.firestore.FieldValue.serverTimestamp()
+    });
+    await loadRentalsForAdmin();
+    if(document.getElementById("view-rentals")&&!document.getElementById("view-rentals").classList.contains("hidden"))showRentalListings();
+    alert(newState?"Rental property Verified कर दी गई है।":"Rental property Unverified कर दी गई है।");
+  }catch(error){
+    console.error("Rental verification update failed:",error);
+    alert("Rental Verification अपडेट नहीं हुआ: "+error.message);
+  }
 }
 
 let jlbEditRec=null;
