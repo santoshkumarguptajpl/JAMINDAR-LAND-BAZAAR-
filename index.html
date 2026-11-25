@@ -102,6 +102,63 @@
 .jlb-lang-mobile{display:flex;gap:8px;align-items:center;border-top:1px solid rgba(16,185,129,.25);padding-top:10px;margin-top:8px}
 .jlb-lang-mobile button{padding:.35rem .7rem;border-radius:.65rem;font-size:.72rem;font-weight:900}
 @media (prefers-reduced-motion:reduce){.jlb-marquee-track{animation:none;padding-left:0;text-align:center;display:block}}
+
+
+/* ===== MOBILE RESPONSIVE POLISH (LAYOUT ONLY) ===== */
+@media (max-width: 767px) {
+  html, body { width:100%; max-width:100%; overflow-x:hidden; }
+  body { font-size:14px; }
+  header.sticky { width:100%; }
+  header.sticky > div:first-child { padding-left:12px; padding-right:12px; }
+  header.sticky > div:first-child > div { min-height:60px; height:auto; gap:8px; }
+  .jlb-brand-mark { width:40px; height:40px; flex-basis:40px; }
+  .jlb-brand-name { font-size:12px !important; line-height:1.2; }
+  header nav { display:none !important; }
+  header .hidden.sm\:flex { display:none !important; }
+  header button[onclick="toggleMobileMenu()"] { display:inline-flex !important; align-items:center; justify-content:center; width:44px; height:44px; flex:0 0 44px; border:1px solid #ffffff35; border-radius:12px; }
+  #mobileMenu { max-height:calc(100svh - 76px); overflow-y:auto; overscroll-behavior:contain; padding:12px 16px 18px; }
+  #mobileMenu > button, #mobileMenu > a { min-height:42px; display:flex; align-items:center; border-bottom:1px solid #ffffff12; }
+  #mobileMenu:not(.hidden) { display:block !important; }
+  .jlb-hero { padding:32px 12px 26px !important; background-position:58% center; }
+  .jlb-hero > .relative { gap:22px; }
+  .jlb-hero h1 { font-size:clamp(27px,7vw,36px) !important; line-height:1.2 !important; }
+  .jlb-hero p { font-size:13px !important; line-height:1.65 !important; }
+  .jlb-hero .mt-6 { gap:8px; }
+  .jlb-gold-button, .jlb-outline-button { min-height:42px; padding:10px 12px; font-size:12px; }
+  .jlb-search-panel { width:100%; padding:14px !important; border-radius:18px !important; }
+  .jlb-search-panel h2 { font-size:18px !important; }
+  .jlb-search-panel input, .jlb-search-panel select { min-height:46px; font-size:13px; }
+  .jlb-search-panel > button { min-height:46px; }
+  .jlb-search-tab { min-height:38px; }
+  .jlb-trust-strip { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:12px 8px; }
+  .jlb-action-card { min-height:76px; }
+  .jlb-action-card b { font-size:12px; line-height:1.35; }
+  .jlb-action-card small { font-size:10px; }
+  .jlb-gov-card { width:100%; padding:14px; border-radius:17px; }
+  .jlb-gov-icon { width:46px; height:46px; flex-basis:46px; border-radius:14px; font-size:20px; }
+  .jlb-gov-button { width:100%; min-height:44px; white-space:normal; text-align:center; line-height:1.35; padding:10px 12px; }
+  #view-home > section[aria-label="सरकारी भूमि सेवाओं के बाहरी लिंक"] .grid { grid-template-columns:minmax(0,1fr) !important; }
+  #view-home > section[aria-label="सरकारी भूमि सेवाओं के बाहरी लिंक"] h2 { font-size:19px !important; line-height:1.35; }
+  #view-home > section[aria-label="सरकारी भूमि सेवाओं के बाहरी लिंक"] > div:last-child { font-size:11px; line-height:1.65; }
+  #propertyGridHome { grid-template-columns:minmax(0,1fr) !important; }
+  footer > div:first-child { grid-template-columns:minmax(0,1fr) !important; gap:24px; }
+  footer { padding-top:30px; }
+  .jlb-mobile-dock button { min-height:48px; }
+}
+@media (max-width: 380px) {
+  .jlb-brand-mark { width:36px; height:36px; flex-basis:36px; }
+  .jlb-brand-name { font-size:11px !important; }
+  .jlb-hero h1 { font-size:27px !important; }
+  .jlb-hero .flex.flex-wrap.gap-3 { display:grid; grid-template-columns:1fr 1fr; }
+  .jlb-hero .flex.flex-wrap.gap-3 button:first-child { grid-column:1 / -1; }
+  .jlb-action-card { gap:7px; padding:10px 8px; }
+  .jlb-action-icon { width:32px; height:32px; flex-basis:32px; }
+}
+@media (min-width: 768px) {
+  #mobileMenu { display:none !important; }
+  header button[onclick="toggleMobileMenu()"] { display:none !important; }
+}
+/* ===== END MOBILE RESPONSIVE POLISH ===== */
 </style>
 </head>
 
