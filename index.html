@@ -1986,6 +1986,7 @@ async function loadRentalsForAdmin(){
       <td class="p-3.5">${escapeHtml(r.listedByRole||"-")}<div class="text-[10px]">${escapeHtml(r.contactName||"")}</div></td>
       <td class="p-3.5"><span class="px-2 py-1 rounded-full text-[10px] font-bold ${r.status==="approved"?"bg-emerald-100 text-emerald-800":r.status==="rejected"?"bg-rose-100 text-rose-800":"bg-amber-100 text-amber-800"}">${escapeHtml((r.status||"pending").toUpperCase())}</span></td>
       <td class="p-3.5 text-right whitespace-nowrap">
+        <button onclick="openAdminEditRental('${escapeHtml(r.id)}')" class="bg-blue-700 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold">Edit</button>
         <button onclick="setRentalStatus('${escapeHtml(r.id)}','approved')" class="bg-emerald-600 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold">Approve</button>
         <button onclick="setRentalStatus('${escapeHtml(r.id)}','rejected')" class="bg-rose-600 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold ml-1">Reject</button>
         <button onclick="setRentalStatus('${escapeHtml(r.id)}','rented')" class="bg-slate-700 text-white px-2.5 py-1.5 rounded-lg text-[10px] font-bold ml-1">Rented</button>
@@ -1996,6 +1997,35 @@ async function loadRentalsForAdmin(){
 async function setRentalStatus(id,status){
   if(!(await requireActiveAdmin()))return;
   try{await db.collection("rentals").doc(id).update({status,updatedAt:firebase.firestore.FieldValue.serverTimestamp()});await loadRentalsForAdmin();if(status==="approved")listenToRentals();}catch(error){alert("Rental status update failed: "+error.message);}
+}
+
+let jlbEditRec=null;
+function closeJlbEdit(){const m=document.getElementById("jlbEditModal");if(m)m.remove();jlbEditRec=null;}
+function jlbField(label,id,value,type){return '<label class="block text-xs font-bold">'+label+'<input id="'+id+'" type="'+(type||"text")+'" value="'+escapeHtml(value==null?"":value)+'" class="mt-1 w-full rounded-lg border p-2.5 text-sm"></label>';}
+function openAdminEditProperty(id){
+ if(sessionStorage.getItem("jlb_role")!=="admin"||!auth.currentUser)return alert("Admin Login आवश्यक है।");
+ const p=allPropertiesMaster.find(x=>x.id===id);if(!p||p.demo)return;
+ jlbEditRec={kind:"property",id:id,data:p};const imgs=p.images&&p.images.length?p.images:(p.image?[p.image]:[]);
+ const m=document.createElement("div");m.id="jlbEditModal";m.className="fixed inset-0 z-[100] overflow-y-auto bg-black/70 p-3";
+ m.innerHTML='<div class="mx-auto my-4 max-w-2xl rounded-2xl bg-white p-5"><div class="flex justify-between"><b>प्रॉपर्टी एडिट करें</b><button type="button" onclick="closeJlbEdit()">✕</button></div><form onsubmit="saveJlbEdit(event)" class="space-y-3 pt-4"><div class="grid grid-cols-1 sm:grid-cols-2 gap-3">'+jlbField("शीर्षक","eTitle",p.title)+jlbField("कीमत (₹)","ePrice",p.priceVal||0,"number")+jlbField("रकबा (डिसमिल)","eArea",p.areaVal||0,"number")+jlbField("ब्लॉक / स्थान","eLocation",p.block)+jlbField("खाता","eKhata",p.khata)+jlbField("प्लॉट","ePlot",p.plot)+jlbField("रास्ता","eRoad",p.road)+'</div><label class="block text-xs font-bold">विवरण<textarea id="eDesc" class="mt-1 w-full rounded-lg border p-3">'+escapeHtml(p.description||"")+'</textarea></label><p class="text-xs font-bold">मौजूदा फोटो</p><div class="grid grid-cols-4 gap-2">'+imgs.map(u=>'<img src="'+escapeHtml(u)+'" class="h-16 w-full rounded object-cover">').join("")+'</div><input id="eImages" type="file" accept="image/jpeg,image/png,image/webp" multiple class="block w-full text-xs"><label class="text-xs"><input id="eReplace" type="checkbox"> पुरानी फोटो हटाकर नई फोटो रखें</label><button class="rounded-lg bg-emerald-700 px-5 py-3 text-white font-bold">सेव करें</button><p id="eMsg" class="text-xs"></p></form></div>';document.body.appendChild(m);
+}
+async function openAdminEditRental(id){
+ if(!(await requireActiveAdmin()))return;
+ try{const d=await db.collection("rentals").doc(id).get();if(!d.exists)return alert("Rental नहीं मिली।");const r={id:d.id,...d.data()};jlbEditRec={kind:"rental",id:id,data:r};const imgs=r.imageUrls&&r.imageUrls.length?r.imageUrls:(r.image?[r.image]:[]);
+ const m=document.createElement("div");m.id="jlbEditModal";m.className="fixed inset-0 z-[100] overflow-y-auto bg-black/70 p-3";
+ m.innerHTML='<div class="mx-auto my-4 max-w-2xl rounded-2xl bg-white p-5"><div class="flex justify-between"><b>रेंटल एडिट करें</b><button type="button" onclick="closeJlbEdit()">✕</button></div><form onsubmit="saveJlbEdit(event)" class="space-y-3 pt-4"><div class="grid grid-cols-1 sm:grid-cols-2 gap-3">'+jlbField("शीर्षक","eTitle",r.title)+jlbField("मासिक किराया (₹)","eRent",r.rent||0,"number")+jlbField("डिपॉजिट (₹)","eDeposit",r.deposit||0,"number")+jlbField("स्थान","eLocation",r.location)+jlbField("मोहल्ला","eLocality",r.locality)+jlbField("क्षेत्रफल","eArea",r.area)+jlbField("संपर्क नाम","eName",r.contactName)+jlbField("मोबाइल","ePhone",r.contactPhone,"tel")+'</div><label class="block text-xs font-bold">विवरण<textarea id="eDesc" class="mt-1 w-full rounded-lg border p-3">'+escapeHtml(r.description||"")+'</textarea></label><p class="text-xs font-bold">मौजूदा फोटो</p><div class="grid grid-cols-4 gap-2">'+imgs.map(u=>'<img src="'+escapeHtml(u)+'" class="h-16 w-full rounded object-cover">').join("")+'</div><input id="eImages" type="file" accept="image/jpeg,image/png,image/webp" multiple class="block w-full text-xs"><label class="text-xs"><input id="eReplace" type="checkbox"> पुरानी फोटो हटाकर नई फोटो रखें</label><button class="rounded-lg bg-emerald-700 px-5 py-3 text-white font-bold">सेव करें</button><p id="eMsg" class="text-xs"></p></form></div>';document.body.appendChild(m);
+ }catch(err){alert("Edit form नहीं खुला: "+err.message);}
+}
+async function saveJlbEdit(e){
+ e.preventDefault();if(!(await requireActiveAdmin())||!jlbEditRec)return;const msg=document.getElementById("eMsg"),files=Array.from(document.getElementById("eImages").files||[]),replace=document.getElementById("eReplace").checked;
+ if(files.length>5||files.some(f=>!["image/jpeg","image/png","image/webp"].includes(f.type)||f.size>5*1024*1024)){msg.textContent="अधिकतम 5 फोटो, JPG/PNG/WebP, 5 MB प्रति फोटो।";return;}
+ if(replace&&!files.length){msg.textContent="नई फोटो चुनें।";return;}
+ const btn=e.querySelector("button[type=submit]");btn.disabled=true;btn.textContent="सेव हो रहा है...";
+ try{const rec=jlbEditRec,old=rec.data,existing=rec.kind==="rental"?(old.imageUrls&&old.imageUrls.length?old.imageUrls:(old.image?[old.image]:[])):(old.images&&old.images.length?old.images:(old.image?[old.image]:[]));if(!replace&&existing.length+files.length>10)throw new Error("अधिकतम 10 फोटो रखें।");const uploaded=[];for(let i=0;i<files.length;i++)uploaded.push(await uploadImageToCloudinary(files[i],"jamindar_land_bazaar/"+(rec.kind==="rental"?"rentals":"properties")+"/"+rec.id));const imgs=replace?uploaded:existing.concat(uploaded),patch={title:document.getElementById("eTitle").value.trim(),description:document.getElementById("eDesc").value.trim(),image:imgs[0]||old.image||"",updatedAt:firebase.firestore.FieldValue.serverTimestamp()};
+ if(rec.kind==="property"){const price=Number(document.getElementById("ePrice").value),area=Number(document.getElementById("eArea").value);if(price<=0||area<=0)throw new Error("कीमत और रकबा सही भरें।");Object.assign(patch,{priceVal:price,price:"₹ "+price.toLocaleString("en-IN"),areaVal:area,area:area+" Decimal",areaUnit:"Decimal",block:document.getElementById("eLocation").value.trim(),village:document.getElementById("eLocation").value.trim(),khata:document.getElementById("eKhata").value.trim(),plot:document.getElementById("ePlot").value.trim(),road:document.getElementById("eRoad").value.trim(),images:imgs});}
+ else{const rent=Number(document.getElementById("eRent").value),deposit=Number(document.getElementById("eDeposit").value||0),phone=document.getElementById("ePhone").value.replace(/\D/g,"");if(rent<=0||deposit<0||phone.length!==10)throw new Error("किराया, डिपॉजिट और 10 अंकों का मोबाइल सही भरें।");Object.assign(patch,{rent:rent,deposit:deposit,location:document.getElementById("eLocation").value.trim(),locality:document.getElementById("eLocality").value.trim(),area:document.getElementById("eArea").value.trim(),contactName:document.getElementById("eName").value.trim(),contactPhone:phone,imageUrls:imgs});}
+ await db.collection(rec.kind==="rental"?"rentals":"properties").doc(rec.id).update(patch);closeJlbEdit();if(rec.kind==="property"){renderAdminTable();renderPublicViews();}else{await loadRentalsForAdmin();listenToRentals();}alert("अपडेट सफलतापूर्वक सेव हुआ।");
+ }catch(err){msg.textContent="सेव नहीं हुआ: "+err.message;}finally{btn.disabled=false;btn.textContent="सेव करें";}
 }
 
 /* ---------- ADMIN AUTH ---------- */
@@ -2408,6 +2438,7 @@ function renderAdminTable() {
         </td>
         <td class="p-3.5 text-right whitespace-nowrap">
           <button onclick="viewPropertyModal('${p.id}')" class="bg-slate-700 text-white px-2 py-1 rounded text-[11px] font-bold">View</button>
+          <button onclick="openAdminEditProperty('${p.id}')" class="bg-blue-700 text-white px-2 py-1 rounded text-[11px] font-bold">Edit</button>
           ${p.status !== "approved" ? `<button onclick="updatePropertyStatus('${p.id}','approved')" class="bg-emerald-600 text-white px-2 py-1 rounded text-[11px] font-bold">Approve</button>` : ""}
           ${p.status !== "rejected" ? `<button onclick="updatePropertyStatus('${p.id}','rejected')" class="bg-amber-600 text-white px-2 py-1 rounded text-[11px] font-bold">Reject</button>` : ""}
           <button onclick="deleteProperty('${p.id}')" class="bg-rose-600 text-white px-2 py-1 rounded text-[11px] font-bold">Delete</button>
